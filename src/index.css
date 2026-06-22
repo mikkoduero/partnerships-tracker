@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth background color transitions when toggling Dark Mode */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom scrollbars for a cleaner, modern app look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+/* --- PRINT OPTIMIZATION --- */
+/* This automatically cleans up the layout when clicking "Print / Export PDF" */
+@media print {
+  /* Hide the sidebar navigation, dark mode buttons, and utility actions */
+  nav,
+  button,
+  header,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Force the main wrapper to take up the full printing page layout */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Ensure background colors don't bleed or distort on the official paper layout */
+  .border,
+  .shadow-sm {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
