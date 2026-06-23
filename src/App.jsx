@@ -210,7 +210,7 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
         <div className="flex flex-col items-center text-center mb-8">
           <div className="w-14 h-14 rounded-xl bg-emerald-900 text-amber-400 flex items-center justify-center text-2xl font-black shadow-md mb-3">R8</div>
           <h1 className="text-xl font-black tracking-tight text-emerald-900 dark:text-amber-400">DepEd Region VIII</h1>
-          <p className="text-xs uppercase font-bold tracking-widest text-slate-400 mt-1">Partnerships & Resource Grid</p>
+          <p className="text-xs uppercase font-bold tracking-widest text-slate-400 mt-1">Partnerships Tracker</p>
         </div>
         <form onSubmit={handleFormSubmit} className="space-y-4">
           {error && <div className="p-3 text-xs bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 font-semibold rounded-lg text-center">{error}</div>}
@@ -258,7 +258,7 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
         <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center text-emerald-950 font-black shadow-md">R8</div>
         <div>
           <h1 className="font-bold text-sm tracking-tight text-amber-400">DepEd Region VIII</h1>
-          <p className="text-[10px] uppercase tracking-wider opacity-75 font-medium">Partnership Grid</p>
+          <p className="text-[10px] uppercase tracking-wider opacity-75 font-medium">Partnerships Tracker</p>
         </div>
       </div>
       <div className="flex-1 p-3 space-y-1 flex md:flex-col overflow-x-auto">
