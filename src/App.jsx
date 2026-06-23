@@ -215,14 +215,14 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
         <form onSubmit={handleFormSubmit} className="space-y-4">
           {error && <div className="p-3 text-xs bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 font-semibold rounded-lg text-center">{error}</div>}
           <div>
-            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-400 mb-1">Username / Identifier</label>
+            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-400 mb-1">Username</label>
             <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className="w-full p-2.5 text-xs rounded-lg border outline-none dark:bg-slate-950 dark:border-slate-800 dark:text-slate-100 focus:border-amber-500 transition" required />
           </div>
           <div>
-            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-400 mb-1">Security Token Key</label>
+            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-400 mb-1">Password</label>
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="w-full p-2.5 text-xs rounded-lg border outline-none dark:bg-slate-950 dark:border-slate-800 dark:text-slate-100 focus:border-amber-500 transition" required />
           </div>
-          <button type="submit" className="w-full py-3 bg-emerald-900 hover:bg-emerald-850 text-amber-400 font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Secure Entry Authorization</button>
+          <button type="submit" className="w-full py-3 bg-emerald-900 hover:bg-emerald-850 text-amber-400 font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Sign In</button>
         </form>
         <div className="mt-8 border-t dark:border-slate-800 pt-5">
           <span className="block text-[10px] uppercase font-black text-slate-400 tracking-widest text-center mb-3">Simulation Role Emulator Bypasses</span>
@@ -246,8 +246,8 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
 function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
   const allTabs = [
     { id: 'dashboard', label: 'Overview Dashboard', icon: 'dashboard', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
-    { id: 'needs', label: 'Needs Inventory', icon: 'needs', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
-    { id: 'contributions', label: 'Contributions Ledger', icon: 'contributions', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
+    { id: 'needs', label: 'Needs', icon: 'needs', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
+    { id: 'contributions', label: 'Contributions', icon: 'contributions', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
     { id: 'users', label: 'User Management', icon: 'users', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.ICT_USER] }
   ];
   const filteredTabs = allTabs.filter(t => t.roles.includes(role));
@@ -277,8 +277,8 @@ function Header({ currentUser, darkMode, setDarkMode, onLogout }) {
   return (
     <header className="px-6 py-4 border-b dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm flex justify-between items-center gap-4">
       <div>
-        <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-700 dark:text-amber-400">Security Clearance Area</span>
-        <h2 className="text-xs font-bold text-slate-500 mt-0.5">{currentUser.office} Terminal Scope</h2>
+        <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-700 dark:text-amber-400">Office</span>
+        <h2 className="text-xs font-bold text-slate-500 mt-0.5">{currentUser.office}</h2>
       </div>
       <div className="flex items-center gap-4 justify-end">
         <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-amber-400 transition" title="Toggle Appearance Mode">
@@ -346,17 +346,17 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
         {!includeCategoryFilters && (
           <>
             <select value={filters.year} onChange={e=>updateF('year', e.target.value)} className={css}>
-              <option value="All">All Calendar Years</option>
+              <option value="All">All Years</option>
               <option value="2026">2026</option>
               <option value="2025">2025</option>
             </select>
             <select value={filters.quarter} onChange={e=>updateF('quarter', e.target.value)} className={css}>
-              <option value="All">All Operational Quarters</option>
+              <option value="All">All Quarters</option>
               <option value="Q1">Q1</option>
               <option value="Q2">Q2</option>
             </select>
             <select value={filters.month} onChange={e=>updateF('month', e.target.value)} className={css}>
-              <option value="All">All Calendar Months</option>
+              <option value="All">All Months</option>
               {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
             </select>
           </>
@@ -669,13 +669,13 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Needs Inventory Master Framework</h2>
+          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Needs Inventory</h2>
           <p className="text-[11px] opacity-60">Scoped scope items: {currentFilteredView.length}</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {!isReadOnly && (
             <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
-              <Icon name="plus" size={14} /><span>Add Needs Batch</span>
+              <Icon name="plus" size={14} /><span>Add Needs</span>
             </button>
           )}
           <button onClick={() => exportToCSV(currentFilteredView, 'DEPED8_NEEDS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-emerald-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-emerald-850">
@@ -694,7 +694,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
               <th className="pb-2">Category</th>
               <th className="pb-2">Line Item</th>
               <th className="pb-2 text-right">Quantity</th>
-              <th className="pb-2 text-right">Overhead Cost</th>
+              <th className="pb-2 text-right">Estimated Value</th>
               <th className="pb-2 text-center">Status</th>
               <th className="pb-2 text-center">Actions</th>
             </tr>
@@ -753,7 +753,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
               <div className="border-t dark:border-slate-800 pt-3 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Staging Sandbox Line Item</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
                   <option value="">Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
@@ -767,14 +767,14 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                   <select value={workingItem.uom} onChange={e=>setWorkingItem({...workingItem, uom:e.target.value})} className={inp}>{UOM_LIST.map(u=><option key={u} value={u}>{u}</option>)}</select>
                 </div>
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Estimated Cost Allocation (₱)"/>
-                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border dark:border-slate-700 hover:bg-slate-200 text-amber-500 transition"><Icon name="plus" size={14} /> Stage Current Component</button>
+                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border dark:border-slate-700 hover:bg-slate-200 text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               {lines.length > 0 && (
                 <div className="border-t dark:border-slate-800 pt-3 space-y-2">
                   {lines.map(l => (
                     <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border dark:border-slate-800 rounded"><span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()}</span></div>
                   ))}
-                  <button onClick={handleCommitBatch} className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Commit Document Stream to Grid</button>
+                  <button onClick={handleCommitBatch} className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Submit</button>
                 </div>
               )}
             </div>
@@ -945,13 +945,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Capital Support Contribution Logs</h2>
-          <p className="text-[11px] opacity-60">Scoped ledger records: {currentFilteredView.length}</p>
+          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Contributions Matrix</h2>
+          <p className="text-[11px] opacity-60">Total donation entries: {currentFilteredView.length}</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {!isReadOnly && (
             <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold hover:bg-amber-600 transition">
-              <Icon name="plus" size={14} /><span>Record Turnover</span>
+              <Icon name="plus" size={14} /><span>Record Donations</span>
             </button>
           )}
           <button onClick={() => exportToCSV(currentFilteredView, 'DEPED8_CONTRIBUTIONS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-emerald-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-emerald-850">
@@ -964,14 +964,14 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
             <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2">Corporate Entity Organ</th>
-              <th className="pb-2">Office</th>
+              <th className="pb-2">Partner</th>
+              <th className="pb-2">Recipient</th>
               <th className="pb-2">Functional Division</th>
               <th className="pb-2">Section/Unit</th>
               <th className="pb-2">Category</th>
-              <th className="pb-2">Component Nomenclature</th>
+              <th className="pb-2">Line Item</th>
               <th className="pb-2 text-right">Quantity</th>
-              <th className="pb-2 text-right">Appraised Valuation</th>
+              <th className="pb-2 text-right">Value</th>
               <th className="pb-2 text-center">Actions</th>
             </tr>
           </thead>
@@ -1014,18 +1014,18 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
             <div className="flex justify-between items-center border-b dark:border-slate-800 pb-3 mb-4">
-              <h3 className="font-black text-sm uppercase tracking-wider text-emerald-800 dark:text-amber-400">Record Resource Asset Turnover</h3>
+              <h3 className="font-black text-sm uppercase tracking-wider text-emerald-800 dark:text-amber-400">Record Contributions</h3>
               <button onClick={() => setAddModal(false)} className="text-slate-400 hover:text-slate-200"><Icon name="close" size={18} /></button>
             </div>
             <div className="space-y-4">
-              <input type="text" value={meta.partner} onChange={e=>setMeta({...meta, partner:e.target.value})} className={inp} placeholder="Corporate / Stakeholder Entity Name"/>
-              <select value={meta.office} onChange={e=>setMeta({...meta, office:e.target.value, fd:'', section:''})} className={inp} disabled={isConstrained}><option value="">Office</option>{OFFICES.map(o=><option key={o} value={o}>{o}</option>)}</select>
+              <input type="text" value={meta.partner} onChange={e=>setMeta({...meta, partner:e.target.value})} className={inp} placeholder="Name of Partner (eg. GMA Kapuso, SaveTheChildren)"/>
+              <select value={meta.office} onChange={e=>setMeta({...meta, office:e.target.value, fd:'', section:''})} className={inp} disabled={isConstrained}><option value="">Recipient</option>{OFFICES.map(o=><option key={o} value={o}>{o}</option>)}</select>
               <div className="grid grid-cols-2 gap-2">
                 <select value={meta.fd} onChange={e=>setMeta({...meta, fd:e.target.value, section:''})} className={inp} disabled={!meta.office}><option value="">Functional Division</option>{activeFds.map(f=><option key={f} value={f}>{f}</option>)}</select>
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
               <div className="border-t dark:border-slate-800 pt-3 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Staging Sandbox Line Item</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
                   <option value="">Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
@@ -1038,15 +1038,15 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   <input type="number" value={workingItem.qty} onChange={e=>setWorkingItem({...workingItem, qty:e.target.value})} className={inp} placeholder="Quantity"/>
                   <select value={workingItem.uom} onChange={e=>setWorkingItem({...workingItem, uom:e.target.value})} className={inp}>{UOM_LIST.map(u=><option key={u} value={u}>{u}</option>)}</select>
                 </div>
-                <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Appraised Fair Valuation (₱)"/>
-                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border dark:border-slate-700 hover:bg-slate-200 text-amber-500 transition"><Icon name="plus" size={14} /> Stage Provision Component</button>
+                <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Value of Item(s) (₱)"/>
+                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border dark:border-slate-700 hover:bg-slate-200 text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               {lines.length > 0 && (
                 <div className="border-t dark:border-slate-800 pt-3 space-y-2">
                   {lines.map(l => (
                     <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border dark:border-slate-800 rounded"><span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()}</span></div>
                   ))}
-                  <button onClick={handleCommitBatch} className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Commit Ledger Sequence</button>
+                  <button onClick={handleCommitBatch} className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Submit</button>
                 </div>
               )}
             </div>
@@ -1155,7 +1155,7 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
     <div className="space-y-6">
       <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">User Management Clearance Node</h2>
+          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">User Management</h2>
           <p className="text-[11px] opacity-60">Authorized system accounts: {users.length}</p>
         </div>
         {hasWriteClearance && (
@@ -1169,11 +1169,11 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
             <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2">Account Mapping Identifier</th>
-              <th className="pb-2">Alias Handle</th>
-              <th className="pb-2">Authorization Clearance Role</th>
+              <th className="pb-2">Name</th>
+              <th className="pb-2">Username</th>
+              <th className="pb-2">Access Level</th>
               <th className="pb-2">Designation Position</th>
-              <th className="pb-2">Office Scope</th>
+              <th className="pb-2">Office</th>
               {hasWriteClearance && <th className="pb-2 text-center">Actions</th>}
             </tr>
           </thead>
@@ -1215,18 +1215,18 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <form onSubmit={handleAddUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
             <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-black text-xs uppercase tracking-wider text-slate-400">Deploy System Credentials</h3>
+              <h3 className="font-black text-xs uppercase tracking-wider text-slate-400">Add User</h3>
               <button type="button" onClick={() => setIsAddOpen(false)} className="text-slate-400"><Icon name="close" size={16} /></button>
             </div>
-            <input type="text" value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className={inp} placeholder="Legal Full Name Designation" required/>
+            <input type="text" value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className={inp} placeholder="Full Name (Juan V. Dela Cruz)" required/>
             <div className="grid grid-cols-2 gap-2">
-              <input type="text" value={form.username} onChange={e=>setForm({...form, username:e.target.value})} className={inp} placeholder="Account Alias" required/>
+              <input type="text" value={form.username} onChange={e=>setForm({...form, username:e.target.value})} className={inp} placeholder="User Name" required/>
               <select value={form.role} onChange={e=>setForm({...form, role:e.target.value})} className={inp}>{Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}</select>
             </div>
-            <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} className={inp} placeholder="Routing Email (name@deped.gov.ph)" required/>
-            <input type="text" value={form.position} onChange={e=>setForm({...form, position:e.target.value})} className={inp} placeholder="Designation Title (e.g., ITO I)" required/>
-            <select value={form.office} onChange={e=>setForm({...form, office:e.target.value})} className={inp}><option value="Regional Office">Regional Office Authority</option>{OFFICES.filter(o=>o!=='Regional Office').map(o=><option key={o} value={o}>{o}</option>)}</select>
-            <button type="submit" className="w-full py-2 bg-emerald-700 text-white font-bold rounded text-xs hover:bg-emerald-850 tracking-wide transition">Provision Security Credentials</button>
+            <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} className={inp} placeholder="Email Address (name@deped.gov.ph)" required/>
+            <input type="text" value={form.position} onChange={e=>setForm({...form, position:e.target.value})} className={inp} placeholder="Position/Designation (e.g., ITO I)" required/>
+            <select value={form.office} onChange={e=>setForm({...form, office:e.target.value})} className={inp}><option value="Regional Office">Office</option>{OFFICES.filter(o=>o!=='Regional Office').map(o=><option key={o} value={o}>{o}</option>)}</select>
+            <button type="submit" className="w-full py-2 bg-emerald-700 text-white font-bold rounded text-xs hover:bg-emerald-850 tracking-wide transition">Submit</button>
           </form>
         </div>
       )}
@@ -1234,16 +1234,16 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
             <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Modify Security Access Identity</h3>
+              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Edit User</h3>
               <button type="button" onClick={() => setEditingUser(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Legal Designation Name</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Full Name</label>
               <input type="text" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name:e.target.value})} className={inp} required />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Alias Handle</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">User Name</label>
                 <input type="text" value={editingUser.username} onChange={e=>setEditingUser({...editingUser, username:e.target.value})} className={inp} required />
               </div>
               <div>
@@ -1254,20 +1254,20 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
               </div>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Routing Email Address</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Email Address</label>
               <input type="email" value={editingUser.email} onChange={e=>setEditingUser({...editingUser, email:e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Service Rank Designation</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Position/Designation</label>
               <input type="text" value={editingUser.position} onChange={e=>setEditingUser({...editingUser, position:e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Office Authority Node Scope</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Office</label>
               <select value={editingUser.office} onChange={e=>setEditingUser({...editingUser, office:e.target.value})} className={inp}>
                 {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
               </select>
             </div>
-            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md"> Apply Authority Adjustments</button>
+            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md"> Submit</button>
           </form>
         </div>
       )}
