@@ -346,17 +346,17 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
         {!includeCategoryFilters && (
           <>
             <select value={filters.year} onChange={e=>updateF('year', e.target.value)} className={css}>
-              <option value="All">All Years</option>
+              <option value="All">Year</option>
               <option value="2026">2026</option>
               <option value="2025">2025</option>
             </select>
             <select value={filters.quarter} onChange={e=>updateF('quarter', e.target.value)} className={css}>
-              <option value="All">All Quarters</option>
-              <option value="Q1">Q1</option>
+              <option value="All">Quarter</option>
+              <option value="Q1">Q1</option> 
               <option value="Q2">Q2</option>
             </select>
             <select value={filters.month} onChange={e=>updateF('month', e.target.value)} className={css}>
-              <option value="All">All Months</option>
+              <option value="All">Month</option>
               {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
             </select>
           </>
