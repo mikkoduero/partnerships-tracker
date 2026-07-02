@@ -534,16 +534,16 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
       </div>
 
       <div className={containerStyle}>
-        <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Ranking of Offices: % Needs vs Contributions (Across Entire Region)</h3>
+        <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Accomplishment Ranking</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
               <tr className="border-b dark:border-slate-800 text-slate-400 uppercase font-black tracking-wider text-[10px]">
                 <th className="pb-3">Office</th>
-                <th className="pb-3 text-right">Target Burden (₱)</th>
-                <th className="pb-3 text-right">Acquired Asset (₱)</th>
-                <th className="pb-3 pl-6 w-1/3">Coverage Structural Rate Progress</th>
-                <th className="pb-3 text-right">Index %</th>
+                <th className="pb-3 text-right">Total Needs (₱)</th>
+                <th className="pb-3 text-right">Total Contributions (₱)</th>
+                <th className="pb-3 pl-6 w-1/3">Accomplishment</th>
+                <th className="pb-3 text-right">%</th>
               </tr>
             </thead>
             <tbody className="divide-y dark:divide-slate-800/50">
