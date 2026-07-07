@@ -37,7 +37,7 @@ const STRUCTURE = {
     'Office of the Regional Director': ['Proper', 'Legal Unit', 'ICT Unit', 'Public Affairs Unit', 'Delivery Unit'],
     'Office of the Assistant Regional Director': ['Proper'],
     'Curriculum and Learning Management Division': ['Proper', 'Learning Resource Management Section'],
-    'Education Support Services Division': ['Proper', 'School Health Section', 'Special Programs and Projects Section', 'Physical Facilities Section'],
+    'Education Support Services Division': ['Proper', 'School Health Section', 'Special Programs and Projects Section', 'Education Facilities Section'],
     'Human Resource Development Division': ['Proper', 'NEAP - Region VIII'],
     'Policy, Planning and Research Division': ['Proper'],
     'Quality Assurance Division': ['Proper'],
@@ -48,7 +48,7 @@ const STRUCTURE = {
   'SDO': {
     'OSDS (Office of the Schools Division Superintendent)': ['Proper', 'Legal Unit', 'ICT Unit', 'Personnel Section', 'Records Section', 'Cash Section', 'Supply Unit'],
     'CID (Curriculum Implementation Division)': ['Proper', 'Instructional Management Section', 'Learning Resource Management Section'],
-    'SGOD (School Governance and Operations Division)': ['Proper', 'Social Mobilization & Networking Section', 'Planning & Research Unit', 'School Health Section', 'Physical Facilities Unit']
+    'SGOD (School Governance and Operations Division)': ['Proper', 'Social Mobilization & Networking Section', 'Planning & Research Unit', 'School Health Section', 'Education Facilities Unit']
   }
 };
 
@@ -75,16 +75,16 @@ const SYSTEM_ROLES = {
 };
 
 const initialNeeds = [
-  { id: 'N1', dateLogged: '2026-06-15', office: 'Regional Office', fd: 'Office of the Regional Director', section: 'ICT Unit', category: 'ICT Equipment and Technology', specificItem: 'Laptop', value: 850000, qty: 20, uom: 'Piece (pc)', status: 'Partially Fulfilled', history: [{ timestamp: '2026-06-15 09:00', user: 'System', action: 'Initial baseline requirement logged.' }] },
-  { id: 'N2', dateLogged: '2026-06-10', office: 'Leyte', fd: 'SGOD (School Governance and Operations Division)', section: 'Social Mobilization & Networking Section', category: 'Infrastructure', specificItem: 'Classroom Repair', value: 2400000, qty: 4, uom: 'Lot', status: 'Unfulfilled', history: [{ timestamp: '2026-06-10 10:30', user: 'System', action: 'Initial baseline requirement logged.' }] },
-  { id: 'N3', dateLogged: '2026-05-20', office: 'Tacloban City', fd: 'CID (Curriculum Implementation Division)', section: 'Learning Resource Management Section', category: 'Furniture', specificItem: 'Office Desk', value: 350000, qty: 50, uom: 'Piece (pc)', status: 'Fulfilled', history: [{ timestamp: '2026-05-20 14:15', user: 'System', action: 'Initial baseline requirement logged.' }] },
-  { id: 'N4', dateLogged: '2026-03-01', office: 'Samar', fd: 'OSDS (Office of the Schools Division Superintendent)', section: 'Supply Unit', category: 'Appliances and Equipment', specificItem: 'Air Conditioner', value: 150000, qty: 3, uom: 'Unit', status: 'Unfulfilled', history: [{ timestamp: '2026-03-01 11:30', user: 'System', action: 'Initial baseline requirement logged.' }] },
+  { id: 'N1', dateLogged: '2026-06-15', office: 'Regional Office', fd: 'Office of the Regional Director', section: 'ICT Unit', category: 'ICT Equipment and Technology', specificItem: 'Laptop', value: 850000, qty: 20, uom: 'Piece (pc)', status: 'Partially Fulfilled', remarks: '', history: [{ timestamp: '2026-06-15 09:00', user: 'System', action: 'Initial baseline requirement logged.' }] },
+  { id: 'N2', dateLogged: '2026-06-10', office: 'Leyte', fd: 'SGOD (School Governance and Operations Division)', section: 'Social Mobilization & Networking Section', category: 'Infrastructure', specificItem: 'Classroom Repair', value: 2400000, qty: 4, uom: 'Lot', status: 'Unfulfilled', remarks: '', history: [{ timestamp: '2026-06-10 10:30', user: 'System', action: 'Initial baseline requirement logged.' }] },
+  { id: 'N3', dateLogged: '2026-05-20', office: 'Tacloban City', fd: 'CID (Curriculum Implementation Division)', section: 'Learning Resource Management Section', category: 'Furniture', specificItem: 'Office Desk', value: 350000, qty: 50, uom: 'Piece (pc)', status: 'Fulfilled', remarks: '', history: [{ timestamp: '2026-05-20 14:15', user: 'System', action: 'Initial baseline requirement logged.' }] },
+  { id: 'N4', dateLogged: '2026-03-01', office: 'Samar', fd: 'OSDS (Office of the Schools Division Superintendent)', section: 'Supply Unit', category: 'Appliances and Equipment', specificItem: 'Air Conditioner', value: 150000, qty: 3, uom: 'Unit', status: 'Unfulfilled', remarks: '', history: [{ timestamp: '2026-03-01 11:30', user: 'System', action: 'Initial baseline requirement logged.' }] },
 ];
 
 const initialContributions = [
-  { id: 'C1', dateLogged: '2026-06-16', partner: 'TechCorp Foundation', office: 'Regional Office', fd: 'Office of the Regional Director', section: 'ICT Unit', category: 'ICT Equipment and Technology', specificItem: 'Laptop', value: 500000, qty: 12, uom: 'Piece (pc)', history: [{ timestamp: '2026-06-16 11:00', user: 'System', action: 'Turnover collection recorded.' }] },
-  { id: 'C2', dateLogged: '2026-05-25', partner: 'SaveTheChildren', office: 'Tacloban City', fd: 'CID (Curriculum Implementation Division)', section: 'Learning Resource Management Section', category: 'Furniture', specificItem: 'Office Desk', value: 350000, qty: 50, uom: 'Piece (pc)', history: [{ timestamp: '2026-05-25 15:30', user: 'System', action: 'Turnover collection recorded.' }] },
-  { id: 'C3', dateLogged: '2026-03-15', partner: 'Alumni Association', office: 'Samar', fd: 'OSDS (Office of the Schools Division Superintendent)', section: 'Supply Unit', category: 'Appliances and Equipment', specificItem: 'Air Conditioner', value: 100000, qty: 2, uom: 'Unit', history: [{ timestamp: '2026-03-15 09:10', user: 'System', action: 'Turnover collection recorded.' }] },
+  { id: 'C1', dateLogged: '2026-06-16', partner: 'TechCorp Foundation', office: 'Regional Office', fd: 'Office of the Regional Director', section: 'ICT Unit', category: 'ICT Equipment and Technology', specificItem: 'Laptop', value: 500000, qty: 12, uom: 'Piece (pc)', remarks: '', history: [{ timestamp: '2026-06-16 11:00', user: 'System', action: 'Turnover collection recorded.' }] },
+  { id: 'C2', dateLogged: '2026-05-25', partner: 'SaveTheChildren', office: 'Tacloban City', fd: 'CID (Curriculum Implementation Division)', section: 'Learning Resource Management Section', category: 'Furniture', specificItem: 'Office Desk', value: 350000, qty: 50, uom: 'Piece (pc)', remarks: '', history: [{ timestamp: '2026-05-25 15:30', user: 'System', action: 'Turnover collection recorded.' }] },
+  { id: 'C3', dateLogged: '2026-03-15', partner: 'Alumni Association', office: 'Samar', fd: 'OSDS (Office of the Schools Division Superintendent)', section: 'Supply Unit', category: 'Appliances and Equipment', specificItem: 'Air Conditioner', value: 100000, qty: 2, uom: 'Unit', remarks: '', history: [{ timestamp: '2026-03-15 09:10', user: 'System', action: 'Turnover collection recorded.' }] },
 ];
 
 const initialUsers = [
@@ -186,10 +186,10 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
     e.preventDefault();
     setError('');
     const targetUser = users.find(u => u.username.toLowerCase() === username.toLowerCase().trim());
-    if (targetUser && (password === 'password123' || u.password === password)) {
+    if (targetUser && (password === 'password123' || targetUser.password === password)) {
       onLoginSuccess(targetUser);
     } else {
-      setError('Invalid alignment credentials. Try simulationquick select keys below.');
+      setError('Invalid alignment credentials. Try simulation quick select keys below.');
     }
   };
 
@@ -225,7 +225,7 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
           <button type="submit" className="w-full py-3 bg-emerald-900 hover:bg-emerald-850 text-amber-400 font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Sign In</button>
         </form>
         <div className="mt-8 border-t dark:border-slate-800 pt-5">
-          <span className="block text-[10px] uppercase font-black text-slate-400 tracking-widest text-center mb-3">Simulation Role Emulator Bypasses</span>
+          <span className="block text-[10px] uppercase font-black text-slate-400 tracking-widest text-center mb-3">Simulation User Accounts</span>
           <div className="grid grid-cols-2 gap-2">
             {users.map((u) => (
               <button key={u.id} onClick={() => handleQuickSelect(u)} className="p-2 text-left text-[10px] font-semibold border dark:border-slate-800 rounded-lg hover:border-amber-500 hover:bg-slate-50 dark:hover:bg-slate-950 transition flex items-center gap-2">
@@ -320,7 +320,7 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
   
   return (
     <div className={`p-4 rounded-xl border mb-6 shadow-sm ${darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-200'}`}>
-      <div className={`grid grid-cols-2 sm:grid-cols-4 ${includeCategoryFilters ? 'lg:grid-cols-5' : 'lg:grid-cols-7'} gap-3`}>
+      <div className={`grid grid-cols-2 sm:grid-cols-4 ${includeCategoryFilters ? 'lg:grid-cols-8' : 'lg:grid-cols-7'} gap-3`}>
         
         {/* OFFICE FILTER: MODIFIED & ENFORCED RLS */}
         <select 
@@ -343,24 +343,23 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
           {(STRUCTURE[filters.office === 'Regional Office' ? 'Regional Office' : 'SDO']?.[filters.fd] || []).map(s => <option key={s} value={s}>{s}</option>)}
         </select>
 
-        {!includeCategoryFilters && (
-          <>
-            <select value={filters.year} onChange={e=>updateF('year', e.target.value)} className={css}>
-              <option value="All">Year</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-            </select>
-            <select value={filters.quarter} onChange={e=>updateF('quarter', e.target.value)} className={css}>
-              <option value="All">Quarter</option>
-              <option value="Q1">Q1</option> 
-              <option value="Q2">Q2</option>
-            </select>
-            <select value={filters.month} onChange={e=>updateF('month', e.target.value)} className={css}>
-              <option value="All">Month</option>
-              {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
-            </select>
-          </>
-        )}
+        {/* ALWAYS SHOW TIME FILTERS BASED ON REQUEST */}
+        <select value={filters.year} onChange={e=>updateF('year', e.target.value)} className={css}>
+          <option value="All">Year</option>
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+        </select>
+        <select value={filters.quarter} onChange={e=>updateF('quarter', e.target.value)} className={css}>
+          <option value="All">Quarter</option>
+          <option value="Q1">Q1</option> 
+          <option value="Q2">Q2</option>
+          <option value="Q3">Q3</option>
+          <option value="Q4">Q4</option>
+        </select>
+        <select value={filters.month} onChange={e=>updateF('month', e.target.value)} className={css}>
+          <option value="All">Month</option>
+          {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
+        </select>
 
         {includeCategoryFilters && (
           <>
@@ -389,25 +388,27 @@ function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
       <svg width="160" height="95" viewBox="0 0 120 70" className="overflow-visible">
         <defs>
           <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#ef4444" />
+            <stop offset="0%" stopColor="#f43f5e" />
             <stop offset="50%" stopColor="#f59e0b" />
             <stop offset="100%" stopColor="#10b981" />
           </linearGradient>
         </defs>
-        <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke={darkMode ? "#334155" : "#e2e8f0"} strokeWidth="12" strokeLinecap="round" />
-        <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke="url(#gaugeGrad)" strokeWidth="12" strokeLinecap="round" strokeDasharray="157" strokeDashoffset={157 - (157 * percent) / 100} />
-        <circle cx="60" cy="60" r="5" fill={darkMode ? "#f8fafc" : "#0f172a"} />
-        <line x1="60" y1="60" x2="60" y2="15" stroke={darkMode ? "#fbbf24" : "#1e3a8a"} strokeWidth="3" strokeLinecap="round" transform={`rotate(${needleRotation} 60 60)`} className="transition-transform duration-1000 ease-out" />
+        <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke={darkMode ? '#334155' : '#e2e8f0'} strokeWidth="12" strokeLinecap="round" />
+        <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke="url(#gaugeGrad)" strokeWidth="12" strokeLinecap="round" strokeDasharray="157" strokeDashoffset={157 - (157 * percent) / 100} style={{ transition: 'stroke-dashoffset 1s ease-out' }} />
+        <g style={{ transform: `rotate(${needleRotation}deg)`, transformOrigin: '60px 60px', transition: 'transform 1s ease-out' }}>
+          <path d="M 58 60 L 60 15 L 62 60 Z" fill={darkMode ? '#f8fafc' : '#0f172a'} />
+          <circle cx="60" cy="60" r="4" fill={darkMode ? '#f8fafc' : '#0f172a'} />
+        </g>
       </svg>
-      <div className="text-center mt-1">
-        <span className="text-2xl font-black tracking-tight">{percent.toFixed(1)}%</span>
-        <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Overall Yield Rate</span>
+      <div className="absolute bottom-0 flex flex-col items-center">
+        <span className="text-xl font-black text-slate-800 dark:text-slate-100">{percent.toFixed(1)}%</span>
+        <span className="text-[10px] uppercase font-bold text-slate-400">Fulfilled</span>
       </div>
     </div>
   );
 }
 
-// --- TAB: DASHBOARD ---
+// --- DASHBOARD ---
 function Dashboard({ needs, contributions, userContext, darkMode }) {
   const [filters, setFilters] = useState({ office: '', fd: '', section: '', year: 'All', quarter: 'All', month: 'All' });
 
@@ -422,11 +423,9 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
       if (filters.quarter !== 'All' && `Q${Math.floor(d.getMonth() / 3) + 1}` !== filters.quarter) return false;
       return true;
     });
-
-    const scopeConts = userContext.role === SYSTEM_ROLES.PARTNER 
-      ? contributions.filter(c => c.partner.toLowerCase() === userContext.name.toLowerCase())
-      : contributions;
-
+    
+    const scopeConts = userContext.role === SYSTEM_ROLES.PARTNER ? contributions.filter(c => c.partner.toLowerCase() === userContext.name.toLowerCase()) : contributions;
+    
     return { filteredNeeds: filterRecordSet(needs), filteredConts: filterRecordSet(scopeConts) };
   }, [needs, contributions, filters, userContext]);
 
@@ -449,41 +448,21 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
     return Object.entries(groups).sort((a,b)=>b[1]-a[1]).slice(0, 10);
   }, [filteredNeeds]);
 
-  const officeStandings = useMemo(() => {
-    const summary = OFFICES.reduce((acc, off) => {
-      acc[off] = { needs: 0, conts: 0 };
-      return acc;
-    }, {});
-
-    needs.forEach(n => { if(summary[n.office]) summary[n.office].needs += Number(n.value); });
-    contributions.forEach(c => { if(summary[c.office]) summary[c.office].conts += Number(c.value); });
-
-    return Object.entries(summary)
-      .map(([name, data]) => {
-        const rate = data.needs > 0 ? (data.conts / data.needs) * 100 : data.conts > 0 ? 100 : 0;
-        return { name, ...data, rate };
-      })
-      .filter(o => o.needs > 0 || o.conts > 0)
-      .sort((a, b) => b.rate - a.rate);
-  }, [needs, contributions]);
-
-  const containerStyle = `p-5 rounded-xl border shadow-sm ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`;
+  const containerStyle = `p-6 rounded-2xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} userContext={userContext} />
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className={containerStyle}>
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Target Needs (Value)</span>
-          <p className="text-3xl font-black text-emerald-700 dark:text-emerald-400 mt-2">₱ {totalNeedsValue.toLocaleString()}</p>
+          <span className="text-[10px] uppercase font-black tracking-widest text-emerald-800 dark:text-emerald-400">Total Validated Needs (Value)</span>
+          <p className="text-3xl font-black text-slate-800 dark:text-slate-100 mt-2">₱ {totalNeedsValue.toLocaleString()}</p>
         </div>
-        
         <div className={containerStyle}>
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Contributions (Value)</span>
+          <span className="text-[10px] uppercase font-black tracking-widest text-amber-600 dark:text-amber-500">Total Validated Contributions (Value)</span>
           <p className="text-3xl font-black text-amber-500 mt-2">₱ {totalContsValue.toLocaleString()}</p>
         </div>
-
         <div className={`${containerStyle} flex flex-col items-center justify-center p-4`}>
           <FuelGaugeChart totalNeeds={totalNeedsValue} totalContributions={totalContsValue} darkMode={darkMode} />
         </div>
@@ -510,7 +489,6 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
             })}
           </div>
         </div>
-
         <div className={containerStyle}>
           <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Priority Needs</h3>
           <div className="space-y-3">
@@ -521,10 +499,10 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
                 <div key={name} className="space-y-1">
                   <div className="flex justify-between text-xs font-semibold">
                     <span className="truncate max-w-[200px]"><span className="opacity-40 font-bold mr-1">#{idx+1}</span>{name}</span>
-                    <span className="text-emerald-600 dark:text-emerald-400">₱{val.toLocaleString()}</span>
+                    <span className="text-amber-500">₱{val.toLocaleString()}</span>
                   </div>
                   <div className="w-full bg-slate-100 dark:bg-slate-800/80 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-gradient-to-r from-amber-500 to-amber-400 h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
+                    <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
                   </div>
                 </div>
               );
@@ -532,97 +510,78 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
           </div>
         </div>
       </div>
-
-      <div className={containerStyle}>
-        <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Accomplishment Ranking</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs whitespace-nowrap">
-            <thead>
-              <tr className="border-b dark:border-slate-800 text-slate-400 uppercase font-black tracking-wider text-[10px]">
-                <th className="pb-3">Office</th>
-                <th className="pb-3 text-right">Total Needs (₱)</th>
-                <th className="pb-3 text-right">Total Contributions (₱)</th>
-                <th className="pb-3 pl-6 w-1/3">Accomplishment</th>
-                <th className="pb-3 text-right">%</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y dark:divide-slate-800/50">
-              {officeStandings.map((off, idx) => (
-                <tr key={off.name} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
-                  <td className="py-3 font-bold"><span className="opacity-40 mr-1.5">{idx+1}</span>{off.name}</td>
-                  <td className="py-3 text-right text-slate-500 font-medium">₱{off.needs.toLocaleString()}</td>
-                  <td className="py-3 text-right text-emerald-700 dark:text-emerald-400 font-bold">₱{off.conts.toLocaleString()}</td>
-                  <td className="py-3 pl-6">
-                    <div className="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-md overflow-hidden relative border dark:border-slate-700/50">
-                      <div className={`h-full transition-all duration-700 ${off.rate >= 100 ? 'bg-emerald-600' : off.rate >= 50 ? 'bg-amber-500' : 'bg-red-500'}`} style={{ width: `${Math.min(off.rate, 100)}%` }}></div>
-                    </div>
-                  </td>
-                  <td className="py-3 text-right font-black text-slate-900 dark:text-amber-400">{off.rate.toFixed(1)}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   );
 }
 
-// --- TAB: NEEDS INVENTORY: ENFORCED RLS ---
+// --- TAB: NEEDS WORKSPACE ---
 function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
-  const [addModal, setAddModal] = useState(false);
-  const [editModal, setEditModal] = useState(null);
-  const [trailModal, setTrailModal] = useState(null);
-  
   const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING || userContext.role === SYSTEM_ROLES.PARTNER;
   const isConstrained = userContext.office !== 'Regional Office';
-
-  // Enforcement: Set initial office filter to SDO's office and prevent change
+  
   const [filters, setFilters] = useState({ 
-    office: isConstrained ? userContext.office : '', // Enforced Scope
-    fd: '', 
-    section: '', 
-    category: '', 
-    specificItem: '' 
+    office: isConstrained ? userContext.office : '', 
+    fd: '', section: '', category: '', specificItem: '',
+    year: 'All', quarter: 'All', month: 'All'
   });
-
+  
   const [meta, setMeta] = useState({ office: isConstrained ? userContext.office : '', fd: '', section: '' });
   const [lines, setLines] = useState([]);
-  const [workingItem, setWorkingItem] = useState({ specificItem: '', category: '', qty: '', uom: 'Piece (pc)', value: '' });
-
+  
+  const [workingItem, setWorkingItem] = useState({ 
+    specificItem: '', category: '', qty: '', uom: 'Piece (pc)', value: '', remarks: '' 
+  });
+  
   const activeFds = useMemo(() => meta.office ? Object.keys(STRUCTURE[meta.office === 'Regional Office' ? 'Regional Office' : 'SDO'] || {}) : [], [meta.office]);
   const activeSections = useMemo(() => (meta.office && meta.fd) ? STRUCTURE[meta.office === 'Regional Office' ? 'Regional Office' : 'SDO']?.[meta.fd] || [] : [], [meta.office, meta.fd]);
-
+  
   const currentFilteredView = useMemo(() => {
     return needs.filter(n => {
-      // Enforcement Check: Non-RO users can *only* see their own office data
       if (isConstrained && n.office !== userContext.office) return false;
-      
       if (filters.office && n.office !== filters.office) return false;
       if (filters.fd && n.fd !== filters.fd) return false;
       if (filters.section && n.section !== filters.section) return false;
       if (filters.category && n.category !== filters.category) return false;
       if (filters.specificItem && n.specificItem !== filters.specificItem) return false;
+      
+      const d = new Date(n.dateLogged);
+      if (filters.year !== 'All' && d.getFullYear().toString() !== filters.year) return false;
+      if (filters.month !== 'All' && MONTHS[d.getMonth()] !== filters.month) return false;
+      if (filters.quarter !== 'All' && `Q${Math.floor(d.getMonth() / 3) + 1}` !== filters.quarter) return false;
+      
       return true;
     });
   }, [needs, filters, isConstrained, userContext]);
 
+  const [addModal, setAddModal] = useState(false);
+  const [editModal, setEditModal] = useState(null);
+  const [trailModal, setTrailModal] = useState(null);
+
   const handlePushLine = () => {
     if (!workingItem.specificItem || !workingItem.category || !workingItem.qty || !workingItem.value) return;
     setLines([...lines, { ...workingItem, id: crypto.randomUUID() }]);
-    setWorkingItem({ specificItem: '', category: '', qty: '', uom: 'Piece (pc)', value: '' });
+    setWorkingItem({ specificItem: '', category: '', qty: '', uom: 'Piece (pc)', value: '', remarks: '' });
   };
 
   const handleCommitBatch = (e) => {
     e.preventDefault();
     if (!meta.office || !meta.fd || !meta.section || !lines.length) return;
+    
     const timestamp = new Date().toLocaleString();
     const formatted = lines.map((l, i) => ({
       id: 'N-GEN-' + (needs.length + i + 1),
       dateLogged: new Date().toISOString().split('T')[0],
-      ...meta, category: l.category, specificItem: l.specificItem, qty: Number(l.qty), uom: l.uom, value: Number(l.value), status: 'Unfulfilled',
-      history: [{ timestamp, user: userContext.name, action: `Logged baseline need item: ${l.specificItem}.` }]
+      ...meta,
+      category: l.category,
+      specificItem: l.specificItem,
+      qty: Number(l.qty),
+      uom: l.uom,
+      value: Number(l.value),
+      status: 'Unfulfilled',
+      remarks: l.remarks,
+      history: [{ timestamp, user: userContext.name, action: 'Initial baseline requirement logged.' }]
     }));
+    
     setNeeds([...formatted, ...needs]);
     setLines([]);
     setMeta({ office: isConstrained ? userContext.office : '', fd: '', section: '' });
@@ -636,18 +595,18 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       if (n.id === editModal.id) {
         const changes = [];
         if (n.qty !== Number(editModal.qty)) changes.push(`Quantity changed from ${n.qty} to ${editModal.qty}`);
-        if (n.value !== Number(editModal.value)) changes.push(`Overhead changed from ₱${n.value} to ₱${editModal.value}`);
-        if (n.status !== editModal.status) changes.push(`Status altered from ${n.status} to ${editModal.status}`);
-
-        return {
-          ...n,
-          qty: Number(editModal.qty),
-          value: Number(editModal.value),
-          status: editModal.status,
+        if (n.value !== Number(editModal.value)) changes.push(`Valuation changed from ₱${n.value} to ₱${editModal.value}`);
+        if (n.status !== editModal.status) changes.push(`Status updated from ${n.status} to ${editModal.status}`);
+        
+        return { 
+          ...n, 
+          qty: Number(editModal.qty), 
+          value: Number(editModal.value), 
+          status: editModal.status, 
           history: [
-            ...n.history,
+            ...n.history, 
             { timestamp, user: userContext.name, action: changes.length ? `Updated metrics: ${changes.join(', ')}.` : 'Saved without variable changes.' }
-          ]
+          ] 
         };
       }
       return n;
@@ -688,38 +647,43 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
             <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
+              <th className="pb-2">Date Logged</th>
               <th className="pb-2">Office</th>
               <th className="pb-2">Functional Division</th>
               <th className="pb-2">Section/Unit</th>
               <th className="pb-2">Category</th>
               <th className="pb-2">Line Item</th>
               <th className="pb-2 text-right">Quantity</th>
-              <th className="pb-2 text-right">Estimated Value</th>
-              <th className="pb-2 text-center">Status</th>
+              <th className="pb-2 text-right">Value</th>
+              <th className="pb-2">Remarks</th>
+              <th className="pb-2">Status</th>
               <th className="pb-2 text-center">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y dark:divide-slate-800/60">
             {currentFilteredView.map(n => (
               <tr key={n.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
-                <td className="py-2.5 font-bold text-emerald-800 dark:text-amber-400">{n.office}</td>
-                <td className="py-2.5 font-medium truncate max-w-[150px]">{n.fd}</td>
+                <td className="py-2.5 text-slate-500">{n.dateLogged}</td>
+                <td className="py-2.5 font-bold">{n.office}</td>
+                <td className="py-2.5 truncate max-w-[130px] text-slate-600 dark:text-slate-400">{n.fd}</td>
                 <td className="py-2.5 text-slate-500">{n.section}</td>
                 <td className="py-2.5 text-slate-400 text-[11px]">{n.category}</td>
-                <td className="py-2.5 font-semibold text-slate-900 dark:text-white">{n.specificItem}</td>
-                <td className="py-2.5 text-right font-medium">{n.qty} <span className="opacity-60 text-[10px]">{n.uom}</span></td>
-                <td className="py-2.5 text-right font-bold">₱{n.value.toLocaleString()}</td>
-                <td className="py-2.5 text-center">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-amber-500 border dark:border-slate-700">{n.status}</span>
+                <td className="py-2.5 font-semibold">{n.specificItem}</td>
+                <td className="py-2.5 text-right font-medium">{n.qty} <span className="text-[10px] opacity-50">{n.uom}</span></td>
+                <td className="py-2.5 text-right font-black text-emerald-700 dark:text-amber-500">₱ {Number(n.value).toLocaleString()}</td>
+                <td className="py-2.5 text-slate-500 text-[11px] truncate max-w-[150px]" title={n.remarks}>{n.remarks || '-'}</td>
+                <td className="py-2.5">
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                    n.status === 'Fulfilled' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' :
+                    n.status === 'Partially Fulfilled' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
+                    'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                  }`}>{n.status}</span>
                 </td>
                 <td className="py-2.5 text-center">
                   <div className="flex items-center justify-center gap-1">
-                    <button onClick={() => setTrailModal(n)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-amber-400 transition" title="Audit Trail History Log">
-                      <Icon name="history" size={14} />
-                    </button>
                     {!isReadOnly && (
                       <>
-                        <button onClick={() => setEditModal(n)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-400 transition" title="Modify Record">
+                        <button onClick={() => setEditModal(n)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-500 transition" title="Modify Record">
                           <Icon name="edit" size={14} />
                         </button>
                         <button onClick={() => handleDeleteItem(n.id)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500 transition" title="Purge Record">
@@ -727,6 +691,9 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                         </button>
                       </>
                     )}
+                    <button onClick={() => setTrailModal(n)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-amber-500 transition" title="Audit Trail">
+                      <Icon name="history" size={14} />
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -735,7 +702,6 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
         </table>
       </div>
 
-      {/* MODAL: ADD BATCH */}
       {addModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
@@ -752,27 +718,32 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 <select value={meta.fd} onChange={e=>setMeta({...meta, fd:e.target.value, section:''})} className={inp} disabled={!meta.office}><option value="">Functional Division</option>{activeFds.map(f=><option key={f} value={f}>{f}</option>)}</select>
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
+              
               <div className="border-t dark:border-slate-800 pt-3 space-y-2">
                 <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
-                  <option value="">Category</option>
+                  <option value="">Select Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
                 </select>
                 <select value={workingItem.specificItem} onChange={e=>setWorkingItem({...workingItem, specificItem:e.target.value})} className={inp} disabled={!workingItem.category}>
-                  <option value="">Line Item</option>
+                  <option value="">Select Specific Item</option>
                   {(CATEGORIES[workingItem.category] || []).map(i=><option key={i} value={i}>{i}</option>)}
                 </select>
                 <div className="grid grid-cols-2 gap-2">
                   <input type="number" value={workingItem.qty} onChange={e=>setWorkingItem({...workingItem, qty:e.target.value})} className={inp} placeholder="Quantity"/>
                   <select value={workingItem.uom} onChange={e=>setWorkingItem({...workingItem, uom:e.target.value})} className={inp}>{UOM_LIST.map(u=><option key={u} value={u}>{u}</option>)}</select>
                 </div>
-                <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Estimated Cost Allocation (₱)"/>
+                <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Estimated Valuation (₱)"/>
+                <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
                 <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border dark:border-slate-700 hover:bg-slate-200 text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
+              
               {lines.length > 0 && (
                 <div className="border-t dark:border-slate-800 pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border dark:border-slate-800 rounded"><span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()}</span></div>
+                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border dark:border-slate-800 rounded">
+                      <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
+                    </div>
                   ))}
                   <button onClick={handleCommitBatch} className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Submit</button>
                 </div>
@@ -782,26 +753,17 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
         </div>
       )}
 
-      {/* MODAL: EDIT & TRAIL: Unchanged */}
       {editModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
             <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Modify Requirement Metrics</h3>
+              <h3 className="font-bold text-sm text-amber-500">Modify Specification</h3>
               <button type="button" onClick={() => setEditModal(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
             </div>
-            <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Target Line Item</label>
-              <input type="text" className={`${inp} opacity-60`} value={editModal.specificItem} disabled />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Quantity</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Requirement Vol.</label>
                 <input type="number" value={editModal.qty} onChange={e=>setEditModal({...editModal, qty: e.target.value})} className={inp} required />
-              </div>
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Unit of Measure</label>
-                <input type="text" className={`${inp} opacity-60`} value={editModal.uom} disabled />
               </div>
             </div>
             <div>
@@ -820,6 +782,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
           </form>
         </div>
       )}
+
       {trailModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
@@ -829,14 +792,14 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className="p-2 text-[11px] rounded bg-slate-50 dark:bg-slate-950 border dark:border-slate-800 space-y-0.5">
-                  <div className="flex justify-between font-bold opacity-60 text-[10px]">
+                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-slate-800/50 border dark:border-slate-700">
+                  <div className="flex justify-between text-[10px] text-slate-400 mb-1">
                     <span>{t.timestamp}</span>
-                    <span className="text-amber-500">{t.user}</span>
+                    <span className="font-bold text-amber-500">{t.user}</span>
                   </div>
                   <p className="text-slate-700 dark:text-slate-300 font-medium">{t.action}</p>
                 </div>
-              )) || <p className="text-xs text-center opacity-40 py-4">No modifications on record indexing.</p>}
+              )) || <p className="text-xs text-center opacity-40 py-4">No logged validation adjustments.</p>}
             </div>
           </div>
         </div>
@@ -845,62 +808,73 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
   );
 }
 
-// --- TAB: CONTRIBUTIONS LEDGER: ENFORCED RLS ---
+// --- TAB: CONTRIBUTIONS WORKSPACE ---
 function ContributionsWorkspace({ contributions, setContributions, userContext, darkMode }) {
-  const [addModal, setAddModal] = useState(false);
-  const [editModal, setEditModal] = useState(null);
-  const [trailModal, setTrailModal] = useState(null);
-
-  const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING || userContext.role === SYSTEM_ROLES.PARTNER;
+  const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING;
   const isConstrained = userContext.office !== 'Regional Office';
-
-  // Enforcement: Lock scope for constrained users
+  
   const [filters, setFilters] = useState({ 
     office: isConstrained ? userContext.office : '', 
-    fd: '', 
-    section: '', 
-    category: '', 
-    specificItem: '' 
+    fd: '', section: '', category: '', specificItem: '',
+    year: 'All', quarter: 'All', month: 'All'
   });
-
+  
   const [meta, setMeta] = useState({ partner: '', office: isConstrained ? userContext.office : '', fd: '', section: '' });
   const [lines, setLines] = useState([]);
-  const [workingItem, setWorkingItem] = useState({ specificItem: '', category: '', qty: '', uom: 'Piece (pc)', value: '' });
-
+  
+  const [workingItem, setWorkingItem] = useState({ 
+    specificItem: '', category: '', qty: '', uom: 'Piece (pc)', value: '', remarks: '' 
+  });
+  
   const activeFds = useMemo(() => meta.office ? Object.keys(STRUCTURE[meta.office === 'Regional Office' ? 'Regional Office' : 'SDO'] || {}) : [], [meta.office]);
   const activeSections = useMemo(() => (meta.office && meta.fd) ? STRUCTURE[meta.office === 'Regional Office' ? 'Regional Office' : 'SDO']?.[meta.fd] || [] : [], [meta.office, meta.fd]);
 
   const currentFilteredView = useMemo(() => {
-    const scope = userContext.role === SYSTEM_ROLES.PARTNER ? contributions.filter(c => c.partner.toLowerCase() === userContext.name.toLowerCase()) : contributions;
-    return scope.filter(c => {
-      // Enforcement Check: Non-RO users can *only* see their own office data
+    return contributions.filter(c => {
       if (isConstrained && c.office !== userContext.office) return false;
-
       if (filters.office && c.office !== filters.office) return false;
       if (filters.fd && c.fd !== filters.fd) return false;
       if (filters.section && c.section !== filters.section) return false;
       if (filters.category && c.category !== filters.category) return false;
       if (filters.specificItem && c.specificItem !== filters.specificItem) return false;
+      
+      const d = new Date(c.dateLogged);
+      if (filters.year !== 'All' && d.getFullYear().toString() !== filters.year) return false;
+      if (filters.month !== 'All' && MONTHS[d.getMonth()] !== filters.month) return false;
+      if (filters.quarter !== 'All' && `Q${Math.floor(d.getMonth() / 3) + 1}` !== filters.quarter) return false;
+
       return true;
     });
   }, [contributions, filters, userContext, isConstrained]);
 
+  const [addModal, setAddModal] = useState(false);
+  const [editModal, setEditModal] = useState(null);
+  const [trailModal, setTrailModal] = useState(null);
+
   const handlePushLine = () => {
     if (!workingItem.specificItem || !workingItem.category || !workingItem.qty || !workingItem.value) return;
     setLines([...lines, { ...workingItem, id: crypto.randomUUID() }]);
-    setWorkingItem({ specificItem: '', category: '', qty: '', uom: 'Piece (pc)', value: '' });
+    setWorkingItem({ specificItem: '', category: '', qty: '', uom: 'Piece (pc)', value: '', remarks: '' });
   };
 
   const handleCommitBatch = (e) => {
     e.preventDefault();
     if (!meta.partner || !meta.office || !meta.fd || !meta.section || !lines.length) return;
+    
     const timestamp = new Date().toLocaleString();
     const formatted = lines.map((l, i) => ({
       id: 'C-GEN-' + (contributions.length + i + 1),
       dateLogged: new Date().toISOString().split('T')[0],
-      ...meta, category: l.category, specificItem: l.specificItem, qty: Number(l.qty), uom: l.uom, value: Number(l.value),
+      ...meta,
+      category: l.category,
+      specificItem: l.specificItem,
+      qty: Number(l.qty),
+      uom: l.uom,
+      value: Number(l.value),
+      remarks: l.remarks,
       history: [{ timestamp, user: userContext.name, action: `Logged asset provision: ${l.specificItem}.` }]
     }));
+    
     setContributions([...formatted, ...contributions]);
     setLines([]);
     setMeta({ partner: '', office: isConstrained ? userContext.office : '', fd: '', section: '' });
@@ -915,26 +889,19 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
         const changes = [];
         if (c.qty !== Number(editModal.qty)) changes.push(`Quantity changed from ${c.qty} to ${editModal.qty}`);
         if (c.value !== Number(editModal.value)) changes.push(`Valuation changed from ₱${c.value} to ₱${editModal.value}`);
-
-        return {
-          ...c,
-          qty: Number(editModal.qty),
+        return { 
+          ...c, 
+          qty: Number(editModal.qty), 
           value: Number(editModal.value),
           history: [
-            ...c.history,
+            ...c.history, 
             { timestamp, user: userContext.name, action: changes.length ? `Updated metrics: ${changes.join(', ')}.` : 'Saved without variable changes.' }
-          ]
+          ] 
         };
       }
       return c;
     }));
     setEditModal(null);
-  };
-
-  const handleDeleteItem = (id) => {
-    if (window.confirm("Purge this contribution record line? This operation is absolute.")) {
-      setContributions(contributions.filter(c => c.id !== id));
-    }
   };
 
   const inp = `w-full p-2 text-xs rounded border outline-none dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100`;
@@ -945,12 +912,12 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Contributions Matrix</h2>
-          <p className="text-[11px] opacity-60">Total donation entries: {currentFilteredView.length}</p>
+          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Contributions Ledger</h2>
+          <p className="text-[11px] opacity-60">Verified Records: {currentFilteredView.length}</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {!isReadOnly && (
-            <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold hover:bg-amber-600 transition">
+            <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
               <Icon name="plus" size={14} /><span>Record Donations</span>
             </button>
           )}
@@ -972,6 +939,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
               <th className="pb-2">Line Item</th>
               <th className="pb-2 text-right">Quantity</th>
               <th className="pb-2 text-right">Value</th>
+              <th className="pb-2">Remarks</th>
               <th className="pb-2 text-center">Actions</th>
             </tr>
           </thead>
@@ -985,22 +953,18 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 <td className="py-2.5 text-slate-400 text-[11px]">{c.category}</td>
                 <td className="py-2.5 font-semibold">{c.specificItem}</td>
                 <td className="py-2.5 text-right font-medium">{c.qty} <span className="text-[10px] opacity-50">{c.uom}</span></td>
-                <td className="py-2.5 text-right font-black text-emerald-700 dark:text-emerald-400">₱{c.value.toLocaleString()}</td>
+                <td className="py-2.5 text-right font-black text-emerald-700 dark:text-amber-500">₱ {Number(c.value).toLocaleString()}</td>
+                <td className="py-2.5 text-slate-500 text-[11px] truncate max-w-[150px]" title={c.remarks}>{c.remarks || '-'}</td>
                 <td className="py-2.5 text-center">
                   <div className="flex items-center justify-center gap-1">
-                    <button onClick={() => setTrailModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-amber-400 transition" title="Audit Trail History Log">
+                    {!isReadOnly && (
+                      <button onClick={() => setEditModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-500 transition" title="Modify Record">
+                        <Icon name="edit" size={14} />
+                      </button>
+                    )}
+                    <button onClick={() => setTrailModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-amber-500 transition" title="Audit Trail">
                       <Icon name="history" size={14} />
                     </button>
-                    {!isReadOnly && (
-                      <>
-                        <button onClick={() => setEditModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-400 transition" title="Modify Record">
-                          <Icon name="edit" size={14} />
-                        </button>
-                        <button onClick={() => handleDeleteItem(c.id)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500 transition" title="Purge Record">
-                          <Icon name="trash" size={14} />
-                        </button>
-                      </>
-                    )}
                   </div>
                 </td>
               </tr>
@@ -1009,29 +973,32 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
         </table>
       </div>
 
-      {/* MODAL: ADD TURNOVER */}
       {addModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
             <div className="flex justify-between items-center border-b dark:border-slate-800 pb-3 mb-4">
-              <h3 className="font-black text-sm uppercase tracking-wider text-emerald-800 dark:text-amber-400">Record Contributions</h3>
+              <h3 className="font-black text-sm uppercase tracking-wider text-emerald-800 dark:text-amber-400">Record Resource Turnover</h3>
               <button onClick={() => setAddModal(false)} className="text-slate-400 hover:text-slate-200"><Icon name="close" size={18} /></button>
             </div>
             <div className="space-y-4">
-              <input type="text" value={meta.partner} onChange={e=>setMeta({...meta, partner:e.target.value})} className={inp} placeholder="Name of Partner (eg. GMA Kapuso, SaveTheChildren)"/>
-              <select value={meta.office} onChange={e=>setMeta({...meta, office:e.target.value, fd:'', section:''})} className={inp} disabled={isConstrained}><option value="">Recipient</option>{OFFICES.map(o=><option key={o} value={o}>{o}</option>)}</select>
+              <input type="text" value={meta.partner} onChange={e=>setMeta({...meta, partner:e.target.value})} className={inp} placeholder="Sponsoring Partner / Entity" />
+              <select value={meta.office} onChange={e=>setMeta({...meta, office:e.target.value, fd:'', section:''})} className={inp} disabled={isConstrained}>
+                <option value="">Recipient Office</option>
+                {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
+              </select>
               <div className="grid grid-cols-2 gap-2">
                 <select value={meta.fd} onChange={e=>setMeta({...meta, fd:e.target.value, section:''})} className={inp} disabled={!meta.office}><option value="">Functional Division</option>{activeFds.map(f=><option key={f} value={f}>{f}</option>)}</select>
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
+              
               <div className="border-t dark:border-slate-800 pt-3 space-y-2">
                 <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
-                  <option value="">Category</option>
+                  <option value="">Select Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
                 </select>
                 <select value={workingItem.specificItem} onChange={e=>setWorkingItem({...workingItem, specificItem:e.target.value})} className={inp} disabled={!workingItem.category}>
-                  <option value="">Line Item</option>
+                  <option value="">Select Specific Item</option>
                   {(CATEGORIES[workingItem.category] || []).map(i=><option key={i} value={i}>{i}</option>)}
                 </select>
                 <div className="grid grid-cols-2 gap-2">
@@ -1039,12 +1006,17 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   <select value={workingItem.uom} onChange={e=>setWorkingItem({...workingItem, uom:e.target.value})} className={inp}>{UOM_LIST.map(u=><option key={u} value={u}>{u}</option>)}</select>
                 </div>
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Value of Item(s) (₱)"/>
+                <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
+                
                 <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border dark:border-slate-700 hover:bg-slate-200 text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
+              
               {lines.length > 0 && (
                 <div className="border-t dark:border-slate-800 pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border dark:border-slate-800 rounded"><span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()}</span></div>
+                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border dark:border-slate-800 rounded">
+                      <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
+                    </div>
                   ))}
                   <button onClick={handleCommitBatch} className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Submit</button>
                 </div>
@@ -1054,53 +1026,41 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
         </div>
       )}
 
-      {/* MODAL: EDIT & TRAIL: Unchanged */}
       {editModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
             <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Modify Capital Turnover Asset Metrics</h3>
+              <h3 className="font-bold text-sm text-amber-500">Modify Specification</h3>
               <button type="button" onClick={() => setEditModal(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
             </div>
-            <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Donor Stakeholder</label>
-              <input type="text" className={`${inp} opacity-60`} value={editModal.partner} disabled />
-            </div>
-            <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Provision Nomenclature</label>
-              <input type="text" className={`${inp} opacity-60`} value={editModal.specificItem} disabled />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Delivered Quantity</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Quantity Provided</label>
                 <input type="number" value={editModal.qty} onChange={e=>setEditModal({...editModal, qty: e.target.value})} className={inp} required />
               </div>
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">UoM</label>
-                <input type="text" className={`${inp} opacity-60`} value={editModal.uom} disabled />
-              </div>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Appraised Fair Valuation Asset (₱)</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Declared Value (₱)</label>
               <input type="number" value={editModal.value} onChange={e=>setEditModal({...editModal, value: e.target.value})} className={inp} required />
             </div>
-            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md"> Save Ledger Parameters</button>
+            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md"> Save Verification Changes</button>
           </form>
         </div>
       )}
+
       {trailModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
             <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-slate-500">Asset Valuation Audit Trail</h3>
+              <h3 className="font-bold text-sm text-slate-500">System Change Audit Trail Log</h3>
               <button onClick={() => setTrailModal(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className="p-2 text-[11px] rounded bg-slate-50 dark:bg-slate-950 border dark:border-slate-800 space-y-0.5">
-                  <div className="flex justify-between font-bold opacity-60 text-[10px]">
+                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-slate-800/50 border dark:border-slate-700">
+                  <div className="flex justify-between text-[10px] text-slate-400 mb-1">
                     <span>{t.timestamp}</span>
-                    <span className="text-amber-500">{t.user}</span>
+                    <span className="font-bold text-amber-500">{t.user}</span>
                   </div>
                   <p className="text-slate-700 dark:text-slate-300 font-medium">{t.action}</p>
                 </div>
@@ -1113,17 +1073,33 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
   );
 }
 
-// --- TAB: USER MANAGEMENT: Restricted ADD ---
+// --- TAB: USER MANAGEMENT ---
 function UserWorkspace({ users, setUsers, userContext, darkMode }) {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
-  const [form, setForm] = useState({ name: '', username: '', email: '', role: SYSTEM_ROLES.FOCAL, position: '', office: 'Regional Office' });
+  
+  // Administrative Clearance Rules 
+  const isSuperAdminOrRoIct = userContext.role === SYSTEM_ROLES.SUPERADMIN || (userContext.role === SYSTEM_ROLES.ICT_USER && userContext.office === 'Regional Office');
+  const hasWriteClearance = userContext.role === SYSTEM_ROLES.SUPERADMIN || userContext.role === SYSTEM_ROLES.ICT_USER; 
+  
+  const canManageUser = (targetOffice) => isSuperAdminOrRoIct || (hasWriteClearance && userContext.office === targetOffice);
+  
+  // Lock View to SDO for non-RO ICT
+  const displayedUsers = users.filter(u => isSuperAdminOrRoIct || u.office === userContext.office);
+
+  const [form, setForm] = useState({ 
+    name: '', username: '', email: '', role: SYSTEM_ROLES.FOCAL, position: '', 
+    office: isSuperAdminOrRoIct ? 'Regional Office' : userContext.office 
+  });
 
   const handleAddUser = (e) => {
     e.preventDefault();
     if (!form.name || !form.username || !form.email) return;
     setUsers([...users, { ...form, id: users.length + 1 }]);
-    setForm({ name: '', username: '', email: '', role: SYSTEM_ROLES.FOCAL, position: '', office: 'Regional Office' });
+    setForm({ 
+      name: '', username: '', email: '', role: SYSTEM_ROLES.FOCAL, position: '', 
+      office: isSuperAdminOrRoIct ? 'Regional Office' : userContext.office 
+    });
     setIsAddOpen(false);
   };
 
@@ -1147,20 +1123,18 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
     }
   };
 
-  // Administrative Clearance: Only RO ICT/Superadmin can write users. SDO ICT can view only.
-  const hasWriteClearance = (userContext.role === SYSTEM_ROLES.SUPERADMIN || userContext.role === SYSTEM_ROLES.ICT_USER) && userContext.office === 'Regional Office';
   const inp = `w-full p-2 text-xs rounded border outline-none dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100`;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">User Management</h2>
-          <p className="text-[11px] opacity-60">Authorized system accounts: {users.length}</p>
+          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">User Management Directory</h2>
+          <p className="text-[11px] opacity-60">Verified Access Profiles: {displayedUsers.length}</p>
         </div>
         {hasWriteClearance && (
-          <button onClick={() => setIsAddOpen(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold hover:bg-amber-600 transition">
-            <Icon name="plus" size={14} /><span>Add User</span>
+          <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+            <Icon name="plus" size={14} /><span>Provision Account</span>
           </button>
         )}
       </div>
@@ -1169,30 +1143,28 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
             <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2">Name</th>
-              <th className="pb-2">Username</th>
-              <th className="pb-2">Access Level</th>
-              <th className="pb-2">Designation Position</th>
-              <th className="pb-2">Office</th>
+              <th className="pb-2">Personnel Node</th>
+              <th className="pb-2">Authentication UUID</th>
+              <th className="pb-2">Designation Scope</th>
+              <th className="pb-2">System Clearance</th>
+              <th className="pb-2">Base Alignment</th>
               {hasWriteClearance && <th className="pb-2 text-center">Actions</th>}
             </tr>
           </thead>
           <tbody className="divide-y dark:divide-slate-800/60">
-            {users.map(u => (
+            {displayedUsers.map(u => (
               <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
                 <td className="py-2.5">
-                  <span className="font-bold block text-slate-900 dark:text-white">{u.name}</span>
-                  <span className="text-[10px] font-mono opacity-60 block">{u.email}</span>
+                  <p className="font-bold text-slate-800 dark:text-slate-200">{u.name}</p>
+                  <p className="text-[10px] opacity-60">{u.email}</p>
                 </td>
-                <td className="py-2.5 font-mono text-slate-500">{u.username}</td>
+                <td className="py-2.5 text-slate-500">{u.username}</td>
+                <td className="py-2.5 text-slate-500">{u.position}</td>
                 <td className="py-2.5">
-                  <span className="font-bold text-emerald-800 dark:text-amber-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[11px]">
-                    {u.role}
-                  </span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500">{u.role}</span>
                 </td>
-                <td className="py-2.5 font-medium opacity-80">{u.position}</td>
                 <td className="py-2.5 font-semibold text-slate-700 dark:text-slate-300">{u.office}</td>
-                {hasWriteClearance && (
+                {hasWriteClearance && canManageUser(u.office) && (
                   <td className="py-2.5 text-center">
                     <div className="flex items-center justify-center gap-1">
                       <button onClick={() => handleEditClick(u)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-400 transition" title="Modify Permissions">
@@ -1210,44 +1182,71 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
         </table>
       </div>
 
-      {/* MODALS: ADD & EDIT: Unchanged, but checks clearances */}
       {isAddOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <form onSubmit={handleAddUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-black text-xs uppercase tracking-wider text-slate-400">Add User</h3>
+            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2 mb-2">
+              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Initialize Identity Record</h3>
               <button type="button" onClick={() => setIsAddOpen(false)} className="text-slate-400"><Icon name="close" size={16} /></button>
             </div>
-            <input type="text" value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className={inp} placeholder="Full Name (Juan V. Dela Cruz)" required/>
-            <div className="grid grid-cols-2 gap-2">
-              <input type="text" value={form.username} onChange={e=>setForm({...form, username:e.target.value})} className={inp} placeholder="User Name" required/>
-              <select value={form.role} onChange={e=>setForm({...form, role:e.target.value})} className={inp}>{Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}</select>
+            <div>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Full Legal Name</label>
+              <input type="text" value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className={inp} required />
             </div>
-            <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} className={inp} placeholder="Email Address (name@deped.gov.ph)" required/>
-            <input type="text" value={form.position} onChange={e=>setForm({...form, position:e.target.value})} className={inp} placeholder="Position/Designation (e.g., ITO I)" required/>
-            <select value={form.office} onChange={e=>setForm({...form, office:e.target.value})} className={inp}><option value="Regional Office">Office</option>{OFFICES.filter(o=>o!=='Regional Office').map(o=><option key={o} value={o}>{o}</option>)}</select>
-            <button type="submit" className="w-full py-2 bg-emerald-700 text-white font-bold rounded text-xs hover:bg-emerald-850 tracking-wide transition">Submit</button>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Auth Alias</label>
+                <input type="text" value={form.username} onChange={e=>setForm({...form, username:e.target.value})} className={inp} required />
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">System clearance</label>
+                <select value={form.role} onChange={e=>setForm({...form, role:e.target.value})} className={inp}>
+                  {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Email Address</label>
+              <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} className={inp} required />
+            </div>
+            <div>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Position/Designation</label>
+              <input type="text" value={form.position} onChange={e=>setForm({...form, position:e.target.value})} className={inp} required />
+            </div>
+            <div>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Office</label>
+              <select 
+                value={form.office} 
+                onChange={e=>setForm({...form, office:e.target.value})} 
+                className={`${inp} ${!isSuperAdminOrRoIct ? 'opacity-60 cursor-not-allowed bg-slate-100 dark:bg-slate-800' : ''}`} 
+                disabled={!isSuperAdminOrRoIct}
+              >
+                {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
+              </select>
+            </div>
+            <button type="submit" className="w-full mt-2 py-2 bg-emerald-800 hover:bg-emerald-850 text-amber-400 font-bold text-xs rounded transition shadow-md">Deploy Node Identity</button>
           </form>
         </div>
       )}
+
       {editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Edit User</h3>
+            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2 mb-2">
+              <h3 className="font-bold text-sm text-amber-500">Modify Identity Parameters</h3>
               <button type="button" onClick={() => setEditingUser(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Full Name</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Full Legal Name</label>
               <input type="text" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name:e.target.value})} className={inp} required />
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">User Name</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Auth Alias</label>
                 <input type="text" value={editingUser.username} onChange={e=>setEditingUser({...editingUser, username:e.target.value})} className={inp} required />
               </div>
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Access Role Level</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">System clearance</label>
                 <select value={editingUser.role} onChange={e=>setEditingUser({...editingUser, role:e.target.value})} className={inp}>
                   {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
                 </select>
@@ -1263,11 +1262,16 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
             </div>
             <div>
               <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Office</label>
-              <select value={editingUser.office} onChange={e=>setEditingUser({...editingUser, office:e.target.value})} className={inp}>
+              <select 
+                value={editingUser.office} 
+                onChange={e=>setEditingUser({...editingUser, office:e.target.value})} 
+                className={`${inp} ${!isSuperAdminOrRoIct ? 'opacity-60 cursor-not-allowed bg-slate-100 dark:bg-slate-800' : ''}`} 
+                disabled={!isSuperAdminOrRoIct}
+              >
                 {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
               </select>
             </div>
-            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md"> Submit</button>
+            <button type="submit" className="w-full mt-2 py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold text-xs rounded transition shadow-md">Execute Parameter Changes</button>
           </form>
         </div>
       )}
