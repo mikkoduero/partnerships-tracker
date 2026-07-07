@@ -1134,7 +1134,7 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
         </div>
         {hasWriteClearance && (
           <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
-            <Icon name="plus" size={14} /><span>Provision Account</span>
+            <Icon name="plus" size={14} /><span>Add Account</span>
           </button>
         )}
       </div>
@@ -1195,11 +1195,11 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Auth Alias</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Username</label>
                 <input type="text" value={form.username} onChange={e=>setForm({...form, username:e.target.value})} className={inp} required />
               </div>
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">System clearance</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">User Type</label>
                 <select value={form.role} onChange={e=>setForm({...form, role:e.target.value})} className={inp}>
                   {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
                 </select>
@@ -1224,7 +1224,7 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
                 {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
               </select>
             </div>
-            <button type="submit" className="w-full mt-2 py-2 bg-emerald-800 hover:bg-emerald-850 text-amber-400 font-bold text-xs rounded transition shadow-md">Deploy Node Identity</button>
+            <button type="submit" className="w-full mt-2 py-2 bg-emerald-800 hover:bg-emerald-850 text-amber-400 font-bold text-xs rounded transition shadow-md">Submit</button>
           </form>
         </div>
       )}
