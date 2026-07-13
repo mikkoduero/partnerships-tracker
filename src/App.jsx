@@ -300,7 +300,7 @@ function Header({ currentUser, darkMode, setDarkMode, onLogout }) {
   );
 }
 
-// --- SYSTEM FILTERS COMPONENT: MODIFIED ---
+// --- SYSTEM FILTERS COMPONENT ---
 function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters = false, userContext }) {
   const updateF = (k, v) => {
     setFilters(prev => {
@@ -322,12 +322,11 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
     <div className={`p-4 rounded-xl border mb-6 shadow-sm ${darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-200'}`}>
       <div className={`grid grid-cols-2 sm:grid-cols-4 ${includeCategoryFilters ? 'lg:grid-cols-8' : 'lg:grid-cols-7'} gap-3`}>
         
-        {/* OFFICE FILTER: MODIFIED & ENFORCED RLS */}
         <select 
           value={filters.office} 
           onChange={e=>updateF('office', e.target.value)} 
           className={`${css} ${isConstrained ? 'opacity-60 cursor-not-allowed bg-slate-100 dark:bg-slate-800' : ''}`}
-          disabled={isConstrained} // Security Enforcement: Lock down for non-RO users
+          disabled={isConstrained}
         >
           <option value="">Region VIII (All Offices)</option>
           {OFFICES.map(o => <option key={o} value={o}>{o}</option>)}
@@ -343,7 +342,6 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
           {(STRUCTURE[filters.office === 'Regional Office' ? 'Regional Office' : 'SDO']?.[filters.fd] || []).map(s => <option key={s} value={s}>{s}</option>)}
         </select>
 
-        {/* ALWAYS SHOW TIME FILTERS BASED ON REQUEST */}
         <select value={filters.year} onChange={e=>updateF('year', e.target.value)} className={css}>
           <option value="All">Year</option>
           <option value="2026">2026</option>
@@ -432,6 +430,16 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
   const totalNeedsValue = filteredNeeds.reduce((a, b) => a + Number(b.value), 0);
   const totalContsValue = filteredConts.reduce((a, b) => a + Number(b.value), 0);
 
+  // --- FEATURE ACCOMPLISHMENTS RANKING COMPUTATION ---
+  const officeRankings = useMemo(() => {
+    return OFFICES.map(off => {
+      const officeNeeds = filteredNeeds.filter(n => n.office === off).reduce((a, b) => a + Number(b.value), 0);
+      const officeConts = filteredConts.filter(c => c.office === off).reduce((a, b) => a + Number(b.value), 0);
+      const accomplishmentPct = officeNeeds > 0 ? (officeConts / officeNeeds) * 100 : 0;
+      return { office: off, needs: officeNeeds, contributions: officeConts, percentage: accomplishmentPct };
+    }).sort((a, b) => b.percentage - a.percentage);
+  }, [filteredNeeds, filteredConts]);
+
   const topDonors = useMemo(() => {
     const groups = filteredConts.reduce((acc, c) => {
       acc[c.partner] = (acc[c.partner] || 0) + Number(c.value);
@@ -465,6 +473,45 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
         </div>
         <div className={`${containerStyle} flex flex-col items-center justify-center p-4`}>
           <FuelGaugeChart totalNeeds={totalNeedsValue} totalContributions={totalContsValue} darkMode={darkMode} />
+        </div>
+      </div>
+
+      {/* --- FEATURE: SDO ACCOMPLISHMENTS RANKING LAYOUT --- */}
+      <div className={containerStyle}>
+        <div className="border-b dark:border-slate-800 pb-3 mb-4">
+          <h3 className="text-xs font-black uppercase tracking-widest text-emerald-800 dark:text-amber-400">Accomplishment Rankings (RO & SDO Matrix)</h3>
+          <p className="text-[11px] opacity-60">Comparative matrix tracking cumulative resource injection matching current active metrics.</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs whitespace-nowrap">
+            <thead>
+              <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
+                <th className="pb-2 pl-2">Rank</th>
+                <th className="pb-2">Office Name</th>
+                <th className="pb-2 text-right">Target Needs</th>
+                <th className="pb-2 text-right">Received Contributions</th>
+                <th className="pb-2 text-center w-40">Fulfillment Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y dark:divide-slate-800/60">
+              {officeRankings.map((node, index) => (
+                <tr key={node.office} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                  <td className="py-2.5 pl-2 font-bold text-slate-400">#{index + 1}</td>
+                  <td className="py-2.5 font-bold text-slate-800 dark:text-slate-200">{node.office}</td>
+                  <td className="py-2.5 text-right font-medium text-slate-600 dark:text-slate-400">₱{node.needs.toLocaleString()}</td>
+                  <td className="py-2.5 text-right font-bold text-emerald-700 dark:text-amber-500">₱{node.contributions.toLocaleString()}</td>
+                  <td className="py-2.5 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-16 bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                        <div className="bg-emerald-500 h-full rounded-full" style={{ width: `${Math.min(node.percentage, 100)}%` }}></div>
+                      </div>
+                      <span className="font-black text-[11px] min-w-10 text-right">{node.percentage.toFixed(1)}%</span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -647,7 +694,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
             <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2">Date Logged</th>
+              <th className="pb-2">Date</th>
               <th className="pb-2">Office</th>
               <th className="pb-2">Functional Division</th>
               <th className="pb-2">Section/Unit</th>
@@ -812,7 +859,13 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
 function ContributionsWorkspace({ contributions, setContributions, userContext, darkMode }) {
   const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING;
   const isConstrained = userContext.office !== 'Regional Office';
+  const isIctUser = userContext.role === SYSTEM_ROLES.ICT_USER;
   
+  // --- SUB-TAB ROUTING ARCHITECTURE ---
+  const [subTab, setSubTab] = useState('ledger'); // 'ledger' or 'partners'
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPartner, setSelectedPartner] = useState(null);
+
   const [filters, setFilters] = useState({ 
     office: isConstrained ? userContext.office : '', 
     fd: '', section: '', category: '', specificItem: '',
@@ -846,6 +899,32 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       return true;
     });
   }, [contributions, filters, userContext, isConstrained]);
+
+  // --- FEATURE: PARTNERS COMPUTATION GRID ---
+  const partnersSummary = useMemo(() => {
+    const registry = {};
+    currentFilteredView.forEach(item => {
+      if (!registry[item.partner]) {
+        registry[item.partner] = { name: item.partner, totalValuation: 0, aggregateLogs: [] };
+      }
+      registry[item.partner].totalValuation += Number(item.value);
+      registry[item.partner].aggregateLogs.push(item);
+    });
+
+    const list = Object.values(registry);
+    if (!searchQuery.trim()) return list;
+    return list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase().trim()));
+  }, [currentFilteredView, searchQuery]);
+
+  // --- AUTOMATIC AUTOCOMPLETE HINTS FOR INTERACTIVE BAR ---
+  const autocompleteSuggestions = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const allUniqueNames = Array.from(new Set(currentFilteredView.map(c => c.partner)));
+    return allUniqueNames.filter(name => 
+      name.toLowerCase().includes(searchQuery.toLowerCase()) && 
+      name.toLowerCase() !== searchQuery.toLowerCase()
+    ).slice(0, 5);
+  }, [currentFilteredView, searchQuery]);
 
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(null);
@@ -910,68 +989,210 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
       
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
-        <div>
-          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Contributions Ledger</h2>
-          <p className="text-[11px] opacity-60">Verified Records: {currentFilteredView.length}</p>
-        </div>
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          {!isReadOnly && (
-            <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
-              <Icon name="plus" size={14} /><span>Record Donations</span>
-            </button>
-          )}
-          <button onClick={() => exportToCSV(currentFilteredView, 'DEPED8_CONTRIBUTIONS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-emerald-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-emerald-850">
-            <Icon name="download" size={14} /><span>Export Matrix</span>
+      {/* --- SUB-TAB HEADERS SWITCHER BAR (SECURED AGAINST ICT USERS) --- */}
+      {!isIctUser && (
+        <div className="flex border-b dark:border-slate-800 gap-2">
+          <button 
+            onClick={() => setSubTab('ledger')} 
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+          >
+            Contributions Ledger
+          </button>
+          <button 
+            onClick={() => setSubTab('partners')} 
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'partners' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+          >
+            Partners Registry
           </button>
         </div>
-      </div>
+      )}
 
-      <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
-        <table className="w-full text-left text-xs whitespace-nowrap">
-          <thead>
-            <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2">Partner</th>
-              <th className="pb-2">Recipient</th>
-              <th className="pb-2">Functional Division</th>
-              <th className="pb-2">Section/Unit</th>
-              <th className="pb-2">Category</th>
-              <th className="pb-2">Line Item</th>
-              <th className="pb-2 text-right">Quantity</th>
-              <th className="pb-2 text-right">Value</th>
-              <th className="pb-2">Remarks</th>
-              <th className="pb-2 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y dark:divide-slate-800/60">
-            {currentFilteredView.map(c => (
-              <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
-                <td className="py-2.5 font-bold text-emerald-800 dark:text-amber-400">{c.partner}</td>
-                <td className="py-2.5 font-bold">{c.office}</td>
-                <td className="py-2.5 truncate max-w-[130px] text-slate-600 dark:text-slate-400">{c.fd}</td>
-                <td className="py-2.5 text-slate-500">{c.section}</td>
-                <td className="py-2.5 text-slate-400 text-[11px]">{c.category}</td>
-                <td className="py-2.5 font-semibold">{c.specificItem}</td>
-                <td className="py-2.5 text-right font-medium">{c.qty} <span className="text-[10px] opacity-50">{c.uom}</span></td>
-                <td className="py-2.5 text-right font-black text-emerald-700 dark:text-amber-500">₱ {Number(c.value).toLocaleString()}</td>
-                <td className="py-2.5 text-slate-500 text-[11px] truncate max-w-[150px]" title={c.remarks}>{c.remarks || '-'}</td>
-                <td className="py-2.5 text-center">
-                  <div className="flex items-center justify-center gap-1">
-                    {!isReadOnly && (
-                      <button onClick={() => setEditModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-500 transition" title="Modify Record">
-                        <Icon name="edit" size={14} />
-                      </button>
-                    )}
-                    <button onClick={() => setTrailModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-amber-500 transition" title="Audit Trail">
-                      <Icon name="history" size={14} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {/* --- ROUTE VIEW 1: RENDER STANDARD CONTRIBUTIONS CONTROLLER --- */}
+      {(subTab === 'ledger' || isIctUser) && (
+        <>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
+            <div>
+              <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Contributions Ledger</h2>
+              <p className="text-[11px] opacity-60">Verified Records: {currentFilteredView.length}</p>
+            </div>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              {!isReadOnly && (
+                <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                  <Icon name="plus" size={14} /><span>Record Donations</span>
+                </button>
+              )}
+              <button onClick={() => exportToCSV(currentFilteredView, 'DEPED8_CONTRIBUTIONS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-emerald-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-emerald-850">
+                <Icon name="download" size={14} /><span>Export Matrix</span>
+              </button>
+            </div>
+          </div>
+
+          <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <table className="w-full text-left text-xs whitespace-nowrap">
+              <thead>
+                <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
+                  <th className="pb-2">Partner</th>
+                  <th className="pb-2">Recipient</th>
+                  <th className="pb-2">Functional Division</th>
+                  <th className="pb-2">Section/Unit</th>
+                  <th className="pb-2">Category</th>
+                  <th className="pb-2">Line Item</th>
+                  <th className="pb-2 text-right">Quantity</th>
+                  <th className="pb-2 text-right">Value</th>
+                  <th className="pb-2">Remarks</th>
+                  <th className="pb-2 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y dark:divide-slate-800/60">
+                {currentFilteredView.map(c => (
+                  <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                    <td className="py-2.5 font-bold text-emerald-800 dark:text-amber-400">{c.partner}</td>
+                    <td className="py-2.5 font-bold">{c.office}</td>
+                    <td className="py-2.5 truncate max-w-[130px] text-slate-600 dark:text-slate-400">{c.fd}</td>
+                    <td className="py-2.5 text-slate-500">{c.section}</td>
+                    <td className="py-2.5 text-slate-400 text-[11px]">{c.category}</td>
+                    <td className="py-2.5 font-semibold">{c.specificItem}</td>
+                    <td className="py-2.5 text-right font-medium">{c.qty} <span className="text-[10px] opacity-50">{c.uom}</span></td>
+                    <td className="py-2.5 text-right font-black text-emerald-700 dark:text-amber-500">₱ {Number(c.value).toLocaleString()}</td>
+                    <td className="py-2.5 text-slate-500 text-[11px] truncate max-w-[150px]" title={c.remarks}>{c.remarks || '-'}</td>
+                    <td className="py-2.5 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        {!isReadOnly && (
+                          <button onClick={() => setEditModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-500 transition" title="Modify Record">
+                            <Icon name="edit" size={14} />
+                          </button>
+                        )}
+                        <button onClick={() => setTrailModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-amber-500 transition" title="Audit Trail">
+                          <Icon name="history" size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {/* --- ROUTE VIEW 2: NEW PARTNERS SUB-TAB (CRITICAL LAYER EXCLUSIVITY ENFORCED) --- */}
+      {subTab === 'partners' && !isIctUser && (
+        <div className="space-y-4">
+          {/* INTERACTIVE COMPONENT: SEARCH ENGINE INPUT CONTAINER */}
+          <div className="relative w-full max-w-md">
+            <input 
+              type="text" 
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search specific partner identity..." 
+              className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border shadow-sm outline-none transition focus:border-amber-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-100 text-slate-800"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-3 text-slate-400 hover:text-slate-200">
+                <Icon name="close" size={14} />
+              </button>
+            )}
+            
+            {/* INTERACTIVE INTELLISENSE AUTOCAMP SYSTEM */}
+            {autocompleteSuggestions.length > 0 && (
+              <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 divide-slate-100 dark:divide-slate-800/60">
+                {autocompleteSuggestions.map(itemHint => (
+                  <button 
+                    key={itemHint} 
+                    onClick={() => setSearchQuery(itemHint)}
+                    className="w-full text-left p-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/40 text-slate-700 dark:text-slate-300 transition"
+                  >
+                    {itemHint}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* DATAGRID MATRIX FRAMEWORK TABLE */}
+          <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <table className="w-full text-left text-xs whitespace-nowrap">
+              <thead>
+                <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
+                  <th className="pb-2 pl-2">Entity Identity / Donor Node</th>
+                  <th className="pb-2 text-center">Total Transaction Lines</th>
+                  <th className="pb-2 text-right pr-4">Total Aggregate Valuation</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y dark:divide-slate-800/60">
+                {partnersSummary.map(rowNode => (
+                  <tr 
+                    key={rowNode.name} 
+                    onClick={() => setSelectedPartner(rowNode)}
+                    className="hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition"
+                  >
+                    <td className="py-3 pl-2 font-black text-emerald-800 dark:text-amber-400 text-xs">{rowNode.name}</td>
+                    <td className="py-3 text-center font-bold text-slate-600 dark:text-slate-300">{rowNode.aggregateLogs.length} transactions</td>
+                    <td className="py-3 text-right pr-4 font-black text-emerald-700 dark:text-amber-500">₱ {rowNode.totalValuation.toLocaleString()}</td>
+                  </tr>
+                ))}
+                {partnersSummary.length === 0 && (
+                  <tr>
+                    <td colSpan="3" className="py-6 text-center text-slate-500 italic">No partners match the applied structural/temporal parameter sets.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* --- MODAL DIALOG DISPLAYING LOGGED TRANSACTIONS PER ENTRANT NODE --- */}
+      {selectedPartner && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
+          <div className={`w-full max-w-4xl p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[85vh] ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-900'}`}>
+            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-3 mb-4">
+              <div>
+                <span className="text-[10px] tracking-wider uppercase font-black text-amber-500">Resource Summary Ledger</span>
+                <h3 className="font-black text-base text-emerald-800 dark:text-amber-400">{selectedPartner.name}</h3>
+              </div>
+              <button onClick={() => setSelectedPartner(null)} className="text-slate-400 hover:text-slate-200 transition">
+                <Icon name="close" size={20} />
+              </button>
+            </div>
+            
+            <div className="overflow-y-auto flex-1 border dark:border-slate-800/80 rounded-lg">
+              <table className="w-full text-left text-xs whitespace-nowrap">
+                <thead className="sticky top-0 bg-slate-100 dark:bg-slate-950 text-slate-400 font-bold uppercase tracking-wider text-[11px] border-b dark:border-slate-800">
+                  <tr>
+                    <th className="p-2.5">Date</th>
+                    <th className="p-2.5">Office</th>
+                    <th className="p-2.5">Functional Division</th>
+                    <th className="p-2.5">Section/Unit</th>
+                    <th className="p-2.5">Category</th>
+                    <th className="p-2.5">Line Item</th>
+                    <th className="p-2.5 text-right">Qty</th>
+                    <th className="p-2.5 text-right pr-3">Valuation</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y dark:divide-slate-800/60">
+                  {selectedPartner.aggregateLogs.map(itemLog => (
+                    <tr key={itemLog.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-[11px]">
+                      <td className="p-2.5 text-slate-500">{itemLog.dateLogged}</td>
+                      <td className="p-2.5 font-bold">{itemLog.office}</td>
+                      <td className="p-2.5 truncate max-w-[120px] text-slate-400">{itemLog.fd}</td>
+                      <td className="p-2.5 text-slate-500">{itemLog.section}</td>
+                      <td className="p-2.5 text-slate-500">{itemLog.category}</td>
+                      <td className="p-2.5 font-semibold text-slate-700 dark:text-slate-300">{itemLog.specificItem}</td>
+                      <td className="p-2.5 text-right font-medium">{itemLog.qty} <span className="text-[10px] opacity-40">{itemLog.uom}</span></td>
+                      <td className="p-2.5 text-right pr-3 font-black text-emerald-600 dark:text-amber-500">₱{itemLog.value.toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-4 pt-3 border-t dark:border-slate-800 flex justify-between items-center">
+              <span className="text-xs font-bold text-slate-400">Total Pipeline Records: {selectedPartner.aggregateLogs.length}</span>
+              <span className="text-sm font-black text-emerald-800 dark:text-amber-400">Total Contribution: ₱{selectedPartner.totalValuation.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {addModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
@@ -1078,13 +1299,11 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   
-  // Administrative Clearance Rules 
   const isSuperAdminOrRoIct = userContext.role === SYSTEM_ROLES.SUPERADMIN || (userContext.role === SYSTEM_ROLES.ICT_USER && userContext.office === 'Regional Office');
   const hasWriteClearance = userContext.role === SYSTEM_ROLES.SUPERADMIN || userContext.role === SYSTEM_ROLES.ICT_USER; 
   
   const canManageUser = (targetOffice) => isSuperAdminOrRoIct || (hasWriteClearance && userContext.office === targetOffice);
   
-  // Lock View to SDO for non-RO ICT
   const displayedUsers = users.filter(u => isSuperAdminOrRoIct || u.office === userContext.office);
 
   const [form, setForm] = useState({ 
@@ -1143,11 +1362,11 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
             <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2">Personnel Node</th>
-              <th className="pb-2">Authentication UUID</th>
-              <th className="pb-2">Designation Scope</th>
-              <th className="pb-2">System Clearance</th>
-              <th className="pb-2">Base Alignment</th>
+              <th className="pb-2">Name</th>
+              <th className="pb-2">Username</th>
+              <th className="pb-2">Designation/Position</th>
+              <th className="pb-2">Access Level</th>
+              <th className="pb-2">Office</th>
               {hasWriteClearance && <th className="pb-2 text-center">Actions</th>}
             </tr>
           </thead>
