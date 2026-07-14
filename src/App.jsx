@@ -115,6 +115,60 @@ const exportToCSV = (data, filename) => {
   document.body.removeChild(link);
 };
 
+// --- SORTING ENGINE HOOK ---
+function useSortableData(items, config = null) {
+  const [sortConfig, setSortConfig] = useState(config);
+
+  const sortedItems = useMemo(() => {
+    let sortableItems = [...items];
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        let aValue = a[sortConfig.key];
+        let bValue = b[sortConfig.key];
+        
+        // Handling for partner transaction counts
+        if (sortConfig.key === 'transactions') {
+          aValue = a.aggregateLogs?.length || 0;
+          bValue = b.aggregateLogs?.length || 0;
+        }
+
+        if (aValue === undefined || aValue === null) aValue = '';
+        if (bValue === undefined || bValue === null) bValue = '';
+
+        if (typeof aValue === 'string') aValue = aValue.toLowerCase();
+        if (typeof bValue === 'string') bValue = bValue.toLowerCase();
+
+        // Convert strict numeric fields for appropriate sorting
+        if (['value', 'qty', 'totalValuation'].includes(sortConfig.key)) {
+          aValue = Number(aValue) || 0;
+          bValue = Number(bValue) || 0;
+        }
+
+        if (aValue < bValue) return sortConfig.direction === 'ascending' ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === 'ascending' ? 1 : -1;
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [items, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  return { items: sortedItems, requestSort, sortConfig };
+}
+
+// Indicator component for sorted columns
+const SortIndicator = ({ sortConfig, sortKey }) => {
+  if (!sortConfig || sortConfig.key !== sortKey) return <span className="ml-1 opacity-20 text-[10px]">↕</span>;
+  return <span className="ml-1 text-[10px] text-amber-500">{sortConfig.direction === 'ascending' ? '▲' : '▼'}</span>;
+};
+
 // --- MAIN WRAPPER COMPONENT ---
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -206,33 +260,33 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
       </div>
-      <div className={`w-full max-w-md p-8 rounded-2xl border shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+      <div className={`w-full max-w-md p-8 rounded-2xl border shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-300'}`}>
         <div className="flex flex-col items-center text-center mb-8">
           <div className="w-14 h-14 rounded-xl bg-emerald-900 text-amber-400 flex items-center justify-center text-2xl font-black shadow-md mb-3">R8</div>
           <h1 className="text-xl font-black tracking-tight text-emerald-900 dark:text-amber-400">DepEd Region VIII</h1>
-          <p className="text-xs uppercase font-bold tracking-widest text-slate-400 mt-1">Partnerships Tracker</p>
+          <p className="text-xs uppercase font-bold tracking-widest text-slate-500 dark:text-slate-400 mt-1">Partnerships Tracker</p>
         </div>
         <form onSubmit={handleFormSubmit} className="space-y-4">
           {error && <div className="p-3 text-xs bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 font-semibold rounded-lg text-center">{error}</div>}
           <div>
-            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-400 mb-1">Username</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className="w-full p-2.5 text-xs rounded-lg border outline-none dark:bg-slate-950 dark:border-slate-800 dark:text-slate-100 focus:border-amber-500 transition" required />
+            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-600 dark:text-slate-400 mb-1">Username</label>
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className="w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-slate-800 outline-none bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition" required />
           </div>
           <div>
-            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-400 mb-1">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="w-full p-2.5 text-xs rounded-lg border outline-none dark:bg-slate-950 dark:border-slate-800 dark:text-slate-100 focus:border-amber-500 transition" required />
+            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-600 dark:text-slate-400 mb-1">Password</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-slate-800 outline-none bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition" required />
           </div>
           <button type="submit" className="w-full py-3 bg-emerald-900 hover:bg-emerald-850 text-amber-400 font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Sign In</button>
         </form>
-        <div className="mt-8 border-t dark:border-slate-800 pt-5">
-          <span className="block text-[10px] uppercase font-black text-slate-400 tracking-widest text-center mb-3">Simulation User Accounts</span>
+        <div className="mt-8 border-t border-slate-200 dark:border-slate-800 pt-5">
+          <span className="block text-[10px] uppercase font-black text-slate-500 dark:text-slate-400 tracking-widest text-center mb-3">Simulation User Accounts</span>
           <div className="grid grid-cols-2 gap-2">
             {users.map((u) => (
-              <button key={u.id} onClick={() => handleQuickSelect(u)} className="p-2 text-left text-[10px] font-semibold border dark:border-slate-800 rounded-lg hover:border-amber-500 hover:bg-slate-50 dark:hover:bg-slate-950 transition flex items-center gap-2">
+              <button key={u.id} onClick={() => handleQuickSelect(u)} className="p-2 text-left text-[10px] font-semibold border border-slate-200 dark:border-slate-800 rounded-lg hover:border-amber-500 hover:bg-slate-50 dark:hover:bg-slate-950 transition flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
                 <div className="truncate">
-                  <p className="font-bold text-slate-900 dark:text-white truncate">{u.name}</p>
-                  <p className="opacity-50 text-[9px] truncate">{u.role} ({u.office})</p>
+                  <p className="font-bold text-slate-800 dark:text-white truncate">{u.name}</p>
+                  <p className="opacity-70 text-slate-600 dark:text-slate-400 text-[9px] truncate">{u.role} ({u.office})</p>
                 </div>
               </button>
             ))}
@@ -275,16 +329,16 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
 
 function Header({ currentUser, darkMode, setDarkMode, onLogout }) {
   return (
-    <header className="px-6 py-4 border-b dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm flex justify-between items-center gap-4">
+    <header className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm flex justify-between items-center gap-4">
       <div>
         <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-700 dark:text-amber-400">Office</span>
-        <h2 className="text-xs font-bold text-slate-500 mt-0.5">{currentUser.office}</h2>
+        <h2 className="text-xs font-bold text-slate-700 dark:text-slate-400 mt-0.5">{currentUser.office}</h2>
       </div>
       <div className="flex items-center gap-4 justify-end">
         <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-amber-400 transition" title="Toggle Appearance Mode">
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
-        <div className="flex items-center gap-3 border-l pl-4 dark:border-slate-700">
+        <div className="flex items-center gap-3 border-l border-slate-200 pl-4 dark:border-slate-700">
           <div className="text-right hidden sm:block">
             <p className="text-xs font-bold text-slate-900 dark:text-white">{currentUser.name}</p>
             <p className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">{currentUser.role}</p>
@@ -316,10 +370,10 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
     return userContext.office !== 'Regional Office';
   }, [userContext]);
 
-  const css = `w-full p-2 text-[11px] font-medium rounded-md border outline-none transition ${darkMode ? 'bg-slate-900 border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-800'} focus:border-amber-500`;
+  const css = `w-full p-2 text-[11px] font-medium rounded-md border outline-none transition ${darkMode ? 'bg-slate-900 border-slate-700 text-slate-100' : 'bg-white border-slate-300 text-slate-800'} focus:border-amber-500`;
   
   return (
-    <div className={`p-4 rounded-xl border mb-6 shadow-sm ${darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-200'}`}>
+    <div className={`p-4 rounded-xl border mb-6 shadow-sm ${darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-300'}`}>
       <div className={`grid grid-cols-2 sm:grid-cols-4 ${includeCategoryFilters ? 'lg:grid-cols-8' : 'lg:grid-cols-7'} gap-3`}>
         
         <select 
@@ -391,7 +445,7 @@ function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
             <stop offset="100%" stopColor="#10b981" />
           </linearGradient>
         </defs>
-        <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke={darkMode ? '#334155' : '#e2e8f0'} strokeWidth="12" strokeLinecap="round" />
+        <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke={darkMode ? '#334155' : '#cbd5e1'} strokeWidth="12" strokeLinecap="round" />
         <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke="url(#gaugeGrad)" strokeWidth="12" strokeLinecap="round" strokeDasharray="157" strokeDashoffset={157 - (157 * percent) / 100} style={{ transition: 'stroke-dashoffset 1s ease-out' }} />
         <g style={{ transform: `rotate(${needleRotation}deg)`, transformOrigin: '60px 60px', transition: 'transform 1s ease-out' }}>
           <path d="M 58 60 L 60 15 L 62 60 Z" fill={darkMode ? '#f8fafc' : '#0f172a'} />
@@ -400,7 +454,7 @@ function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
       </svg>
       <div className="absolute bottom-0 flex flex-col items-center">
         <span className="text-xl font-black text-slate-800 dark:text-slate-100">{percent.toFixed(1)}%</span>
-        <span className="text-[10px] uppercase font-bold text-slate-400">Fulfilled</span>
+        <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Fulfilled</span>
       </div>
     </div>
   );
@@ -430,7 +484,6 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
   const totalNeedsValue = filteredNeeds.reduce((a, b) => a + Number(b.value), 0);
   const totalContsValue = filteredConts.reduce((a, b) => a + Number(b.value), 0);
 
-  // --- FEATURE ACCOMPLISHMENTS RANKING COMPUTATION ---
   const officeRankings = useMemo(() => {
     return OFFICES.map(off => {
       const officeNeeds = filteredNeeds.filter(n => n.office === off).reduce((a, b) => a + Number(b.value), 0);
@@ -469,23 +522,22 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
         </div>
         <div className={containerStyle}>
           <span className="text-[10px] uppercase font-black tracking-widest text-amber-600 dark:text-amber-500">Total Validated Contributions (Value)</span>
-          <p className="text-3xl font-black text-amber-500 mt-2">₱ {totalContsValue.toLocaleString()}</p>
+          <p className="text-3xl font-black text-amber-600 dark:text-amber-500 mt-2">₱ {totalContsValue.toLocaleString()}</p>
         </div>
         <div className={`${containerStyle} flex flex-col items-center justify-center p-4`}>
           <FuelGaugeChart totalNeeds={totalNeedsValue} totalContributions={totalContsValue} darkMode={darkMode} />
         </div>
       </div>
 
-      {/* --- FEATURE: SDO ACCOMPLISHMENTS RANKING LAYOUT --- */}
       <div className={containerStyle}>
-        <div className="border-b dark:border-slate-800 pb-3 mb-4">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
           <h3 className="text-xs font-black uppercase tracking-widest text-emerald-800 dark:text-amber-400">Accomplishment Rankings (RO & SDO Matrix)</h3>
-          <p className="text-[11px] opacity-60">Comparative matrix tracking cumulative resource injection matching current active metrics.</p>
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Comparative matrix tracking cumulative resource injection matching current active metrics.</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
-              <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
+              <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
                 <th className="pb-2 pl-2">Rank</th>
                 <th className="pb-2">Office Name</th>
                 <th className="pb-2 text-right">Target Needs</th>
@@ -493,19 +545,19 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
                 <th className="pb-2 text-center w-40">Fulfillment Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y dark:divide-slate-800/60">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60">
               {officeRankings.map((node, index) => (
                 <tr key={node.office} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
-                  <td className="py-2.5 pl-2 font-bold text-slate-400">#{index + 1}</td>
+                  <td className="py-2.5 pl-2 font-bold text-slate-500 dark:text-slate-400">#{index + 1}</td>
                   <td className="py-2.5 font-bold text-slate-800 dark:text-slate-200">{node.office}</td>
-                  <td className="py-2.5 text-right font-medium text-slate-600 dark:text-slate-400">₱{node.needs.toLocaleString()}</td>
+                  <td className="py-2.5 text-right font-medium text-slate-700 dark:text-slate-400">₱{node.needs.toLocaleString()}</td>
                   <td className="py-2.5 text-right font-bold text-emerald-700 dark:text-amber-500">₱{node.contributions.toLocaleString()}</td>
                   <td className="py-2.5 text-center">
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-16 bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
                         <div className="bg-emerald-500 h-full rounded-full" style={{ width: `${Math.min(node.percentage, 100)}%` }}></div>
                       </div>
-                      <span className="font-black text-[11px] min-w-10 text-right">{node.percentage.toFixed(1)}%</span>
+                      <span className="font-black text-[11px] min-w-10 text-right text-slate-700 dark:text-slate-300">{node.percentage.toFixed(1)}%</span>
                     </div>
                   </td>
                 </tr>
@@ -517,7 +569,7 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className={containerStyle}>
-          <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Top 10 Donors</h3>
+          <h3 className="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4">Top 10 Donors</h3>
           <div className="space-y-3">
             {topDonors.map(([name, val], idx) => {
               const max = topDonors[0]?.[1] || 1;
@@ -525,10 +577,10 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
               return (
                 <div key={name} className="space-y-1">
                   <div className="flex justify-between text-xs font-semibold">
-                    <span className="truncate max-w-[200px]"><span className="opacity-40 font-bold mr-1">#{idx+1}</span>{name}</span>
-                    <span className="text-amber-500">₱{val.toLocaleString()}</span>
+                    <span className="truncate max-w-[200px] text-slate-700 dark:text-slate-200"><span className="opacity-50 font-bold mr-1">#{idx+1}</span>{name}</span>
+                    <span className="text-amber-600 dark:text-amber-500">₱{val.toLocaleString()}</span>
                   </div>
-                  <div className="w-full bg-slate-100 dark:bg-slate-800/80 h-2.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800/80 h-2.5 rounded-full overflow-hidden">
                     <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
                   </div>
                 </div>
@@ -537,7 +589,7 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
           </div>
         </div>
         <div className={containerStyle}>
-          <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Priority Needs</h3>
+          <h3 className="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4">Priority Needs</h3>
           <div className="space-y-3">
             {priorityNeeds.map(([name, val], idx) => {
               const max = priorityNeeds[0]?.[1] || 1;
@@ -545,10 +597,10 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
               return (
                 <div key={name} className="space-y-1">
                   <div className="flex justify-between text-xs font-semibold">
-                    <span className="truncate max-w-[200px]"><span className="opacity-40 font-bold mr-1">#{idx+1}</span>{name}</span>
-                    <span className="text-amber-500">₱{val.toLocaleString()}</span>
+                    <span className="truncate max-w-[200px] text-slate-700 dark:text-slate-200"><span className="opacity-50 font-bold mr-1">#{idx+1}</span>{name}</span>
+                    <span className="text-amber-600 dark:text-amber-500">₱{val.toLocaleString()}</span>
                   </div>
-                  <div className="w-full bg-slate-100 dark:bg-slate-800/80 h-2.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800/80 h-2.5 rounded-full overflow-hidden">
                     <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
                   </div>
                 </div>
@@ -599,6 +651,9 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       return true;
     });
   }, [needs, filters, isConstrained, userContext]);
+
+  // Applying sorting hook
+  const { items: sortedFilteredView, requestSort, sortConfig } = useSortableData(currentFilteredView);
 
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(null);
@@ -667,16 +722,16 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
     }
   };
 
-  const inp = `w-full p-2 text-xs rounded border outline-none dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100`;
+  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-slate-700 outline-none bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
       
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
         <div>
           <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Needs Inventory</h2>
-          <p className="text-[11px] opacity-60">Scoped scope items: {currentFilteredView.length}</p>
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Scoped items: {currentFilteredView.length}</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {!isReadOnly && (
@@ -693,52 +748,52 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
-            <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2">Date</th>
-              <th className="pb-2">Office</th>
-              <th className="pb-2">Functional Division</th>
-              <th className="pb-2">Section/Unit</th>
-              <th className="pb-2">Category</th>
-              <th className="pb-2">Line Item</th>
-              <th className="pb-2 text-right">Quantity</th>
-              <th className="pb-2 text-right">Value</th>
+            <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('dateLogged')}>Date <SortIndicator sortConfig={sortConfig} sortKey="dateLogged" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" /></th>
+              <th className="pb-2 text-right cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" /></th>
+              <th className="pb-2 text-right cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" /></th>
               <th className="pb-2">Remarks</th>
-              <th className="pb-2">Status</th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('status')}>Status <SortIndicator sortConfig={sortConfig} sortKey="status" /></th>
               <th className="pb-2 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y dark:divide-slate-800/60">
-            {currentFilteredView.map(n => (
-              <tr key={n.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
-                <td className="py-2.5 text-slate-500">{n.dateLogged}</td>
-                <td className="py-2.5 font-bold">{n.office}</td>
-                <td className="py-2.5 truncate max-w-[130px] text-slate-600 dark:text-slate-400">{n.fd}</td>
-                <td className="py-2.5 text-slate-500">{n.section}</td>
-                <td className="py-2.5 text-slate-400 text-[11px]">{n.category}</td>
-                <td className="py-2.5 font-semibold">{n.specificItem}</td>
-                <td className="py-2.5 text-right font-medium">{n.qty} <span className="text-[10px] opacity-50">{n.uom}</span></td>
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+            {sortedFilteredView.map(n => (
+              <tr key={n.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-slate-700 dark:text-slate-300">
+                <td className="py-2.5 text-slate-600 dark:text-slate-500">{n.dateLogged}</td>
+                <td className="py-2.5 font-bold text-slate-800 dark:text-slate-200">{n.office}</td>
+                <td className="py-2.5 truncate max-w-[130px] text-slate-700 dark:text-slate-400">{n.fd}</td>
+                <td className="py-2.5 text-slate-600 dark:text-slate-500">{n.section}</td>
+                <td className="py-2.5 text-slate-500 dark:text-slate-400 text-[11px]">{n.category}</td>
+                <td className="py-2.5 font-semibold text-slate-800 dark:text-slate-300">{n.specificItem}</td>
+                <td className="py-2.5 text-right font-medium">{n.qty} <span className="text-[10px] text-slate-500 opacity-80 dark:opacity-50">{n.uom}</span></td>
                 <td className="py-2.5 text-right font-black text-emerald-700 dark:text-amber-500">₱ {Number(n.value).toLocaleString()}</td>
-                <td className="py-2.5 text-slate-500 text-[11px] truncate max-w-[150px]" title={n.remarks}>{n.remarks || '-'}</td>
+                <td className="py-2.5 text-slate-600 dark:text-slate-500 text-[11px] truncate max-w-[150px]" title={n.remarks}>{n.remarks || '-'}</td>
                 <td className="py-2.5">
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                     n.status === 'Fulfilled' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' :
                     n.status === 'Partially Fulfilled' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
-                    'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                    'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                   }`}>{n.status}</span>
                 </td>
                 <td className="py-2.5 text-center">
                   <div className="flex items-center justify-center gap-1">
                     {!isReadOnly && (
                       <>
-                        <button onClick={() => setEditModal(n)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-500 transition" title="Modify Record">
+                        <button onClick={() => setEditModal(n)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-500 transition" title="Modify Record">
                           <Icon name="edit" size={14} />
                         </button>
-                        <button onClick={() => handleDeleteItem(n.id)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500 transition" title="Purge Record">
+                        <button onClick={() => handleDeleteItem(n.id)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500 transition" title="Purge Record">
                           <Icon name="trash" size={14} />
                         </button>
                       </>
                     )}
-                    <button onClick={() => setTrailModal(n)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-amber-500 transition" title="Audit Trail">
+                    <button onClick={() => setTrailModal(n)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-500 transition" title="Audit Trail">
                       <Icon name="history" size={14} />
                     </button>
                   </div>
@@ -751,10 +806,10 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
 
       {addModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-3 mb-4">
+          <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
               <h3 className="font-black text-sm uppercase tracking-wider text-emerald-800 dark:text-amber-400">Record Requirement Allocation</h3>
-              <button onClick={() => setAddModal(false)} className="text-slate-400 hover:text-slate-200"><Icon name="close" size={18} /></button>
+              <button onClick={() => setAddModal(false)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={18} /></button>
             </div>
             <div className="space-y-4">
               <select value={meta.office} onChange={e=>setMeta({...meta, office:e.target.value, fd:'', section:''})} className={inp} disabled={isConstrained}>
@@ -766,8 +821,8 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
               
-              <div className="border-t dark:border-slate-800 pt-3 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Line Item</span>
+              <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-500">Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
                   <option value="">Select Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
@@ -782,13 +837,13 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </div>
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Estimated Valuation (₱)"/>
                 <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
-                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border dark:border-slate-700 hover:bg-slate-200 text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
+                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-200 text-amber-600 dark:text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               
               {lines.length > 0 && (
-                <div className="border-t dark:border-slate-800 pt-3 space-y-2">
+                <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border dark:border-slate-800 rounded">
+                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded">
                       <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
                     </div>
                   ))}
@@ -802,23 +857,23 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
 
       {editModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-amber-500">Modify Specification</h3>
-              <button type="button" onClick={() => setEditModal(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
+          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
+              <h3 className="font-bold text-sm text-amber-600 dark:text-amber-500">Modify Specification</h3>
+              <button type="button" onClick={() => setEditModal(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Requirement Vol.</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Requirement Vol.</label>
                 <input type="number" value={editModal.qty} onChange={e=>setEditModal({...editModal, qty: e.target.value})} className={inp} required />
               </div>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Estimated Overhead Cost (₱)</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Estimated Overhead Cost (₱)</label>
               <input type="number" value={editModal.value} onChange={e=>setEditModal({...editModal, value: e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Fulfillment Status Tier</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Fulfillment Status Tier</label>
               <select value={editModal.status} onChange={e=>setEditModal({...editModal, status: e.target.value})} className={inp}>
                 <option value="Unfulfilled">Unfulfilled</option>
                 <option value="Partially Fulfilled">Partially Fulfilled</option>
@@ -833,20 +888,20 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       {trailModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-slate-500">System Change Audit Trail Log</h3>
-              <button onClick={() => setTrailModal(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
+              <h3 className="font-bold text-sm text-slate-700 dark:text-slate-400">System Change Audit Trail Log</h3>
+              <button onClick={() => setTrailModal(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-slate-800/50 border dark:border-slate-700">
-                  <div className="flex justify-between text-[10px] text-slate-400 mb-1">
+                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                  <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400 mb-1">
                     <span>{t.timestamp}</span>
-                    <span className="font-bold text-amber-500">{t.user}</span>
+                    <span className="font-bold text-amber-600 dark:text-amber-500">{t.user}</span>
                   </div>
-                  <p className="text-slate-700 dark:text-slate-300 font-medium">{t.action}</p>
+                  <p className="text-slate-800 dark:text-slate-300 font-medium">{t.action}</p>
                 </div>
-              )) || <p className="text-xs text-center opacity-40 py-4">No logged validation adjustments.</p>}
+              )) || <p className="text-xs text-center text-slate-500 opacity-60 py-4">No logged validation adjustments.</p>}
             </div>
           </div>
         </div>
@@ -861,7 +916,6 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
   const isConstrained = userContext.office !== 'Regional Office';
   const isIctUser = userContext.role === SYSTEM_ROLES.ICT_USER;
   
-  // --- SUB-TAB ROUTING ARCHITECTURE ---
   const [subTab, setSubTab] = useState('ledger'); // 'ledger' or 'partners'
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPartner, setSelectedPartner] = useState(null);
@@ -900,7 +954,9 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     });
   }, [contributions, filters, userContext, isConstrained]);
 
-  // --- FEATURE: PARTNERS COMPUTATION GRID ---
+  // Applying sorting hook for Ledger
+  const { items: sortedFilteredView, requestSort, sortConfig } = useSortableData(currentFilteredView);
+
   const partnersSummary = useMemo(() => {
     const registry = {};
     currentFilteredView.forEach(item => {
@@ -916,7 +972,9 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     return list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase().trim()));
   }, [currentFilteredView, searchQuery]);
 
-  // --- AUTOMATIC AUTOCOMPLETE HINTS FOR INTERACTIVE BAR ---
+  // Applying sorting hook for Partners
+  const { items: sortedPartnersSummary, requestSort: requestSortPartners, sortConfig: sortConfigPartners } = useSortableData(partnersSummary);
+
   const autocompleteSuggestions = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const allUniqueNames = Array.from(new Set(currentFilteredView.map(c => c.partner)));
@@ -983,37 +1041,35 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     setEditModal(null);
   };
 
-  const inp = `w-full p-2 text-xs rounded border outline-none dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100`;
+  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-slate-700 outline-none bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
       
-      {/* --- SUB-TAB HEADERS SWITCHER BAR (SECURED AGAINST ICT USERS) --- */}
       {!isIctUser && (
-        <div className="flex border-b dark:border-slate-800 gap-2">
+        <div className="flex border-b border-slate-200 dark:border-slate-800 gap-2">
           <button 
             onClick={() => setSubTab('ledger')} 
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
           >
             Contributions
           </button>
           <button 
             onClick={() => setSubTab('partners')} 
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'partners' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'partners' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
           >
             Partners
           </button>
         </div>
       )}
 
-      {/* --- ROUTE VIEW 1: RENDER STANDARD CONTRIBUTIONS CONTROLLER --- */}
       {(subTab === 'ledger' || isIctUser) && (
         <>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
             <div>
               <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Contributions Ledger</h2>
-              <p className="text-[11px] opacity-60">Verified Records: {currentFilteredView.length}</p>
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Verified Records: {currentFilteredView.length}</p>
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {!isReadOnly && (
@@ -1030,39 +1086,39 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
           <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
             <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
-                <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-                  <th className="pb-2">Partner</th>
-                  <th className="pb-2">Recipient</th>
-                  <th className="pb-2">Functional Division</th>
-                  <th className="pb-2">Section/Unit</th>
-                  <th className="pb-2">Category</th>
-                  <th className="pb-2">Line Item</th>
-                  <th className="pb-2 text-right">Quantity</th>
-                  <th className="pb-2 text-right">Value</th>
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
+                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('partner')}>Partner <SortIndicator sortConfig={sortConfig} sortKey="partner" /></th>
+                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('office')}>Recipient <SortIndicator sortConfig={sortConfig} sortKey="office" /></th>
+                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" /></th>
+                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" /></th>
+                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" /></th>
+                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" /></th>
+                  <th className="pb-2 text-right cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" /></th>
+                  <th className="pb-2 text-right cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" /></th>
                   <th className="pb-2">Remarks</th>
                   <th className="pb-2 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y dark:divide-slate-800/60">
-                {currentFilteredView.map(c => (
-                  <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                {sortedFilteredView.map(c => (
+                  <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-slate-700 dark:text-slate-300">
                     <td className="py-2.5 font-bold text-emerald-800 dark:text-amber-400">{c.partner}</td>
-                    <td className="py-2.5 font-bold">{c.office}</td>
-                    <td className="py-2.5 truncate max-w-[130px] text-slate-600 dark:text-slate-400">{c.fd}</td>
-                    <td className="py-2.5 text-slate-500">{c.section}</td>
-                    <td className="py-2.5 text-slate-400 text-[11px]">{c.category}</td>
-                    <td className="py-2.5 font-semibold">{c.specificItem}</td>
-                    <td className="py-2.5 text-right font-medium">{c.qty} <span className="text-[10px] opacity-50">{c.uom}</span></td>
+                    <td className="py-2.5 font-bold text-slate-800 dark:text-slate-200">{c.office}</td>
+                    <td className="py-2.5 truncate max-w-[130px] text-slate-700 dark:text-slate-400">{c.fd}</td>
+                    <td className="py-2.5 text-slate-600 dark:text-slate-500">{c.section}</td>
+                    <td className="py-2.5 text-slate-500 dark:text-slate-400 text-[11px]">{c.category}</td>
+                    <td className="py-2.5 font-semibold text-slate-800 dark:text-slate-300">{c.specificItem}</td>
+                    <td className="py-2.5 text-right font-medium">{c.qty} <span className="text-[10px] text-slate-500 opacity-80 dark:opacity-50">{c.uom}</span></td>
                     <td className="py-2.5 text-right font-black text-emerald-700 dark:text-amber-500">₱ {Number(c.value).toLocaleString()}</td>
-                    <td className="py-2.5 text-slate-500 text-[11px] truncate max-w-[150px]" title={c.remarks}>{c.remarks || '-'}</td>
+                    <td className="py-2.5 text-slate-600 dark:text-slate-500 text-[11px] truncate max-w-[150px]" title={c.remarks}>{c.remarks || '-'}</td>
                     <td className="py-2.5 text-center">
                       <div className="flex items-center justify-center gap-1">
                         {!isReadOnly && (
-                          <button onClick={() => setEditModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-500 transition" title="Modify Record">
+                          <button onClick={() => setEditModal(c)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-500 transition" title="Modify Record">
                             <Icon name="edit" size={14} />
                           </button>
                         )}
-                        <button onClick={() => setTrailModal(c)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-amber-500 transition" title="Audit Trail">
+                        <button onClick={() => setTrailModal(c)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-500 transition" title="Audit Trail">
                           <Icon name="history" size={14} />
                         </button>
                       </div>
@@ -1075,35 +1131,31 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
         </>
       )}
 
-      {/* --- ROUTE VIEW 2: NEW PARTNERS SUB-TAB (CRITICAL LAYER EXCLUSIVITY ENFORCED) --- */}
       {subTab === 'partners' && !isIctUser && (
         <div className="space-y-4">
-          {/* INTERACTIVE COMPONENT: PARTNERS HEADER & CONTROLS */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
             
-            {/* SEARCH ENGINE INPUT CONTAINER */}
             <div className="relative w-full max-w-md">
               <input 
                 type="text" 
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search specific partner identity..." 
-                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border shadow-sm outline-none transition focus:border-amber-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-100 text-slate-800"
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-slate-300 dark:border-slate-800 shadow-sm outline-none transition focus:border-amber-500 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-3 text-slate-400 hover:text-slate-200">
+                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-3 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
                   <Icon name="close" size={14} />
                 </button>
               )}
               
-              {/* INTERACTIVE INTELLISENSE AUTOCAMP SYSTEM */}
               {autocompleteSuggestions.length > 0 && (
                 <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 divide-slate-100 dark:divide-slate-800/60">
                   {autocompleteSuggestions.map(itemHint => (
                     <button 
                       key={itemHint} 
                       onClick={() => setSearchQuery(itemHint)}
-                      className="w-full text-left p-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/40 text-slate-700 dark:text-slate-300 transition"
+                      className="w-full text-left p-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800/40 text-slate-800 dark:text-slate-300 transition"
                     >
                       {itemHint}
                     </button>
@@ -1112,7 +1164,6 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
               )}
             </div>
 
-            {/* ACTION CONTROLS: PRINT AND EXPORT */}
             <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
               <button onClick={() => {
                 const sortedList = [...partnersSummary].sort((a, b) => a.name.localeCompare(b.name));
@@ -1125,7 +1176,6 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                       <title>List of Partners</title>
                       <style>
                         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #1e293b; line-height: 1.5; }
-                        .header-img { width: 100%; max-width: 750px; display: block; margin: 0 auto 20px auto; }
                         .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #64748b; }
                         h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #0f172a; }
                         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
@@ -1137,7 +1187,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                     </head>
                     <body>
                       <div class="date-note">DATA AS OF ${todayFormatted}</div>
-                      <img src="header_3.png" alt="Document Header" class="header-img" />
+                      <!-- <img src="header_3.png" alt="Document Header" class="header-img" /> -->
                       <h2>Alphabetical List of Partners</h2>
                       <table>
                         <thead>
@@ -1163,11 +1213,10 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 printWindow.document.close();
                 printWindow.focus();
                 
-                // Allow a brief delay for the header image to fully load in the new window before triggering print
                 setTimeout(() => {
                   printWindow.print();
                   printWindow.close();
-                }, 750);
+                }, 200);
               }} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
                 <span>Print List</span>
               </button>
@@ -1185,29 +1234,28 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
             </div>
           </div>
 
-          {/* DATAGRID MATRIX FRAMEWORK TABLE */}
           <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
             <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
-                <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-                  <th className="pb-2 pl-2">Partner</th>
-                  <th className="pb-2 text-center">No. of Contributions</th>
-                  <th className="pb-2 text-right pr-4">Total Value</th>
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
+                  <th className="pb-2 pl-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSortPartners('name')}>Partner <SortIndicator sortConfig={sortConfigPartners} sortKey="name" /></th>
+                  <th className="pb-2 text-center cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSortPartners('transactions')}>No. of Contributions <SortIndicator sortConfig={sortConfigPartners} sortKey="transactions" /></th>
+                  <th className="pb-2 text-right pr-4 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSortPartners('totalValuation')}>Total Value <SortIndicator sortConfig={sortConfigPartners} sortKey="totalValuation" /></th>
                 </tr>
               </thead>
-              <tbody className="divide-y dark:divide-slate-800/60">
-                {partnersSummary.map(rowNode => (
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                {sortedPartnersSummary.map(rowNode => (
                   <tr 
                     key={rowNode.name} 
                     onClick={() => setSelectedPartner(rowNode)}
-                    className="hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition"
+                    className="hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition text-slate-800 dark:text-slate-300"
                   >
                     <td className="py-3 pl-2 font-black text-emerald-800 dark:text-amber-400 text-xs">{rowNode.name}</td>
-                    <td className="py-3 text-center font-bold text-slate-600 dark:text-slate-300">{rowNode.aggregateLogs.length} transactions</td>
+                    <td className="py-3 text-center font-bold text-slate-700 dark:text-slate-300">{rowNode.aggregateLogs.length} transactions</td>
                     <td className="py-3 text-right pr-4 font-black text-emerald-700 dark:text-amber-500">₱ {rowNode.totalValuation.toLocaleString()}</td>
                   </tr>
                 ))}
-                {partnersSummary.length === 0 && (
+                {sortedPartnersSummary.length === 0 && (
                   <tr>
                     <td colSpan="3" className="py-6 text-center text-slate-500 italic">No partners match the applied structural/temporal parameter sets.</td>
                   </tr>
@@ -1218,23 +1266,22 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
         </div>
       )}
 
-      {/* --- MODAL DIALOG DISPLAYING LOGGED TRANSACTIONS PER ENTRANT NODE --- */}
       {selectedPartner && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
           <div className={`w-full max-w-4xl p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[85vh] ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-900'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-3 mb-4">
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
               <div>
-                <span className="text-[10px] tracking-wider uppercase font-black text-amber-500">Resource Summary Ledger</span>
+                <span className="text-[10px] tracking-wider uppercase font-black text-amber-600 dark:text-amber-500">Resource Summary Ledger</span>
                 <h3 className="font-black text-base text-emerald-800 dark:text-amber-400">{selectedPartner.name}</h3>
               </div>
-              <button onClick={() => setSelectedPartner(null)} className="text-slate-400 hover:text-slate-200 transition">
+              <button onClick={() => setSelectedPartner(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
                 <Icon name="close" size={20} />
               </button>
             </div>
             
-            <div className="overflow-y-auto flex-1 border dark:border-slate-800/80 rounded-lg">
+            <div className="overflow-y-auto flex-1 border border-slate-200 dark:border-slate-800/80 rounded-lg">
               <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className="sticky top-0 bg-slate-100 dark:bg-slate-950 text-slate-400 font-bold uppercase tracking-wider text-[11px] border-b dark:border-slate-800">
+                <thead className="sticky top-0 bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider text-[11px] border-b border-slate-200 dark:border-slate-800">
                   <tr>
                     <th className="p-2.5">Date</th>
                     <th className="p-2.5">Office</th>
@@ -1246,24 +1293,24 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                     <th className="p-2.5 text-right pr-3">Valuation</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y dark:divide-slate-800/60">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
                   {selectedPartner.aggregateLogs.map(itemLog => (
-                    <tr key={itemLog.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-[11px]">
-                      <td className="p-2.5 text-slate-500">{itemLog.dateLogged}</td>
+                    <tr key={itemLog.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-[11px] text-slate-700 dark:text-slate-300">
+                      <td className="p-2.5 text-slate-600 dark:text-slate-500">{itemLog.dateLogged}</td>
                       <td className="p-2.5 font-bold">{itemLog.office}</td>
-                      <td className="p-2.5 truncate max-w-[120px] text-slate-400">{itemLog.fd}</td>
-                      <td className="p-2.5 text-slate-500">{itemLog.section}</td>
-                      <td className="p-2.5 text-slate-500">{itemLog.category}</td>
-                      <td className="p-2.5 font-semibold text-slate-700 dark:text-slate-300">{itemLog.specificItem}</td>
-                      <td className="p-2.5 text-right font-medium">{itemLog.qty} <span className="text-[10px] opacity-40">{itemLog.uom}</span></td>
-                      <td className="p-2.5 text-right pr-3 font-black text-emerald-600 dark:text-amber-500">₱{itemLog.value.toLocaleString()}</td>
+                      <td className="p-2.5 truncate max-w-[120px] text-slate-600 dark:text-slate-400">{itemLog.fd}</td>
+                      <td className="p-2.5 text-slate-600 dark:text-slate-500">{itemLog.section}</td>
+                      <td className="p-2.5 text-slate-600 dark:text-slate-500">{itemLog.category}</td>
+                      <td className="p-2.5 font-semibold text-slate-800 dark:text-slate-300">{itemLog.specificItem}</td>
+                      <td className="p-2.5 text-right font-medium">{itemLog.qty} <span className="text-[10px] text-slate-500 opacity-80 dark:opacity-40">{itemLog.uom}</span></td>
+                      <td className="p-2.5 text-right pr-3 font-black text-emerald-700 dark:text-amber-500">₱{itemLog.value.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="mt-4 pt-3 border-t dark:border-slate-800 flex justify-between items-center">
-              <span className="text-xs font-bold text-slate-400">Total Pipeline Records: {selectedPartner.aggregateLogs.length}</span>
+            <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+              <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Total Pipeline Records: {selectedPartner.aggregateLogs.length}</span>
               <span className="text-sm font-black text-emerald-800 dark:text-amber-400">Total Contribution: ₱{selectedPartner.totalValuation.toLocaleString()}</span>
             </div>
           </div>
@@ -1272,10 +1319,10 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
       {addModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-3 mb-4">
+          <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
               <h3 className="font-black text-sm uppercase tracking-wider text-emerald-800 dark:text-amber-400">Record Resource Turnover</h3>
-              <button onClick={() => setAddModal(false)} className="text-slate-400 hover:text-slate-200"><Icon name="close" size={18} /></button>
+              <button onClick={() => setAddModal(false)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={18} /></button>
             </div>
             <div className="space-y-4">
               <input type="text" value={meta.partner} onChange={e=>setMeta({...meta, partner:e.target.value})} className={inp} placeholder="Sponsoring Partner / Entity" />
@@ -1288,8 +1335,8 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
               
-              <div className="border-t dark:border-slate-800 pt-3 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Line Item</span>
+              <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-500">Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
                   <option value="">Select Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
@@ -1305,13 +1352,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Value of Item(s) (₱)"/>
                 <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
                 
-                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border dark:border-slate-700 hover:bg-slate-200 text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
+                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-200 text-amber-600 dark:text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               
               {lines.length > 0 && (
-                <div className="border-t dark:border-slate-800 pt-3 space-y-2">
+                <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border dark:border-slate-800 rounded">
+                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded">
                       <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
                     </div>
                   ))}
@@ -1325,19 +1372,19 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
       {editModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-amber-500">Modify Specification</h3>
-              <button type="button" onClick={() => setEditModal(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
+          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
+              <h3 className="font-bold text-sm text-amber-600 dark:text-amber-500">Modify Specification</h3>
+              <button type="button" onClick={() => setEditModal(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Quantity Provided</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Quantity Provided</label>
                 <input type="number" value={editModal.qty} onChange={e=>setEditModal({...editModal, qty: e.target.value})} className={inp} required />
               </div>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Declared Value (₱)</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Declared Value (₱)</label>
               <input type="number" value={editModal.value} onChange={e=>setEditModal({...editModal, value: e.target.value})} className={inp} required />
             </div>
             <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md"> Save Verification Changes</button>
@@ -1348,20 +1395,20 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       {trailModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-slate-500">System Change Audit Trail Log</h3>
-              <button onClick={() => setTrailModal(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
+              <h3 className="font-bold text-sm text-slate-700 dark:text-slate-400">System Change Audit Trail Log</h3>
+              <button onClick={() => setTrailModal(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-slate-800/50 border dark:border-slate-700">
-                  <div className="flex justify-between text-[10px] text-slate-400 mb-1">
+                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                  <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400 mb-1">
                     <span>{t.timestamp}</span>
-                    <span className="font-bold text-amber-500">{t.user}</span>
+                    <span className="font-bold text-amber-600 dark:text-amber-500">{t.user}</span>
                   </div>
-                  <p className="text-slate-700 dark:text-slate-300 font-medium">{t.action}</p>
+                  <p className="text-slate-800 dark:text-slate-300 font-medium">{t.action}</p>
                 </div>
-              )) || <p className="text-xs text-center opacity-40 py-4">No logged validation adjustments.</p>}
+              )) || <p className="text-xs text-center text-slate-500 opacity-60 py-4">No logged validation adjustments.</p>}
             </div>
           </div>
         </div>
@@ -1381,6 +1428,7 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
   const canManageUser = (targetOffice) => isSuperAdminOrRoIct || (hasWriteClearance && userContext.office === targetOffice);
   
   const displayedUsers = users.filter(u => isSuperAdminOrRoIct || u.office === userContext.office);
+  const { items: sortedUsers, requestSort, sortConfig } = useSortableData(displayedUsers);
 
   const [form, setForm] = useState({ 
     name: '', username: '', email: '', role: SYSTEM_ROLES.FOCAL, position: '', 
@@ -1418,14 +1466,14 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
     }
   };
 
-  const inp = `w-full p-2 text-xs rounded border outline-none dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100`;
+  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-slate-700 outline-none bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition`;
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
+      <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
         <div>
           <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">User Management Directory</h2>
-          <p className="text-[11px] opacity-60">Verified Access Profiles: {displayedUsers.length}</p>
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Verified Access Profiles: {displayedUsers.length}</p>
         </div>
         {hasWriteClearance && (
           <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
@@ -1437,35 +1485,35 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
       <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
-            <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2">Name</th>
-              <th className="pb-2">Username</th>
-              <th className="pb-2">Designation/Position</th>
-              <th className="pb-2">Access Level</th>
-              <th className="pb-2">Office</th>
+            <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('name')}>Name <SortIndicator sortConfig={sortConfig} sortKey="name" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('username')}>Username <SortIndicator sortConfig={sortConfig} sortKey="username" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('position')}>Designation/Position <SortIndicator sortConfig={sortConfig} sortKey="position" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('role')}>Access Level <SortIndicator sortConfig={sortConfig} sortKey="role" /></th>
+              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" /></th>
               {hasWriteClearance && <th className="pb-2 text-center">Actions</th>}
             </tr>
           </thead>
-          <tbody className="divide-y dark:divide-slate-800/60">
-            {displayedUsers.map(u => (
-              <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+            {sortedUsers.map(u => (
+              <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-slate-700 dark:text-slate-300">
                 <td className="py-2.5">
                   <p className="font-bold text-slate-800 dark:text-slate-200">{u.name}</p>
-                  <p className="text-[10px] opacity-60">{u.email}</p>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 opacity-80">{u.email}</p>
                 </td>
-                <td className="py-2.5 text-slate-500">{u.username}</td>
-                <td className="py-2.5 text-slate-500">{u.position}</td>
+                <td className="py-2.5 text-slate-600 dark:text-slate-400">{u.username}</td>
+                <td className="py-2.5 text-slate-600 dark:text-slate-400">{u.position}</td>
                 <td className="py-2.5">
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500">{u.role}</span>
                 </td>
-                <td className="py-2.5 font-semibold text-slate-700 dark:text-slate-300">{u.office}</td>
+                <td className="py-2.5 font-semibold text-slate-800 dark:text-slate-300">{u.office}</td>
                 {hasWriteClearance && canManageUser(u.office) && (
                   <td className="py-2.5 text-center">
                     <div className="flex items-center justify-center gap-1">
-                      <button onClick={() => handleEditClick(u)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-emerald-400 transition" title="Modify Permissions">
+                      <button onClick={() => handleEditClick(u)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition" title="Modify Permissions">
                         <Icon name="edit" size={14} />
                       </button>
-                      <button onClick={() => handleDeleteUser(u.id)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500 transition" title="Revoke Credentials">
+                      <button onClick={() => handleDeleteUser(u.id)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500 transition" title="Revoke Credentials">
                         <Icon name="trash" size={14} />
                       </button>
                     </div>
@@ -1479,37 +1527,37 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
 
       {isAddOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <form onSubmit={handleAddUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2 mb-2">
+          <form onSubmit={handleAddUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2 mb-2">
               <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Initialize Identity Record</h3>
-              <button type="button" onClick={() => setIsAddOpen(false)} className="text-slate-400"><Icon name="close" size={16} /></button>
+              <button type="button" onClick={() => setIsAddOpen(false)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Full Legal Name</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Full Legal Name</label>
               <input type="text" value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className={inp} required />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Username</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Username</label>
                 <input type="text" value={form.username} onChange={e=>setForm({...form, username:e.target.value})} className={inp} required />
               </div>
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">User Type</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">User Type</label>
                 <select value={form.role} onChange={e=>setForm({...form, role:e.target.value})} className={inp}>
                   {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
                 </select>
               </div>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Email Address</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Email Address</label>
               <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Position/Designation</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Position/Designation</label>
               <input type="text" value={form.position} onChange={e=>setForm({...form, position:e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Office</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Office</label>
               <select 
                 value={form.office} 
                 onChange={e=>setForm({...form, office:e.target.value})} 
@@ -1526,37 +1574,37 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
 
       {editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b dark:border-slate-800 pb-2 mb-2">
-              <h3 className="font-bold text-sm text-amber-500">Modify Identity Parameters</h3>
-              <button type="button" onClick={() => setEditingUser(null)} className="text-slate-400"><Icon name="close" size={16} /></button>
+          <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2 mb-2">
+              <h3 className="font-bold text-sm text-amber-600 dark:text-amber-500">Modify Identity Parameters</h3>
+              <button type="button" onClick={() => setEditingUser(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Full Legal Name</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Full Legal Name</label>
               <input type="text" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name:e.target.value})} className={inp} required />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Auth Alias</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Auth Alias</label>
                 <input type="text" value={editingUser.username} onChange={e=>setEditingUser({...editingUser, username:e.target.value})} className={inp} required />
               </div>
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">System clearance</label>
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">System clearance</label>
                 <select value={editingUser.role} onChange={e=>setEditingUser({...editingUser, role:e.target.value})} className={inp}>
                   {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
                 </select>
               </div>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Email Address</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Email Address</label>
               <input type="email" value={editingUser.email} onChange={e=>setEditingUser({...editingUser, email:e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Position/Designation</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Position/Designation</label>
               <input type="text" value={editingUser.position} onChange={e=>setEditingUser({...editingUser, position:e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Office</label>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Office</label>
               <select 
                 value={editingUser.office} 
                 onChange={e=>setEditingUser({...editingUser, office:e.target.value})} 
