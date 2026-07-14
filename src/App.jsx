@@ -996,13 +996,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
             onClick={() => setSubTab('ledger')} 
             className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
           >
-            Contributions Ledger
+            Contributions
           </button>
           <button 
             onClick={() => setSubTab('partners')} 
             className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'partners' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
           >
-            Partners Registry
+            Partners
           </button>
         </div>
       )}
@@ -1078,35 +1078,111 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       {/* --- ROUTE VIEW 2: NEW PARTNERS SUB-TAB (CRITICAL LAYER EXCLUSIVITY ENFORCED) --- */}
       {subTab === 'partners' && !isIctUser && (
         <div className="space-y-4">
-          {/* INTERACTIVE COMPONENT: SEARCH ENGINE INPUT CONTAINER */}
-          <div className="relative w-full max-w-md">
-            <input 
-              type="text" 
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search specific partner identity..." 
-              className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border shadow-sm outline-none transition focus:border-amber-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-100 text-slate-800"
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-3 text-slate-400 hover:text-slate-200">
-                <Icon name="close" size={14} />
-              </button>
-            )}
+          {/* INTERACTIVE COMPONENT: PARTNERS HEADER & CONTROLS */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border dark:border-slate-800 rounded-xl shadow-sm">
             
-            {/* INTERACTIVE INTELLISENSE AUTOCAMP SYSTEM */}
-            {autocompleteSuggestions.length > 0 && (
-              <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 divide-slate-100 dark:divide-slate-800/60">
-                {autocompleteSuggestions.map(itemHint => (
-                  <button 
-                    key={itemHint} 
-                    onClick={() => setSearchQuery(itemHint)}
-                    className="w-full text-left p-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/40 text-slate-700 dark:text-slate-300 transition"
-                  >
-                    {itemHint}
-                  </button>
-                ))}
-              </div>
-            )}
+            {/* SEARCH ENGINE INPUT CONTAINER */}
+            <div className="relative w-full max-w-md">
+              <input 
+                type="text" 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search specific partner identity..." 
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border shadow-sm outline-none transition focus:border-amber-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-100 text-slate-800"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-3 text-slate-400 hover:text-slate-200">
+                  <Icon name="close" size={14} />
+                </button>
+              )}
+              
+              {/* INTERACTIVE INTELLISENSE AUTOCAMP SYSTEM */}
+              {autocompleteSuggestions.length > 0 && (
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 divide-slate-100 dark:divide-slate-800/60">
+                  {autocompleteSuggestions.map(itemHint => (
+                    <button 
+                      key={itemHint} 
+                      onClick={() => setSearchQuery(itemHint)}
+                      className="w-full text-left p-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/40 text-slate-700 dark:text-slate-300 transition"
+                    >
+                      {itemHint}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* ACTION CONTROLS: PRINT AND EXPORT */}
+            <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+              <button onClick={() => {
+                const sortedList = [...partnersSummary].sort((a, b) => a.name.localeCompare(b.name));
+                const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+                const printWindow = window.open('', '_blank');
+                
+                printWindow.document.write(`
+                  <html>
+                    <head>
+                      <title>List of Partners</title>
+                      <style>
+                        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #1e293b; line-height: 1.5; }
+                        .header-img { width: 100%; max-width: 750px; display: block; margin: 0 auto 20px auto; }
+                        .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #64748b; }
+                        h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #0f172a; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                        th, td { border: 1px solid #cbd5e1; padding: 10px 12px; text-align: left; font-size: 13px; }
+                        th { background-color: #f8fafc; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #475569; }
+                        .text-right { text-align: right; }
+                        .text-center { text-align: center; }
+                      </style>
+                    </head>
+                    <body>
+                      <div class="date-note">DATA AS OF ${todayFormatted}</div>
+                      <img src="header_3.png" alt="Document Header" class="header-img" />
+                      <h2>Alphabetical List of Partners</h2>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Partner Name</th>
+                            <th class="text-center">No. of Contributions</th>
+                            <th class="text-right">Total Value (PHP)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${sortedList.map(p => `
+                            <tr>
+                              <td><strong>${p.name}</strong></td>
+                              <td class="text-center">${p.aggregateLogs.length} transactions</td>
+                              <td class="text-right">P ${Number(p.totalValuation).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                            </tr>
+                          `).join('')}
+                        </tbody>
+                      </table>
+                    </body>
+                  </html>
+                `);
+                printWindow.document.close();
+                printWindow.focus();
+                
+                // Allow a brief delay for the header image to fully load in the new window before triggering print
+                setTimeout(() => {
+                  printWindow.print();
+                  printWindow.close();
+                }, 750);
+              }} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                <span>Print List</span>
+              </button>
+              
+              <button onClick={() => {
+                const exportPayload = partnersSummary.map(p => ({
+                  'Partner Name': p.name,
+                  'Total Transactions': p.aggregateLogs.length,
+                  'Total Valuation (PHP)': p.totalValuation
+                }));
+                exportToCSV(exportPayload, 'DEPED8_PARTNERS_MATRIX_EXPORT');
+              }} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-emerald-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-emerald-850 transition">
+                <Icon name="download" size={14} /><span>Export Matrix</span>
+              </button>
+            </div>
           </div>
 
           {/* DATAGRID MATRIX FRAMEWORK TABLE */}
@@ -1114,9 +1190,9 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
             <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
                 <tr className="border-b dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-                  <th className="pb-2 pl-2">Entity Identity / Donor Node</th>
-                  <th className="pb-2 text-center">Total Transaction Lines</th>
-                  <th className="pb-2 text-right pr-4">Total Aggregate Valuation</th>
+                  <th className="pb-2 pl-2">Partner</th>
+                  <th className="pb-2 text-center">No. of Contributions</th>
+                  <th className="pb-2 text-right pr-4">Total Value</th>
                 </tr>
               </thead>
               <tbody className="divide-y dark:divide-slate-800/60">
