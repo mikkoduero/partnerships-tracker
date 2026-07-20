@@ -1533,41 +1533,39 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
               <button type="button" onClick={() => setIsAddOpen(false)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Full Legal Name</label>
-              <input type="text" value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className={inp} required />
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Full Name</label>
+              <input type="text" value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className={inp} required />
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Username</label>
-                <input type="text" value={form.username} onChange={e=>setForm({...form, username:e.target.value})} className={inp} required />
-              </div>
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">User Type</label>
-                <select value={form.role} onChange={e=>setForm({...form, role:e.target.value})} className={inp}>
-                  {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
-                </select>
-              </div>
+            <div>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Username</label>
+              <input type="text" value={form.username} onChange={e=>setForm({...form, username: e.target.value})} className={inp} required />
             </div>
             <div>
               <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Email Address</label>
-              <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} className={inp} required />
+              <input type="email" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Position/Designation</label>
-              <input type="text" value={form.position} onChange={e=>setForm({...form, position:e.target.value})} className={inp} required />
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Designation/Position</label>
+              <input type="text" value={form.position} onChange={e=>setForm({...form, position: e.target.value})} className={inp} />
             </div>
-            <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Office</label>
-              <select 
-                value={form.office} 
-                onChange={e=>setForm({...form, office:e.target.value})} 
-                className={`${inp} ${!isSuperAdminOrRoIct ? 'opacity-60 cursor-not-allowed bg-slate-100 dark:bg-slate-800' : ''}`} 
-                disabled={!isSuperAdminOrRoIct}
-              >
-                {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
-              </select>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Role</label>
+                <select value={form.role} onChange={e=>setForm({...form, role: e.target.value})} className={inp}>
+                  <option value={SYSTEM_ROLES.FOCAL}>{SYSTEM_ROLES.FOCAL}</option>
+                  <option value={SYSTEM_ROLES.ICT_USER}>{SYSTEM_ROLES.ICT_USER}</option>
+                  <option value={SYSTEM_ROLES.MONITORING}>{SYSTEM_ROLES.MONITORING}</option>
+                  {isSuperAdminOrRoIct && <option value={SYSTEM_ROLES.SUPERADMIN}>{SYSTEM_ROLES.SUPERADMIN}</option>}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Office</label>
+                <select value={form.office} onChange={e=>setForm({...form, office: e.target.value})} className={inp} disabled={!isSuperAdminOrRoIct}>
+                  {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
             </div>
-            <button type="submit" className="w-full mt-2 py-2 bg-emerald-800 hover:bg-emerald-850 text-amber-400 font-bold text-xs rounded transition shadow-md">Submit</button>
+            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md mt-2">Create Identity</button>
           </form>
         </div>
       )}
@@ -1576,45 +1574,35 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
           <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
             <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2 mb-2">
-              <h3 className="font-bold text-sm text-amber-600 dark:text-amber-500">Modify Identity Parameters</h3>
+              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Modify Identity Record</h3>
               <button type="button" onClick={() => setEditingUser(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Full Legal Name</label>
-              <input type="text" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name:e.target.value})} className={inp} required />
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Full Name</label>
+              <input type="text" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name: e.target.value})} className={inp} required />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Designation/Position</label>
+              <input type="text" value={editingUser.position} onChange={e=>setEditingUser({...editingUser, position: e.target.value})} className={inp} />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Auth Alias</label>
-                <input type="text" value={editingUser.username} onChange={e=>setEditingUser({...editingUser, username:e.target.value})} className={inp} required />
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Role</label>
+                <select value={editingUser.role} onChange={e=>setEditingUser({...editingUser, role: e.target.value})} className={inp}>
+                  <option value={SYSTEM_ROLES.FOCAL}>{SYSTEM_ROLES.FOCAL}</option>
+                  <option value={SYSTEM_ROLES.ICT_USER}>{SYSTEM_ROLES.ICT_USER}</option>
+                  <option value={SYSTEM_ROLES.MONITORING}>{SYSTEM_ROLES.MONITORING}</option>
+                  {isSuperAdminOrRoIct && <option value={SYSTEM_ROLES.SUPERADMIN}>{SYSTEM_ROLES.SUPERADMIN}</option>}
+                </select>
               </div>
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">System clearance</label>
-                <select value={editingUser.role} onChange={e=>setEditingUser({...editingUser, role:e.target.value})} className={inp}>
-                  {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
+                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Office</label>
+                <select value={editingUser.office} onChange={e=>setEditingUser({...editingUser, office: e.target.value})} className={inp} disabled={!isSuperAdminOrRoIct}>
+                  {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
                 </select>
               </div>
             </div>
-            <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Email Address</label>
-              <input type="email" value={editingUser.email} onChange={e=>setEditingUser({...editingUser, email:e.target.value})} className={inp} required />
-            </div>
-            <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Position/Designation</label>
-              <input type="text" value={editingUser.position} onChange={e=>setEditingUser({...editingUser, position:e.target.value})} className={inp} required />
-            </div>
-            <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Office</label>
-              <select 
-                value={editingUser.office} 
-                onChange={e=>setEditingUser({...editingUser, office:e.target.value})} 
-                className={`${inp} ${!isSuperAdminOrRoIct ? 'opacity-60 cursor-not-allowed bg-slate-100 dark:bg-slate-800' : ''}`} 
-                disabled={!isSuperAdminOrRoIct}
-              >
-                {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
-              </select>
-            </div>
-            <button type="submit" className="w-full mt-2 py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold text-xs rounded transition shadow-md">Execute Parameter Changes</button>
+            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md mt-2">Save Changes</button>
           </form>
         </div>
       )}
