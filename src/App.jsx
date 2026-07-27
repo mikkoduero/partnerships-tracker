@@ -532,7 +532,7 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
       <div className={containerStyle}>
         <div className="border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
           <h3 className="text-xs font-black uppercase tracking-widest text-emerald-800 dark:text-amber-400">Accomplishment Rankings (RO & SDO Matrix)</h3>
-          <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Comparative matrix tracking cumulative resource injection matching current active metrics.</p>
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Comparative matrix.</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs whitespace-nowrap">
@@ -1198,7 +1198,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                     <body>
                       <div class="date-note">DATA AS OF ${todayFormatted}</div>
                       <!-- <img src="header_3.png" alt="Document Header" class="header-img" /> -->
-                      <h2>Alphabetical List of Partners</h2>
+                      <h2>List of Partners</h2>
                       <table>
                         <thead>
                           <tr>
