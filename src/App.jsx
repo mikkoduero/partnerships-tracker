@@ -1,3 +1,4 @@
+//[cite: 7]
 import React, { useState, useMemo, useEffect } from 'react';
 
 // --- ICONS ENGINE ---
@@ -11,12 +12,14 @@ function Icon({ name, size = 18, className = '' }) {
     moon: <path d="M10 2c-1.82 0-3.53.5-5 1.35C7.99 5.08 10 8.3 10 12s-2.01 6.92-5 8.65C6.47 21.5 8.18 22 10 22c5.52 0 10-4.48 10-10S15.52 2 10 2z" />,
     plus: <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />,
     download: <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />,
+    print: <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-2-9H7v4h10V3z" />,
     trash: <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />,
     close: <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />,
     edit: <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />,
     history: <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />,
     logout: <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />,
-    lock: <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+    lock: <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>,
+    info: <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -126,7 +129,6 @@ function useSortableData(items, config = null) {
         let aValue = a[sortConfig.key];
         let bValue = b[sortConfig.key];
         
-        // Handling for partner transaction counts
         if (sortConfig.key === 'transactions') {
           aValue = a.aggregateLogs?.length || 0;
           bValue = b.aggregateLogs?.length || 0;
@@ -138,7 +140,6 @@ function useSortableData(items, config = null) {
         if (typeof aValue === 'string') aValue = aValue.toLowerCase();
         if (typeof bValue === 'string') bValue = bValue.toLowerCase();
 
-        // Convert strict numeric fields for appropriate sorting
         if (['value', 'qty', 'totalValuation'].includes(sortConfig.key)) {
           aValue = Number(aValue) || 0;
           bValue = Number(bValue) || 0;
@@ -163,9 +164,8 @@ function useSortableData(items, config = null) {
   return { items: sortedItems, requestSort, sortConfig };
 }
 
-// Indicator component for sorted columns
-const SortIndicator = ({ sortConfig, sortKey }) => {
-  if (!sortConfig || sortConfig.key !== sortKey) return <span className="ml-1 opacity-20 text-[10px]">↕</span>;
+const SortIndicator = ({ sortConfig, sortKey, darkMode }) => {
+  if (!sortConfig || sortConfig.key !== sortKey) return <span className={`ml-1 ${darkMode ? 'text-white' : 'text-black'} opacity-40 dark:opacity-40 text-[10px]`}>↕</span>;
   return <span className="ml-1 text-[10px] text-amber-500">{sortConfig.direction === 'ascending' ? '▲' : '▼'}</span>;
 };
 
@@ -207,7 +207,7 @@ export default function App() {
 
   return (
     <div className={`min-h-screen font-sans flex flex-col md:flex-row transition-colors duration-200 ${
-      darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'
+      darkMode ? 'bg-zinc-950 text-white' : 'bg-slate-50 text-black'
     }`}>
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} darkMode={darkMode} role={currentUser.role} />
       
@@ -224,6 +224,7 @@ export default function App() {
           {activeTab === 'needs' && <NeedsWorkspace needs={needs} setNeeds={setNeeds} userContext={currentUser} darkMode={darkMode} />}
           {activeTab === 'contributions' && <ContributionsWorkspace contributions={contributions} setContributions={setContributions} userContext={currentUser} darkMode={darkMode} />}
           {activeTab === 'users' && <UserWorkspace users={users} setUsers={setUsers} userContext={currentUser} darkMode={darkMode} />}
+          {activeTab === 'about' && <AboutWorkspace darkMode={darkMode} />}
         </main>
       </div>
     </div>
@@ -254,39 +255,42 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-200 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-100 text-slate-900'}`}>
+    <div className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-200 ${darkMode ? 'bg-zinc-950 text-white' : 'bg-slate-100 text-black'}`}>
       <div className="absolute top-4 right-4">
-        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-lg bg-white dark:bg-slate-900 hover:bg-slate-200 shadow-sm text-slate-700 dark:text-amber-400 transition">
+        <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-lg bg-white dark:bg-zinc-900 hover:bg-slate-200 shadow-sm ${darkMode ? 'text-amber-400' : 'text-black'} transition`}>
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
       </div>
-      <div className={`w-full max-w-md p-8 rounded-2xl border shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-300'}`}>
+      <div className={`w-full max-w-md p-8 rounded-2xl border shadow-xl ${darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-300'}`}>
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-14 h-14 rounded-xl bg-emerald-900 text-amber-400 flex items-center justify-center text-2xl font-black shadow-md mb-3">R8</div>
-          <h1 className="text-xl font-black tracking-tight text-emerald-900 dark:text-amber-400">DepEd Region VIII</h1>
-          <p className="text-xs uppercase font-bold tracking-widest text-slate-500 dark:text-slate-400 mt-1">Partnerships Tracker</p>
+          <div className="w-16 h-16 rounded-xl bg-amber-500 text-black flex items-center justify-center text-2xl font-black shadow-md mb-3 overflow-hidden">
+             <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
+             <span className="hidden">R8</span>
+          </div>
+          <h1 className={`text-xl font-black tracking-tight ${darkMode ? 'text-amber-400' : 'text-black'}`}>Project UGNAY</h1>
+          <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-black'} mt-1`}>by DepEd Region VIII</p>
         </div>
         <form onSubmit={handleFormSubmit} className="space-y-4">
-          {error && <div className="p-3 text-xs bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 font-semibold rounded-lg text-center">{error}</div>}
+          {error && <div className={`p-3 text-xs bg-red-500/10 border border-red-500/20 ${darkMode ? 'text-red-400' : 'text-red-600'} font-semibold rounded-lg text-center`}>{error}</div>}
           <div>
-            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-600 dark:text-slate-400 mb-1">Username</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className="w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-slate-800 outline-none bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition" required />
+            <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Username</label>
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className={`w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-zinc-800 outline-none bg-white dark:bg-zinc-950 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`} required />
           </div>
           <div>
-            <label className="block text-[10px] uppercase font-black tracking-wider text-slate-600 dark:text-slate-400 mb-1">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-slate-800 outline-none bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition" required />
+            <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Password</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-zinc-800 outline-none bg-white dark:bg-zinc-950 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`} required />
           </div>
-          <button type="submit" className="w-full py-3 bg-emerald-900 hover:bg-emerald-850 text-amber-400 font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Sign In</button>
+          <button type="submit" className="w-full py-3 bg-zinc-900 hover:bg-black text-amber-500 dark:bg-amber-500 dark:hover:bg-amber-600 dark:text-black font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Sign In</button>
         </form>
-        <div className="mt-8 border-t border-slate-200 dark:border-slate-800 pt-5">
-          <span className="block text-[10px] uppercase font-black text-slate-500 dark:text-slate-400 tracking-widest text-center mb-3">Simulation User Accounts</span>
+        <div className="mt-8 border-t border-slate-200 dark:border-zinc-800 pt-5">
+          <span className={`block text-[10px] uppercase font-black ${darkMode ? 'text-white' : 'text-black'} tracking-widest text-center mb-3`}>Simulation User Accounts</span>
           <div className="grid grid-cols-2 gap-2">
             {users.map((u) => (
-              <button key={u.id} onClick={() => handleQuickSelect(u)} className="p-2 text-left text-[10px] font-semibold border border-slate-200 dark:border-slate-800 rounded-lg hover:border-amber-500 hover:bg-slate-50 dark:hover:bg-slate-950 transition flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
+              <button key={u.id} onClick={() => handleQuickSelect(u)} className="p-2 text-left text-[10px] font-semibold border border-slate-200 dark:border-zinc-800 rounded-lg hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-zinc-950 transition flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-amber-500"></div>
                 <div className="truncate">
-                  <p className="font-bold text-slate-800 dark:text-white truncate">{u.name}</p>
-                  <p className="opacity-70 text-slate-600 dark:text-slate-400 text-[9px] truncate">{u.role} ({u.office})</p>
+                  <p className={`font-bold ${darkMode ? 'text-white' : 'text-black'} truncate`}>{u.name}</p>
+                  <p className={`${darkMode ? 'text-white' : 'text-black'} opacity-80 text-[9px] truncate`}>{u.role} ({u.office})</p>
                 </div>
               </button>
             ))}
@@ -302,22 +306,26 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
     { id: 'dashboard', label: 'Overview Dashboard', icon: 'dashboard', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
     { id: 'needs', label: 'Needs', icon: 'needs', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
     { id: 'contributions', label: 'Contributions', icon: 'contributions', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
-    { id: 'users', label: 'User Management', icon: 'users', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.ICT_USER] }
+    { id: 'users', label: 'User Management', icon: 'users', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.ICT_USER] },
+    { id: 'about', label: 'About', icon: 'info', roles: Object.values(SYSTEM_ROLES) }
   ];
   const filteredTabs = allTabs.filter(t => t.roles.includes(role));
 
   return (
-    <aside className={`w-full md:w-64 border-b md:border-b-0 md:border-r transition-all ${darkMode ? 'bg-emerald-950 border-emerald-900/40 text-emerald-100' : 'bg-emerald-900 border-emerald-950 text-white'} flex flex-col`}>
-      <div className="p-5 flex items-center gap-3 border-b border-emerald-800/60">
-        <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center text-emerald-950 font-black shadow-md">R8</div>
+    <aside className={`w-full md:w-64 border-b md:border-b-0 md:border-r transition-all ${darkMode ? 'bg-black border-zinc-900 text-zinc-100' : 'bg-zinc-900 border-zinc-950 text-white'} flex flex-col`}>
+      <div className="p-5 flex items-center gap-3 border-b border-zinc-800">
+        <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center text-black font-black shadow-md overflow-hidden">
+          <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
+          <span className="hidden">R8</span>
+        </div>
         <div>
-          <h1 className="font-bold text-sm tracking-tight text-amber-400">DepEd Region VIII</h1>
-          <p className="text-[10px] uppercase tracking-wider opacity-75 font-medium">Partnerships Tracker</p>
+          <h1 className="font-bold text-sm tracking-tight text-amber-400">Project UGNAY</h1>
+          <p className="text-[10px] uppercase tracking-wider text-white opacity-80 font-medium">DepEd Region VIII</p>
         </div>
       </div>
       <div className="flex-1 p-3 space-y-1 flex md:flex-col overflow-x-auto">
         {filteredTabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-lg whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-amber-500 text-emerald-950 font-bold shadow-md' : 'hover:bg-emerald-800/50 text-emerald-100/90'}`}>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-lg whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-amber-500 text-black font-bold shadow-md' : 'hover:bg-zinc-800 text-white'}`}>
             <Icon name={tab.icon} size={16} />
             <span>{tab.label}</span>
           </button>
@@ -329,23 +337,23 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
 
 function Header({ currentUser, darkMode, setDarkMode, onLogout }) {
   return (
-    <header className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm flex justify-between items-center gap-4">
+    <header className="px-6 py-4 border-b border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm flex justify-between items-center gap-4">
       <div>
-        <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-700 dark:text-amber-400">Office</span>
-        <h2 className="text-xs font-bold text-slate-700 dark:text-slate-400 mt-0.5">{currentUser.office}</h2>
+        <span className={`text-[10px] uppercase font-bold tracking-widest ${darkMode ? 'text-amber-400' : 'text-black'}`}>Office</span>
+        <h2 className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-black'} mt-0.5`}>{currentUser.office}</h2>
       </div>
       <div className="flex items-center gap-4 justify-end">
-        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-amber-400 transition" title="Toggle Appearance Mode">
+        <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-lg bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 ${darkMode ? 'text-amber-400' : 'text-black'} transition`} title="Toggle Appearance Mode">
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
-        <div className="flex items-center gap-3 border-l border-slate-200 pl-4 dark:border-slate-700">
+        <div className="flex items-center gap-3 border-l border-slate-200 pl-4 dark:border-zinc-700">
           <div className="text-right hidden sm:block">
-            <p className="text-xs font-bold text-slate-900 dark:text-white">{currentUser.name}</p>
-            <p className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">{currentUser.role}</p>
+            <p className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-black'}`}>{currentUser.name}</p>
+            <p className={`text-[10px] ${darkMode ? 'text-amber-400' : 'text-amber-600'} font-medium`}>{currentUser.role}</p>
           </div>
-          <div className="w-9 h-9 rounded-full bg-emerald-800 text-amber-400 flex items-center justify-center font-bold text-sm">{currentUser.name.split(' ').map(n=>n[0]).join('')}</div>
+          <div className="w-9 h-9 rounded-full bg-zinc-800 text-amber-400 flex items-center justify-center font-bold text-sm border border-amber-500/20">{currentUser.name.split(' ').map(n=>n[0]).join('')}</div>
         </div>
-        <button onClick={onLogout} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 transition ml-2">
+        <button onClick={onLogout} className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-500/10 hover:bg-red-500/20 ${darkMode ? 'text-red-400' : 'text-red-600'} transition ml-2`}>
           <Icon name="logout" size={14} />
           <span>Sign Out</span>
         </button>
@@ -354,7 +362,6 @@ function Header({ currentUser, darkMode, setDarkMode, onLogout }) {
   );
 }
 
-// --- SYSTEM FILTERS COMPONENT ---
 function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters = false, userContext }) {
   const updateF = (k, v) => {
     setFilters(prev => {
@@ -370,32 +377,23 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
     return userContext.office !== 'Regional Office';
   }, [userContext]);
 
-  const css = `w-full p-2 text-[11px] font-medium rounded-md border outline-none transition ${darkMode ? 'bg-slate-900 border-slate-700 text-slate-100' : 'bg-white border-slate-300 text-slate-800'} focus:border-amber-500`;
+  const css = `w-full p-2 text-[11px] font-medium rounded-md border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
   
   return (
-    <div className={`p-4 rounded-xl border mb-6 shadow-sm ${darkMode ? 'bg-slate-900/40 border-slate-800' : 'bg-white border-slate-300'}`}>
+    <div className={`p-4 rounded-xl border mb-6 shadow-sm ${darkMode ? 'bg-zinc-900/40 border-zinc-800' : 'bg-white border-slate-300'}`}>
       <div className={`grid grid-cols-2 sm:grid-cols-4 ${includeCategoryFilters ? 'lg:grid-cols-8' : 'lg:grid-cols-7'} gap-3`}>
-        
-        <select 
-          value={filters.office} 
-          onChange={e=>updateF('office', e.target.value)} 
-          className={`${css} ${isConstrained ? 'opacity-60 cursor-not-allowed bg-slate-100 dark:bg-slate-800' : ''}`}
-          disabled={isConstrained}
-        >
+        <select value={filters.office} onChange={e=>updateF('office', e.target.value)} className={`${css} ${darkMode ? 'text-white' : 'text-black'} ${isConstrained ? 'opacity-60 cursor-not-allowed' : ''}`} disabled={isConstrained}>
           <option value="">Region VIII (All Offices)</option>
           {OFFICES.map(o => <option key={o} value={o}>{o}</option>)}
         </select>
-        
         <select value={filters.fd} onChange={e=>updateF('fd', e.target.value)} className={css} disabled={!filters.office}>
           <option value="">Functional Division</option>
           {Object.keys(STRUCTURE[filters.office === 'Regional Office' ? 'Regional Office' : 'SDO'] || {}).map(f => <option key={f} value={f}>{f}</option>)}
         </select>
-        
         <select value={filters.section} onChange={e=>updateF('section', e.target.value)} className={css} disabled={!filters.fd}>
           <option value="">Section/Unit</option>
           {(STRUCTURE[filters.office === 'Regional Office' ? 'Regional Office' : 'SDO']?.[filters.fd] || []).map(s => <option key={s} value={s}>{s}</option>)}
         </select>
-
         <select value={filters.year} onChange={e=>updateF('year', e.target.value)} className={css}>
           <option value="All">Year</option>
           <option value="2026">2026</option>
@@ -412,7 +410,6 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
           <option value="All">Month</option>
           {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
         </select>
-
         {includeCategoryFilters && (
           <>
             <select value={filters.category} onChange={e=>updateF('category', e.target.value)} className={css}>
@@ -430,7 +427,6 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
   );
 }
 
-// --- FUEL GAUGE GRAPHIC ---
 function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
   const percent = totalNeeds > 0 ? Math.min((totalContributions / totalNeeds) * 100, 100) : 0;
   const needleRotation = -90 + (percent * 1.8);
@@ -445,7 +441,7 @@ function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
             <stop offset="100%" stopColor="#10b981" />
           </linearGradient>
         </defs>
-        <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke={darkMode ? '#334155' : '#cbd5e1'} strokeWidth="12" strokeLinecap="round" />
+        <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke={darkMode ? '#27272a' : '#cbd5e1'} strokeWidth="12" strokeLinecap="round" />
         <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke="url(#gaugeGrad)" strokeWidth="12" strokeLinecap="round" strokeDasharray="157" strokeDashoffset={157 - (157 * percent) / 100} style={{ transition: 'stroke-dashoffset 1s ease-out' }} />
         <g style={{ transform: `rotate(${needleRotation}deg)`, transformOrigin: '60px 60px', transition: 'transform 1s ease-out' }}>
           <path d="M 58 60 L 60 15 L 62 60 Z" fill={darkMode ? '#f8fafc' : '#0f172a'} />
@@ -453,14 +449,13 @@ function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
         </g>
       </svg>
       <div className="absolute bottom-0 flex flex-col items-center">
-        <span className="text-xl font-black text-slate-800 dark:text-slate-100">{percent.toFixed(1)}%</span>
-        <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Fulfilled</span>
+        <span className={`text-xl font-black ${darkMode ? 'text-amber-400' : 'text-black'}`}>{percent.toFixed(1)}%</span>
+        <span className={`text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-black'}`}>Fulfilled</span>
       </div>
     </div>
   );
 }
 
-// --- DASHBOARD ---
 function Dashboard({ needs, contributions, userContext, darkMode }) {
   const [filters, setFilters] = useState({ office: '', fd: '', section: '', year: 'All', quarter: 'All', month: 'All' });
 
@@ -477,7 +472,6 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
     });
     
     const scopeConts = userContext.role === SYSTEM_ROLES.PARTNER ? contributions.filter(c => c.partner.toLowerCase() === userContext.name.toLowerCase()) : contributions;
-    
     return { filteredNeeds: filterRecordSet(needs), filteredConts: filterRecordSet(scopeConts) };
   }, [needs, contributions, filters, userContext]);
 
@@ -509,7 +503,7 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
     return Object.entries(groups).sort((a,b)=>b[1]-a[1]).slice(0, 10);
   }, [filteredNeeds]);
 
-  const containerStyle = `p-6 rounded-2xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`;
+  const containerStyle = `p-6 rounded-2xl border shadow-sm ${darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-200'}`;
 
   return (
     <div className="space-y-6">
@@ -517,12 +511,12 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className={containerStyle}>
-          <span className="text-[10px] uppercase font-black tracking-widest text-emerald-800 dark:text-emerald-400">Total Validated Needs (Value)</span>
-          <p className="text-3xl font-black text-slate-800 dark:text-slate-100 mt-2">₱ {totalNeedsValue.toLocaleString()}</p>
+          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-black'}`}>Total Validated Needs (Value)</span>
+          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-black'} mt-2`}>₱ {totalNeedsValue.toLocaleString()}</p>
         </div>
         <div className={containerStyle}>
-          <span className="text-[10px] uppercase font-black tracking-widest text-amber-600 dark:text-amber-500">Total Validated Contributions (Value)</span>
-          <p className="text-3xl font-black text-amber-600 dark:text-amber-500 mt-2">₱ {totalContsValue.toLocaleString()}</p>
+          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>Total Validated Contributions (Value)</span>
+          <p className={`text-3xl font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'} mt-2`}>₱ {totalContsValue.toLocaleString()}</p>
         </div>
         <div className={`${containerStyle} flex flex-col items-center justify-center p-4`}>
           <FuelGaugeChart totalNeeds={totalNeedsValue} totalContributions={totalContsValue} darkMode={darkMode} />
@@ -530,14 +524,14 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
       </div>
 
       <div className={containerStyle}>
-        <div className="border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
-          <h3 className="text-xs font-black uppercase tracking-widest text-emerald-800 dark:text-amber-400">Accomplishment Rankings (RO & SDO Matrix)</h3>
-          <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Comparative matrix.</p>
+        <div className="border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
+          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-amber-400' : 'text-black'}`}>Accomplishment Rankings (RO & SDO Matrix)</h3>
+          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Comparative matrix.</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
+              <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
                 <th className="pb-2 pl-2">Rank</th>
                 <th className="pb-2">Office Name</th>
                 <th className="pb-2 text-right">Target Needs</th>
@@ -545,19 +539,19 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
                 <th className="pb-2 text-center w-40">Fulfillment Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60">
+            <tbody className="divide-y divide-slate-200 dark:divide-zinc-800/60">
               {officeRankings.map((node, index) => (
-                <tr key={node.office} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
-                  <td className="py-2.5 pl-2 font-bold text-slate-500 dark:text-slate-400">#{index + 1}</td>
-                  <td className="py-2.5 font-bold text-slate-800 dark:text-slate-200">{node.office}</td>
-                  <td className="py-2.5 text-right font-medium text-slate-700 dark:text-slate-400">₱{node.needs.toLocaleString()}</td>
-                  <td className="py-2.5 text-right font-bold text-emerald-700 dark:text-amber-500">₱{node.contributions.toLocaleString()}</td>
+                <tr key={node.office} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                  <td className={`py-2.5 pl-2 font-bold ${darkMode ? 'text-white' : 'text-black'}`}>#{index + 1}</td>
+                  <td className="py-2.5 font-bold">{node.office}</td>
+                  <td className="py-2.5 text-right font-medium">₱{node.needs.toLocaleString()}</td>
+                  <td className={`py-2.5 text-right font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>₱{node.contributions.toLocaleString()}</td>
                   <td className="py-2.5 text-center">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="w-16 bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div className="bg-emerald-500 h-full rounded-full" style={{ width: `${Math.min(node.percentage, 100)}%` }}></div>
+                      <div className="w-16 bg-slate-200 dark:bg-zinc-800 rounded-full h-2 overflow-hidden">
+                        <div className="bg-amber-500 h-full rounded-full" style={{ width: `${Math.min(node.percentage, 100)}%` }}></div>
                       </div>
-                      <span className="font-black text-[11px] min-w-10 text-right text-slate-700 dark:text-slate-300">{node.percentage.toFixed(1)}%</span>
+                      <span className="font-black text-[11px] min-w-10 text-right">{node.percentage.toFixed(1)}%</span>
                     </div>
                   </td>
                 </tr>
@@ -569,19 +563,19 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className={containerStyle}>
-          <h3 className="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4">Top Donors</h3>
+          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-black'} mb-4`}>Top Donors</h3>
           <div className="space-y-3">
             {topDonors.map(([name, val], idx) => {
               const max = topDonors[0]?.[1] || 1;
               const pct = (val / max) * 100;
               return (
                 <div key={name} className="space-y-1">
-                  <div className="flex justify-between text-xs font-semibold">
-                    <span className="truncate max-w-[200px] text-slate-700 dark:text-slate-200"><span className="opacity-50 font-bold mr-1">#{idx+1}</span>{name}</span>
-                    <span className="text-amber-600 dark:text-amber-500">₱{val.toLocaleString()}</span>
+                  <div className={`flex justify-between text-xs font-semibold ${darkMode ? 'text-white' : 'text-black'}`}>
+                    <span className="truncate max-w-[200px]"><span className={`${darkMode ? 'text-white' : 'text-black'} opacity-60 font-bold mr-1`}>#{idx+1}</span>{name}</span>
+                    <span className={`${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>₱{val.toLocaleString()}</span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800/80 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
+                  <div className="w-full bg-slate-200 dark:bg-zinc-800/80 h-2.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
                   </div>
                 </div>
               );
@@ -589,19 +583,19 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
           </div>
         </div>
         <div className={containerStyle}>
-          <h3 className="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 mb-4">Priority Needs</h3>
+          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-black'} mb-4`}>Priority Needs</h3>
           <div className="space-y-3">
             {priorityNeeds.map(([name, val], idx) => {
               const max = priorityNeeds[0]?.[1] || 1;
               const pct = (val / max) * 100;
               return (
                 <div key={name} className="space-y-1">
-                  <div className="flex justify-between text-xs font-semibold">
-                    <span className="truncate max-w-[200px] text-slate-700 dark:text-slate-200"><span className="opacity-50 font-bold mr-1">#{idx+1}</span>{name}</span>
-                    <span className="text-amber-600 dark:text-amber-500">₱{val.toLocaleString()}</span>
+                  <div className={`flex justify-between text-xs font-semibold ${darkMode ? 'text-white' : 'text-black'}`}>
+                    <span className="truncate max-w-[200px]"><span className={`${darkMode ? 'text-white' : 'text-black'} opacity-60 font-bold mr-1`}>#{idx+1}</span>{name}</span>
+                    <span className={`${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>₱{val.toLocaleString()}</span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800/80 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
+                  <div className="w-full bg-slate-200 dark:bg-zinc-800/80 h-2.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
                   </div>
                 </div>
               );
@@ -613,7 +607,6 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
   );
 }
 
-// --- TAB: NEEDS WORKSPACE ---
 function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
   const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING || userContext.role === SYSTEM_ROLES.PARTNER;
   const isConstrained = userContext.office !== 'Regional Office';
@@ -624,7 +617,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
     year: 'All', quarter: 'All', month: 'All'
   });
   
-  const [meta, setMeta] = useState({ office: isConstrained ? userContext.office : '', fd: '', section: '' });
+  const [meta, setMeta] = useState({ dateLogged: new Date().toISOString().split('T')[0], office: isConstrained ? userContext.office : '', fd: '', section: '' });
   const [lines, setLines] = useState([]);
   
   const [workingItem, setWorkingItem] = useState({ 
@@ -647,12 +640,10 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       if (filters.year !== 'All' && d.getFullYear().toString() !== filters.year) return false;
       if (filters.month !== 'All' && MONTHS[d.getMonth()] !== filters.month) return false;
       if (filters.quarter !== 'All' && `Q${Math.floor(d.getMonth() / 3) + 1}` !== filters.quarter) return false;
-      
       return true;
     });
   }, [needs, filters, isConstrained, userContext]);
 
-  // Applying sorting hook
   const { items: sortedFilteredView, requestSort, sortConfig } = useSortableData(currentFilteredView);
 
   const [addModal, setAddModal] = useState(false);
@@ -667,13 +658,15 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
 
   const handleCommitBatch = (e) => {
     e.preventDefault();
-    if (!meta.office || !meta.fd || !meta.section || !lines.length) return;
+    if (!meta.dateLogged || !meta.office || !meta.fd || !meta.section || !lines.length) return;
     
     const timestamp = new Date().toLocaleString();
     const formatted = lines.map((l, i) => ({
       id: 'N-GEN-' + (needs.length + i + 1),
-      dateLogged: new Date().toISOString().split('T')[0],
-      ...meta,
+      dateLogged: meta.dateLogged,
+      office: meta.office,
+      fd: meta.fd,
+      section: meta.section,
       category: l.category,
       specificItem: l.specificItem,
       qty: Number(l.qty),
@@ -686,7 +679,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
     
     setNeeds([...formatted, ...needs]);
     setLines([]);
-    setMeta({ office: isConstrained ? userContext.office : '', fd: '', section: '' });
+    setMeta({ dateLogged: new Date().toISOString().split('T')[0], office: isConstrained ? userContext.office : '', fd: '', section: '' });
     setAddModal(false);
   };
 
@@ -722,78 +715,137 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
     }
   };
 
-  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-slate-700 outline-none bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition`;
+  const handlePrintNeeds = () => {
+    const printWindow = window.open('', '_blank');
+    const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+    
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Needs Matrix</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
+            .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #333; }
+            h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #000; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
+            .text-right { text-align: right; }
+            .text-center { text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class="date-note">DATA AS OF ${todayFormatted}</div>
+          <h2>Needs Validation Ledger</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Office</th>
+                <th>Functional Division</th>
+                <th>Line Item</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Value (PHP)</th>
+                <th class="text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedFilteredView.map(n => `
+                <tr>
+                  <td>${n.dateLogged}</td>
+                  <td><strong>${n.office}</strong></td>
+                  <td>${n.fd}</td>
+                  <td>${n.specificItem}</td>
+                  <td class="text-right">${n.qty} ${n.uom}</td>
+                  <td class="text-right">P ${Number(n.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                  <td class="text-center">${n.status}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
+  };
+
+  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-zinc-700 outline-none bg-white dark:bg-zinc-900 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
       
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-zinc-900 p-4 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Needs Inventory</h2>
-          <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Scoped items: {currentFilteredView.length}</p>
+          <h2 className={`text-sm font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>Needs Inventory</h2>
+          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Scoped items: {currentFilteredView.length}</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {!isReadOnly && (
-            <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+            <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
               <Icon name="plus" size={14} /><span>Add Needs</span>
             </button>
           )}
-          <button onClick={() => exportToCSV(currentFilteredView, 'DEPED8_NEEDS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-emerald-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-emerald-850">
+          <button onClick={handlePrintNeeds} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700">
+            <Icon name="print" size={14} /><span>Print</span>
+          </button>
+          <button onClick={() => exportToCSV(currentFilteredView, 'PROJECT_UGNAY_NEEDS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700">
             <Icon name="download" size={14} /><span>Export Matrix</span>
           </button>
         </div>
       </div>
 
-      <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+      <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
-            <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('dateLogged')}>Date <SortIndicator sortConfig={sortConfig} sortKey="dateLogged" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" /></th>
-              <th className="pb-2 text-right cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" /></th>
-              <th className="pb-2 text-right cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" /></th>
-              <th className="pb-2">Remarks</th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('status')}>Status <SortIndicator sortConfig={sortConfig} sortKey="status" /></th>
-              <th className="pb-2 text-center">Actions</th>
+            <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('dateLogged')}>Date <SortIndicator sortConfig={sortConfig} sortKey="dateLogged" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" darkMode={darkMode} /></th>
+              <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" darkMode={darkMode} /></th>
+              <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" darkMode={darkMode} /></th>
+              <th className={`pb-2 ${darkMode ? 'text-white' : 'text-black'}`}>Remarks</th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('status')}>Status <SortIndicator sortConfig={sortConfig} sortKey="status" darkMode={darkMode} /></th>
+              <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-black'}`}>Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+          <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
             {sortedFilteredView.map(n => (
-              <tr key={n.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-slate-700 dark:text-slate-300">
-                <td className="py-2.5 text-slate-600 dark:text-slate-500">{n.dateLogged}</td>
-                <td className="py-2.5 font-bold text-slate-800 dark:text-slate-200">{n.office}</td>
-                <td className="py-2.5 truncate max-w-[130px] text-slate-700 dark:text-slate-400">{n.fd}</td>
-                <td className="py-2.5 text-slate-600 dark:text-slate-500">{n.section}</td>
-                <td className="py-2.5 text-slate-500 dark:text-slate-400 text-[11px]">{n.category}</td>
-                <td className="py-2.5 font-semibold text-slate-800 dark:text-slate-300">{n.specificItem}</td>
-                <td className="py-2.5 text-right font-medium">{n.qty} <span className="text-[10px] text-slate-500 opacity-80 dark:opacity-50">{n.uom}</span></td>
-                <td className="py-2.5 text-right font-black text-emerald-700 dark:text-amber-500">₱ {Number(n.value).toLocaleString()}</td>
-                <td className="py-2.5 text-slate-600 dark:text-slate-500 text-[11px] truncate max-w-[150px]" title={n.remarks}>{n.remarks || '-'}</td>
+              <tr key={n.id} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                <td className="py-2.5">{n.dateLogged}</td>
+                <td className="py-2.5 font-bold">{n.office}</td>
+                <td className="py-2.5 truncate max-w-[130px]">{n.fd}</td>
+                <td className="py-2.5">{n.section}</td>
+                <td className="py-2.5 text-[11px]">{n.category}</td>
+                <td className="py-2.5 font-semibold">{n.specificItem}</td>
+                <td className="py-2.5 text-right font-medium">{n.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-80 dark:opacity-60`}>{n.uom}</span></td>
+                <td className={`py-2.5 text-right font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>₱ {Number(n.value).toLocaleString()}</td>
+                <td className="py-2.5 text-[11px] truncate max-w-[150px]" title={n.remarks}>{n.remarks || '-'}</td>
                 <td className="py-2.5">
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    n.status === 'Fulfilled' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' :
-                    n.status === 'Partially Fulfilled' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
-                    'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
+                    n.status === 'Fulfilled' ? 'bg-amber-100 text-amber-900 dark:bg-amber-900/30 dark:text-amber-400' :
+                    n.status === 'Partially Fulfilled' ? 'bg-orange-100 text-orange-900 dark:bg-orange-900/30 dark:text-orange-400' :
+                    'bg-slate-200 text-black dark:bg-zinc-800 dark:text-white'
                   }`}>{n.status}</span>
                 </td>
                 <td className="py-2.5 text-center">
                   <div className="flex items-center justify-center gap-1">
                     {!isReadOnly && (
                       <>
-                        <button onClick={() => setEditModal(n)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-500 transition" title="Modify Record">
+                        <button onClick={() => setEditModal(n)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Modify Record">
                           <Icon name="edit" size={14} />
                         </button>
-                        <button onClick={() => handleDeleteItem(n.id)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500 transition" title="Purge Record">
+                        <button onClick={() => handleDeleteItem(n.id)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-red-600 dark:hover:text-red-500 transition`} title="Purge Record">
                           <Icon name="trash" size={14} />
                         </button>
                       </>
                     )}
-                    <button onClick={() => setTrailModal(n)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-500 transition" title="Audit Trail">
+                    <button onClick={() => setTrailModal(n)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Audit Trail">
                       <Icon name="history" size={14} />
                     </button>
                   </div>
@@ -805,13 +857,14 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       </div>
 
       {addModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
-              <h3 className="font-black text-sm uppercase tracking-wider text-emerald-800 dark:text-amber-400">Record Requirements</h3>
-              <button onClick={() => setAddModal(false)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={18} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
+              <h3 className={`font-black text-sm uppercase tracking-wider ${darkMode ? 'text-amber-400' : 'text-black'}`}>Record Requirements</h3>
+              <button onClick={() => setAddModal(false)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white`}><Icon name="close" size={18} /></button>
             </div>
             <div className="space-y-4">
+              <input type="date" value={meta.dateLogged} onChange={e=>setMeta({...meta, dateLogged: e.target.value})} className={inp} title="Date Logged" />
               <select value={meta.office} onChange={e=>setMeta({...meta, office:e.target.value, fd:'', section:''})} className={inp} disabled={isConstrained}>
                 <option value="">Office</option>
                 {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
@@ -821,8 +874,8 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
               
-              <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-500">Line Item</span>
+              <div className="border-t border-slate-200 dark:border-zinc-800 pt-3 space-y-2">
+                <span className={`text-[10px] font-black uppercase tracking-widest ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
                   <option value="">Select Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
@@ -837,17 +890,17 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </div>
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Estimated Valuation (₱)"/>
                 <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
-                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-200 text-amber-600 dark:text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
+                <button type="button" onClick={handlePushLine} className={`w-full py-2 bg-slate-100 dark:bg-zinc-800 text-xs font-bold rounded border border-slate-200 dark:border-zinc-700 hover:bg-slate-200 ${darkMode ? 'text-amber-500' : 'text-amber-600'} transition`}><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               
               {lines.length > 0 && (
-                <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
+                <div className="border-t border-slate-200 dark:border-zinc-800 pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded">
+                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'}`}>
                       <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
                     </div>
                   ))}
-                  <button onClick={handleCommitBatch} className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Submit</button>
+                  <button onClick={handleCommitBatch} className="w-full py-2 bg-zinc-900 hover:bg-black text-amber-500 font-bold rounded text-xs transition">Submit</button>
                 </div>
               )}
             </div>
@@ -856,52 +909,52 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       )}
 
       {editModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-amber-600 dark:text-amber-500">Modify Specification</h3>
-              <button type="button" onClick={() => setEditModal(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>Modify Specification</h3>
+              <button type="button" onClick={() => setEditModal(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Requirement Vol.</label>
+                <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Requirement Vol.</label>
                 <input type="number" value={editModal.qty} onChange={e=>setEditModal({...editModal, qty: e.target.value})} className={inp} required />
               </div>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Estimated Overhead Cost (₱)</label>
+              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Estimated Overhead Cost (₱)</label>
               <input type="number" value={editModal.value} onChange={e=>setEditModal({...editModal, value: e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Fulfillment Status Tier</label>
+              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Fulfillment Status Tier</label>
               <select value={editModal.status} onChange={e=>setEditModal({...editModal, status: e.target.value})} className={inp}>
                 <option value="Unfulfilled">Unfulfilled</option>
                 <option value="Partially Fulfilled">Partially Fulfilled</option>
                 <option value="Fulfilled">Fulfilled</option>
               </select>
             </div>
-            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md"> Save Verification Changes</button>
+            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-black font-black text-xs rounded transition shadow-md"> Save Verification Changes</button>
           </form>
         </div>
       )}
 
       {trailModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-slate-700 dark:text-slate-400">System Change Audit Trail Log</h3>
-              <button onClick={() => setTrailModal(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-black'}`}>System Change Audit Trail Log</h3>
+              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
-                  <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400 mb-1">
+                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700">
+                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-black'} mb-1`}>
                     <span>{t.timestamp}</span>
-                    <span className="font-bold text-amber-600 dark:text-amber-500">{t.user}</span>
+                    <span className={`font-bold ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>{t.user}</span>
                   </div>
-                  <p className="text-slate-800 dark:text-slate-300 font-medium">{t.action}</p>
+                  <p className={`${darkMode ? 'text-white' : 'text-black'} font-medium`}>{t.action}</p>
                 </div>
-              )) || <p className="text-xs text-center text-slate-500 opacity-60 py-4">No logged validation adjustments.</p>}
+              )) || <p className={`text-xs text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 py-4`}>No logged validation adjustments.</p>}
             </div>
           </div>
         </div>
@@ -910,13 +963,12 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
   );
 }
 
-// --- TAB: CONTRIBUTIONS WORKSPACE ---
 function ContributionsWorkspace({ contributions, setContributions, userContext, darkMode }) {
   const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING;
   const isConstrained = userContext.office !== 'Regional Office';
   const isIctUser = userContext.role === SYSTEM_ROLES.ICT_USER;
   
-  const [subTab, setSubTab] = useState('ledger'); // 'ledger' or 'partners'
+  const [subTab, setSubTab] = useState('ledger'); 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPartner, setSelectedPartner] = useState(null);
 
@@ -926,7 +978,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     year: 'All', quarter: 'All', month: 'All'
   });
   
-  const [meta, setMeta] = useState({ partner: '', office: isConstrained ? userContext.office : '', fd: '', section: '' });
+  const [meta, setMeta] = useState({ dateLogged: new Date().toISOString().split('T')[0], partner: '', office: isConstrained ? userContext.office : '', fd: '', section: '' });
   const [lines, setLines] = useState([]);
   
   const [workingItem, setWorkingItem] = useState({ 
@@ -954,7 +1006,6 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     });
   }, [contributions, filters, userContext, isConstrained]);
 
-  // Applying sorting hook for Ledger
   const { items: sortedFilteredView, requestSort, sortConfig } = useSortableData(currentFilteredView);
 
   const partnersSummary = useMemo(() => {
@@ -972,7 +1023,6 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     return list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase().trim()));
   }, [currentFilteredView, searchQuery]);
 
-  // Applying sorting hook for Partners
   const { items: sortedPartnersSummary, requestSort: requestSortPartners, sortConfig: sortConfigPartners } = useSortableData(partnersSummary);
 
   const autocompleteSuggestions = useMemo(() => {
@@ -984,7 +1034,6 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     ).slice(0, 5);
   }, [currentFilteredView, searchQuery]);
 
-  // New hook for auto-suggesting partner names in the Record Donations modal
   const partnerModalSuggestions = useMemo(() => {
     if (!meta.partner.trim()) return [];
     const allUniqueNames = Array.from(new Set(contributions.map(c => c.partner)));
@@ -1006,13 +1055,16 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
   const handleCommitBatch = (e) => {
     e.preventDefault();
-    if (!meta.partner || !meta.office || !meta.fd || !meta.section || !lines.length) return;
+    if (!meta.partner || !meta.dateLogged || !meta.office || !meta.fd || !meta.section || !lines.length) return;
     
     const timestamp = new Date().toLocaleString();
     const formatted = lines.map((l, i) => ({
       id: 'C-GEN-' + (contributions.length + i + 1),
-      dateLogged: new Date().toISOString().split('T')[0],
-      ...meta,
+      dateLogged: meta.dateLogged,
+      partner: meta.partner,
+      office: meta.office,
+      fd: meta.fd,
+      section: meta.section,
       category: l.category,
       specificItem: l.specificItem,
       qty: Number(l.qty),
@@ -1024,7 +1076,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     
     setContributions([...formatted, ...contributions]);
     setLines([]);
-    setMeta({ partner: '', office: isConstrained ? userContext.office : '', fd: '', section: '' });
+    setMeta({ dateLogged: new Date().toISOString().split('T')[0], partner: '', office: isConstrained ? userContext.office : '', fd: '', section: '' });
     setAddModal(false);
   };
 
@@ -1051,23 +1103,76 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     setEditModal(null);
   };
 
-  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-slate-700 outline-none bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition`;
+  const handlePrintContributionsLedger = () => {
+    const printWindow = window.open('', '_blank');
+    const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+    
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Contributions Ledger Matrix</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
+            .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #333; }
+            h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #000; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
+            .text-right { text-align: right; }
+          </style>
+        </head>
+        <body>
+          <div class="date-note">DATA AS OF ${todayFormatted}</div>
+          <h2>Contributions Ledger</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Partner</th>
+                <th>Recipient Office</th>
+                <th>Line Item</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Value (PHP)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedFilteredView.map(c => `
+                <tr>
+                  <td>${c.dateLogged}</td>
+                  <td><strong>${c.partner}</strong></td>
+                  <td>${c.office}</td>
+                  <td>${c.specificItem}</td>
+                  <td class="text-right">${c.qty} ${c.uom}</td>
+                  <td class="text-right">P ${Number(c.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
+  };
+
+  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-zinc-700 outline-none bg-white dark:bg-zinc-900 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
       
       {!isIctUser && (
-        <div className="flex border-b border-slate-200 dark:border-slate-800 gap-2">
+        <div className="flex border-b border-slate-200 dark:border-zinc-800 gap-2">
           <button 
             onClick={() => setSubTab('ledger')} 
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? `border-amber-500 ${darkMode ? 'text-amber-400' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
           >
             Contributions
           </button>
           <button 
             onClick={() => setSubTab('partners')} 
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'partners' ? 'border-amber-500 text-emerald-800 dark:text-amber-400' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'partners' ? `border-amber-500 ${darkMode ? 'text-amber-400' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
           >
             Partners
           </button>
@@ -1076,59 +1181,64 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
       {(subTab === 'ledger' || isIctUser) && (
         <>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-zinc-900 p-4 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
             <div>
-              <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">Contributions Ledger</h2>
-              <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Verified Records: {currentFilteredView.length}</p>
+              <h2 className={`text-sm font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>Contributions Ledger</h2>
+              <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Verified Records: {currentFilteredView.length}</p>
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {!isReadOnly && (
-                <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
                   <Icon name="plus" size={14} /><span>Record Donations</span>
                 </button>
               )}
-              <button onClick={() => exportToCSV(currentFilteredView, 'DEPED8_CONTRIBUTIONS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-emerald-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-emerald-850">
+              <button onClick={handlePrintContributionsLedger} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700">
+                <Icon name="print" size={14} /><span>Print</span>
+              </button>
+              <button onClick={() => exportToCSV(currentFilteredView, 'PROJECT_UGNAY_CONTRIBUTIONS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
 
-          <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+          <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
             <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
-                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('partner')}>Partner <SortIndicator sortConfig={sortConfig} sortKey="partner" /></th>
-                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('office')}>Recipient <SortIndicator sortConfig={sortConfig} sortKey="office" /></th>
-                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" /></th>
-                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" /></th>
-                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" /></th>
-                  <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" /></th>
-                  <th className="pb-2 text-right cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" /></th>
-                  <th className="pb-2 text-right cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" /></th>
-                  <th className="pb-2">Remarks</th>
-                  <th className="pb-2 text-center">Actions</th>
+                <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+                  <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('dateLogged')}>Date <SortIndicator sortConfig={sortConfig} sortKey="dateLogged" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('partner')}>Partner <SortIndicator sortConfig={sortConfig} sortKey="partner" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('office')}>Recipient <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" darkMode={darkMode} /></th>
+                  <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" darkMode={darkMode} /></th>
+                  <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" darkMode={darkMode} /></th>
+                  <th className={`pb-2 ${darkMode ? 'text-white' : 'text-black'}`}>Remarks</th>
+                  <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-black'}`}>Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+              <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
                 {sortedFilteredView.map(c => (
-                  <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-slate-700 dark:text-slate-300">
-                    <td className="py-2.5 font-bold text-emerald-800 dark:text-amber-400">{c.partner}</td>
-                    <td className="py-2.5 font-bold text-slate-800 dark:text-slate-200">{c.office}</td>
-                    <td className="py-2.5 truncate max-w-[130px] text-slate-700 dark:text-slate-400">{c.fd}</td>
-                    <td className="py-2.5 text-slate-600 dark:text-slate-500">{c.section}</td>
-                    <td className="py-2.5 text-slate-500 dark:text-slate-400 text-[11px]">{c.category}</td>
-                    <td className="py-2.5 font-semibold text-slate-800 dark:text-slate-300">{c.specificItem}</td>
-                    <td className="py-2.5 text-right font-medium">{c.qty} <span className="text-[10px] text-slate-500 opacity-80 dark:opacity-50">{c.uom}</span></td>
-                    <td className="py-2.5 text-right font-black text-emerald-700 dark:text-amber-500">₱ {Number(c.value).toLocaleString()}</td>
-                    <td className="py-2.5 text-slate-600 dark:text-slate-500 text-[11px] truncate max-w-[150px]" title={c.remarks}>{c.remarks || '-'}</td>
+                  <tr key={c.id} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                    <td className="py-2.5">{c.dateLogged}</td>
+                    <td className={`py-2.5 font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>{c.partner}</td>
+                    <td className="py-2.5 font-bold">{c.office}</td>
+                    <td className="py-2.5 truncate max-w-[130px]">{c.fd}</td>
+                    <td className="py-2.5">{c.section}</td>
+                    <td className="py-2.5 text-[11px]">{c.category}</td>
+                    <td className="py-2.5 font-semibold">{c.specificItem}</td>
+                    <td className="py-2.5 text-right font-medium">{c.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-80 dark:opacity-60`}>{c.uom}</span></td>
+                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>₱ {Number(c.value).toLocaleString()}</td>
+                    <td className="py-2.5 text-[11px] truncate max-w-[150px]" title={c.remarks}>{c.remarks || '-'}</td>
                     <td className="py-2.5 text-center">
                       <div className="flex items-center justify-center gap-1">
                         {!isReadOnly && (
-                          <button onClick={() => setEditModal(c)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-500 transition" title="Modify Record">
+                          <button onClick={() => setEditModal(c)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Modify Record">
                             <Icon name="edit" size={14} />
                           </button>
                         )}
-                        <button onClick={() => setTrailModal(c)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-500 transition" title="Audit Trail">
+                        <button onClick={() => setTrailModal(c)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Audit Trail">
                           <Icon name="history" size={14} />
                         </button>
                       </div>
@@ -1143,7 +1253,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
       {subTab === 'partners' && !isIctUser && (
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-zinc-900 p-4 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
             
             <div className="relative w-full max-w-md">
               <input 
@@ -1151,21 +1261,21 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search specific partner identity..." 
-                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-slate-300 dark:border-slate-800 shadow-sm outline-none transition focus:border-amber-500 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100"
+                className={`w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-slate-300 dark:border-zinc-800 shadow-sm outline-none transition focus:border-amber-500 bg-white dark:bg-zinc-900 ${darkMode ? 'text-white' : 'text-black'}`}
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-3 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+                <button onClick={() => setSearchQuery('')} className={`absolute right-2.5 top-3 ${darkMode ? 'text-white' : 'text-black'} opacity-50 hover:opacity-100`}>
                   <Icon name="close" size={14} />
                 </button>
               )}
               
               {autocompleteSuggestions.length > 0 && (
-                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 divide-slate-100 dark:divide-slate-800/60">
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 divide-slate-100 dark:divide-zinc-800/60">
                   {autocompleteSuggestions.map(itemHint => (
                     <button 
                       key={itemHint} 
                       onClick={() => setSearchQuery(itemHint)}
-                      className="w-full text-left p-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800/40 text-slate-800 dark:text-slate-300 transition"
+                      className={`w-full text-left p-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-zinc-800/40 ${darkMode ? 'text-white' : 'text-black'} transition`}
                     >
                       {itemHint}
                     </button>
@@ -1185,19 +1295,18 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                     <head>
                       <title>List of Partners</title>
                       <style>
-                        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #1e293b; line-height: 1.5; }
-                        .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #64748b; }
-                        h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #0f172a; }
+                        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
+                        .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #333; }
+                        h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #000; }
                         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-                        th, td { border: 1px solid #cbd5e1; padding: 10px 12px; text-align: left; font-size: 13px; }
-                        th { background-color: #f8fafc; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #475569; }
+                        th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; font-size: 13px; }
+                        th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
                         .text-right { text-align: right; }
                         .text-center { text-align: center; }
                       </style>
                     </head>
                     <body>
                       <div class="date-note">DATA AS OF ${todayFormatted}</div>
-                      <!-- <img src="header_3.png" alt="Document Header" class="header-img" /> -->
                       <h2>List of Partners</h2>
                       <table>
                         <thead>
@@ -1227,8 +1336,8 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   printWindow.print();
                   printWindow.close();
                 }, 200);
-              }} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
-                <span>Print List</span>
+              }} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                <Icon name="print" size={14} /><span>Print List</span>
               </button>
               
               <button onClick={() => {
@@ -1237,37 +1346,37 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   'Total Transactions': p.aggregateLogs.length,
                   'Total Valuation (PHP)': p.totalValuation
                 }));
-                exportToCSV(exportPayload, 'DEPED8_PARTNERS_MATRIX_EXPORT');
-              }} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-emerald-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-emerald-850 transition">
+                exportToCSV(exportPayload, 'PROJECT_UGNAY_PARTNERS_MATRIX_EXPORT');
+              }} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700 transition">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
 
-          <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+          <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
             <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
-                  <th className="pb-2 pl-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSortPartners('name')}>Partner <SortIndicator sortConfig={sortConfigPartners} sortKey="name" /></th>
-                  <th className="pb-2 text-center cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSortPartners('transactions')}>No. of Contributions <SortIndicator sortConfig={sortConfigPartners} sortKey="transactions" /></th>
-                  <th className="pb-2 text-right pr-4 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSortPartners('totalValuation')}>Total Value <SortIndicator sortConfig={sortConfigPartners} sortKey="totalValuation" /></th>
+                <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+                  <th className={`pb-2 pl-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortPartners('name')}>Partner <SortIndicator sortConfig={sortConfigPartners} sortKey="name" darkMode={darkMode} /></th>
+                  <th className={`pb-2 text-center cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortPartners('transactions')}>No. of Contributions <SortIndicator sortConfig={sortConfigPartners} sortKey="transactions" darkMode={darkMode} /></th>
+                  <th className={`pb-2 text-right pr-4 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortPartners('totalValuation')}>Total Value <SortIndicator sortConfig={sortConfigPartners} sortKey="totalValuation" darkMode={darkMode} /></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+              <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
                 {sortedPartnersSummary.map(rowNode => (
                   <tr 
                     key={rowNode.name} 
                     onClick={() => setSelectedPartner(rowNode)}
-                    className="hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition text-slate-800 dark:text-slate-300"
+                    className={`hover:bg-slate-50 dark:hover:bg-zinc-800/40 cursor-pointer transition ${darkMode ? 'text-white' : 'text-black'}`}
                   >
-                    <td className="py-3 pl-2 font-black text-emerald-800 dark:text-amber-400 text-xs">{rowNode.name}</td>
-                    <td className="py-3 text-center font-bold text-slate-700 dark:text-slate-300">{rowNode.aggregateLogs.length} transactions</td>
-                    <td className="py-3 text-right pr-4 font-black text-emerald-700 dark:text-amber-500">₱ {rowNode.totalValuation.toLocaleString()}</td>
+                    <td className={`py-3 pl-2 font-black ${darkMode ? 'text-amber-400' : 'text-black'} text-xs`}>{rowNode.name}</td>
+                    <td className="py-3 text-center font-bold">{rowNode.aggregateLogs.length} transactions</td>
+                    <td className={`py-3 text-right pr-4 font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>₱ {rowNode.totalValuation.toLocaleString()}</td>
                   </tr>
                 ))}
                 {sortedPartnersSummary.length === 0 && (
                   <tr>
-                    <td colSpan="3" className="py-6 text-center text-slate-500 italic">No partners match the applied structural/temporal parameter sets.</td>
+                    <td colSpan="3" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 italic`}>No partners match the applied structural/temporal parameter sets.</td>
                   </tr>
                 )}
               </tbody>
@@ -1277,21 +1386,21 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       )}
 
       {selectedPartner && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
-          <div className={`w-full max-w-4xl p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[85vh] ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-900'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/70 backdrop-blur-sm">
+          <div className={`w-full max-w-4xl p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[85vh] ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
               <div>
-                <span className="text-[10px] tracking-wider uppercase font-black text-amber-600 dark:text-amber-500">Resource Summary Ledger</span>
-                <h3 className="font-black text-base text-emerald-800 dark:text-amber-400">{selectedPartner.name}</h3>
+                <span className={`text-[10px] tracking-wider uppercase font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>Resource Summary Ledger</span>
+                <h3 className={`font-black text-base ${darkMode ? 'text-amber-400' : 'text-black'}`}>{selectedPartner.name}</h3>
               </div>
-              <button onClick={() => setSelectedPartner(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition">
+              <button onClick={() => setSelectedPartner(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white transition opacity-60 hover:opacity-100`}>
                 <Icon name="close" size={20} />
               </button>
             </div>
             
-            <div className="overflow-y-auto flex-1 border border-slate-200 dark:border-slate-800/80 rounded-lg">
+            <div className="overflow-y-auto flex-1 border border-slate-200 dark:border-zinc-800/80 rounded-lg">
               <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className="sticky top-0 bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider text-[11px] border-b border-slate-200 dark:border-slate-800">
+                <thead className={`sticky top-0 bg-slate-100 dark:bg-zinc-950 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider text-[11px] border-b border-slate-200 dark:border-zinc-800`}>
                   <tr>
                     <th className="p-2.5">Date</th>
                     <th className="p-2.5">Office</th>
@@ -1303,40 +1412,41 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                     <th className="p-2.5 text-right pr-3">Valuation</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
                   {selectedPartner.aggregateLogs.map(itemLog => (
-                    <tr key={itemLog.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-[11px] text-slate-700 dark:text-slate-300">
-                      <td className="p-2.5 text-slate-600 dark:text-slate-500">{itemLog.dateLogged}</td>
+                    <tr key={itemLog.id} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 text-[11px] ${darkMode ? 'text-white' : 'text-black'}`}>
+                      <td className="p-2.5">{itemLog.dateLogged}</td>
                       <td className="p-2.5 font-bold">{itemLog.office}</td>
-                      <td className="p-2.5 truncate max-w-[120px] text-slate-600 dark:text-slate-400">{itemLog.fd}</td>
-                      <td className="p-2.5 text-slate-600 dark:text-slate-500">{itemLog.section}</td>
-                      <td className="p-2.5 text-slate-600 dark:text-slate-500">{itemLog.category}</td>
-                      <td className="p-2.5 font-semibold text-slate-800 dark:text-slate-300">{itemLog.specificItem}</td>
-                      <td className="p-2.5 text-right font-medium">{itemLog.qty} <span className="text-[10px] text-slate-500 opacity-80 dark:opacity-40">{itemLog.uom}</span></td>
-                      <td className="p-2.5 text-right pr-3 font-black text-emerald-700 dark:text-amber-500">₱{itemLog.value.toLocaleString()}</td>
+                      <td className="p-2.5 truncate max-w-[120px]">{itemLog.fd}</td>
+                      <td className="p-2.5">{itemLog.section}</td>
+                      <td className="p-2.5">{itemLog.category}</td>
+                      <td className="p-2.5 font-semibold">{itemLog.specificItem}</td>
+                      <td className="p-2.5 text-right font-medium">{itemLog.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-80 dark:opacity-60`}>{itemLog.uom}</span></td>
+                      <td className={`p-2.5 text-right pr-3 font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>₱{itemLog.value.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
-              <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Total Pipeline Records: {selectedPartner.aggregateLogs.length}</span>
-              <span className="text-sm font-black text-emerald-800 dark:text-amber-400">Total Contribution: ₱{selectedPartner.totalValuation.toLocaleString()}</span>
+            <div className="mt-4 pt-3 border-t border-slate-200 dark:border-zinc-800 flex justify-between items-center">
+              <span className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-black'}`}>Total Pipeline Records: {selectedPartner.aggregateLogs.length}</span>
+              <span className={`text-sm font-black ${darkMode ? 'text-amber-400' : 'text-black'}`}>Total Contribution: ₱{selectedPartner.totalValuation.toLocaleString()}</span>
             </div>
           </div>
         </div>
       )}
 
       {addModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
-              <h3 className="font-black text-sm uppercase tracking-wider text-emerald-800 dark:text-amber-400">Record Donations</h3>
-              <button onClick={() => setAddModal(false)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={18} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <div className={`w-full max-w-lg p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
+              <h3 className={`font-black text-sm uppercase tracking-wider ${darkMode ? 'text-amber-400' : 'text-black'}`}>Record Donations</h3>
+              <button onClick={() => setAddModal(false)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={18} /></button>
             </div>
             <div className="space-y-4">
               
-              {/* Partner Dropdown Logic wrapper */}
+              <input type="date" value={meta.dateLogged} onChange={e=>setMeta({...meta, dateLogged: e.target.value})} className={inp} title="Date Logged" />
+
               <div className="relative w-full">
                 <input 
                   type="text" 
@@ -1346,13 +1456,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   placeholder="Sponsoring Partner / Entity" 
                 />
                 {partnerModalSuggestions.length > 0 && (
-                  <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 divide-slate-100 dark:divide-slate-800/60">
+                  <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 divide-slate-100 dark:divide-zinc-800/60">
                     {partnerModalSuggestions.map(itemHint => (
                       <button 
                         key={itemHint}
                         type="button"
                         onClick={() => setMeta({...meta, partner: itemHint})}
-                        className="w-full text-left p-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800/40 text-slate-800 dark:text-slate-300 transition"
+                        className={`w-full text-left p-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-zinc-800/40 ${darkMode ? 'text-white' : 'text-black'} transition`}
                       >
                         {itemHint}
                       </button>
@@ -1370,8 +1480,8 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
               
-              <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-500">Line Item</span>
+              <div className="border-t border-slate-200 dark:border-zinc-800 pt-3 space-y-2">
+                <span className={`text-[10px] font-black uppercase tracking-widest ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
                   <option value="">Select Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
@@ -1387,17 +1497,17 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Value of Item(s) (₱)"/>
                 <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
                 
-                <button type="button" onClick={handlePushLine} className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-200 text-amber-600 dark:text-amber-500 transition"><Icon name="plus" size={14} /> Add Line Item</button>
+                <button type="button" onClick={handlePushLine} className={`w-full py-2 bg-slate-100 dark:bg-zinc-800 text-xs font-bold rounded border border-slate-200 dark:border-zinc-700 hover:bg-slate-200 ${darkMode ? 'text-amber-500' : 'text-amber-600'} transition`}><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               
               {lines.length > 0 && (
-                <div className="border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
+                <div className="border-t border-slate-200 dark:border-zinc-800 pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className="flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded">
+                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'}`}>
                       <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
                     </div>
                   ))}
-                  <button onClick={handleCommitBatch} className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Submit</button>
+                  <button onClick={handleCommitBatch} className="w-full py-2 bg-zinc-900 hover:bg-black text-amber-500 font-bold rounded text-xs transition">Submit</button>
                 </div>
               )}
             </div>
@@ -1406,44 +1516,44 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       )}
 
       {editModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-amber-600 dark:text-amber-500">Modify Specification</h3>
-              <button type="button" onClick={() => setEditModal(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>Modify Specification</h3>
+              <button type="button" onClick={() => setEditModal(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Quantity Provided</label>
+                <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Quantity Provided</label>
                 <input type="number" value={editModal.qty} onChange={e=>setEditModal({...editModal, qty: e.target.value})} className={inp} required />
               </div>
             </div>
             <div>
-              <label className="block text-[10px] uppercase font-bold text-slate-600 dark:text-slate-400 mb-1">Declared Value (₱)</label>
+              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Declared Value (₱)</label>
               <input type="number" value={editModal.value} onChange={e=>setEditModal({...editModal, value: e.target.value})} className={inp} required />
             </div>
-            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-black text-xs rounded transition shadow-md"> Save Verification Changes</button>
+            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-black font-black text-xs rounded transition shadow-md"> Save Verification Changes</button>
           </form>
         </div>
       )}
 
       {trailModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2">
-              <h3 className="font-bold text-sm text-slate-700 dark:text-slate-400">System Change Audit Trail Log</h3>
-              <button onClick={() => setTrailModal(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-black'}`}>System Change Audit Trail Log</h3>
+              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
-                  <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400 mb-1">
+                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700">
+                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-black'} mb-1`}>
                     <span>{t.timestamp}</span>
-                    <span className="font-bold text-amber-600 dark:text-amber-500">{t.user}</span>
+                    <span className={`font-bold ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>{t.user}</span>
                   </div>
-                  <p className="text-slate-800 dark:text-slate-300 font-medium">{t.action}</p>
+                  <p className={`${darkMode ? 'text-white' : 'text-black'} font-medium`}>{t.action}</p>
                 </div>
-              )) || <p className="text-xs text-center text-slate-500 opacity-60 py-4">No logged validation adjustments.</p>}
+              )) || <p className={`text-xs text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 py-4`}>No logged validation adjustments.</p>}
             </div>
           </div>
         </div>
@@ -1460,8 +1570,6 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
   const isSuperAdminOrRoIct = userContext.role === SYSTEM_ROLES.SUPERADMIN || (userContext.role === SYSTEM_ROLES.ICT_USER && userContext.office === 'Regional Office');
   const hasWriteClearance = userContext.role === SYSTEM_ROLES.SUPERADMIN || userContext.role === SYSTEM_ROLES.ICT_USER; 
   
-  const canManageUser = (targetOffice) => isSuperAdminOrRoIct || (hasWriteClearance && userContext.office === targetOffice);
-  
   const displayedUsers = users.filter(u => isSuperAdminOrRoIct || u.office === userContext.office);
   const { items: sortedUsers, requestSort, sortConfig } = useSortableData(displayedUsers);
 
@@ -1473,16 +1581,12 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
   const handleAddUser = (e) => {
     e.preventDefault();
     if (!form.name || !form.username || !form.email) return;
-    setUsers([...users, { ...form, id: users.length + 1 }]);
+    setUsers([...users, { ...form, id: users.length + 1, password: 'password123' }]);
     setForm({ 
       name: '', username: '', email: '', role: SYSTEM_ROLES.FOCAL, position: '', 
       office: isSuperAdminOrRoIct ? 'Regional Office' : userContext.office 
     });
     setIsAddOpen(false);
-  };
-
-  const handleEditClick = (u) => {
-    setEditingUser(u);
   };
 
   const handleUpdateUser = (e) => {
@@ -1501,54 +1605,56 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
     }
   };
 
-  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-slate-700 outline-none bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:border-amber-500 transition`;
+  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-zinc-700 outline-none bg-white dark:bg-zinc-900 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`;
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+      <div className="flex justify-between items-center bg-white dark:bg-zinc-900 p-4 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-sm font-bold text-emerald-800 dark:text-amber-400">User Management Directory</h2>
-          <p className="text-[11px] text-slate-600 dark:text-slate-400 opacity-80">Verified Access Profiles: {displayedUsers.length}</p>
+          <h2 className={`text-sm font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>User Management Directory</h2>
+          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Verified Access Profiles: {displayedUsers.length}</p>
         </div>
         {hasWriteClearance && (
-          <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 text-emerald-950 rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+          <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
             <Icon name="plus" size={14} /><span>Add Account</span>
           </button>
         )}
       </div>
 
-      <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+      <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
-            <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('name')}>Name <SortIndicator sortConfig={sortConfig} sortKey="name" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('username')}>Username <SortIndicator sortConfig={sortConfig} sortKey="username" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('position')}>Designation/Position <SortIndicator sortConfig={sortConfig} sortKey="position" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('role')}>Access Level <SortIndicator sortConfig={sortConfig} sortKey="role" /></th>
-              <th className="pb-2 cursor-pointer hover:text-emerald-700 dark:hover:text-amber-400 select-none" onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" /></th>
-              {hasWriteClearance && <th className="pb-2 text-center">Actions</th>}
+            <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('name')}>Name <SortIndicator sortConfig={sortConfig} sortKey="name" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('username')}>Username <SortIndicator sortConfig={sortConfig} sortKey="username" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('position')}>Designation/Position <SortIndicator sortConfig={sortConfig} sortKey="position" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('role')}>Access Level <SortIndicator sortConfig={sortConfig} sortKey="role" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
+              {hasWriteClearance && <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-black'}`}>Actions</th>}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+          <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
             {sortedUsers.map(u => (
-              <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 text-slate-700 dark:text-slate-300">
+              <tr key={u.id} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
                 <td className="py-2.5">
-                  <p className="font-bold text-slate-800 dark:text-slate-200">{u.name}</p>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 opacity-80">{u.email}</p>
+                  <p className="font-bold">{u.name}</p>
+                  <p className={`text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>{u.email}</p>
                 </td>
-                <td className="py-2.5 text-slate-600 dark:text-slate-400">{u.username}</td>
-                <td className="py-2.5 text-slate-600 dark:text-slate-400">{u.position}</td>
+                <td className={`py-2.5 font-semibold ${darkMode ? 'text-white' : 'text-black'}`}>{u.username}</td>
+                <td className="py-2.5">{u.position || '-'}</td>
                 <td className="py-2.5">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500">{u.role}</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 dark:bg-amber-900/30 dark:text-amber-400">
+                    {u.role}
+                  </span>
                 </td>
-                <td className="py-2.5 font-semibold text-slate-800 dark:text-slate-300">{u.office}</td>
-                {hasWriteClearance && canManageUser(u.office) && (
+                <td className="py-2.5 font-bold">{u.office}</td>
+                {hasWriteClearance && (
                   <td className="py-2.5 text-center">
                     <div className="flex items-center justify-center gap-1">
-                      <button onClick={() => handleEditClick(u)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition" title="Modify Permissions">
+                      <button onClick={() => setEditingUser(u)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Modify Access">
                         <Icon name="edit" size={14} />
                       </button>
-                      <button onClick={() => handleDeleteUser(u.id)} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500 transition" title="Revoke Credentials">
+                      <button onClick={() => handleDeleteUser(u.id)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-red-600 dark:hover:text-red-500 transition`} title="Purge Record">
                         <Icon name="trash" size={14} />
                       </button>
                     </div>
@@ -1561,52 +1667,80 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
       </div>
 
       {isAddOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <form onSubmit={handleAddUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2 mb-2">
-              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Create Account</h3>
-              <button type="button" onClick={() => setIsAddOpen(false)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
+              <h3 className={`font-black text-sm ${darkMode ? 'text-amber-400' : 'text-black'}`}>New User Identity</h3>
+              <button onClick={() => setIsAddOpen(false)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={18} /></button>
             </div>
-            <input type="text" value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className={inp} placeholder="Full Name" required />
-            <input type="text" value={form.username} onChange={e=>setForm({...form, username: e.target.value})} className={inp} placeholder="Username" required />
-            <input type="email" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} className={inp} placeholder="Email Address (ex.: juan.delacruz@deped.gov.ph)" required />
-            <input type="text" value={form.position} onChange={e=>setForm({...form, position: e.target.value})} className={inp} placeholder="Position/Designation" required />
-            <select value={form.role} onChange={e=>setForm({...form, role: e.target.value})} className={inp}>
-              <option value={SYSTEM_ROLES.FOCAL}>Partnerships Focal</option>
-              <option value={SYSTEM_ROLES.MONITORING}>Monitoring</option>
-              {isSuperAdminOrRoIct && <option value={SYSTEM_ROLES.SUPERADMIN}>Superadmin</option>}
-              {isSuperAdminOrRoIct && <option value={SYSTEM_ROLES.ICT_USER}>ICT Unit</option>}
-            </select>
-            {isSuperAdminOrRoIct && (
-              <select value={form.office} onChange={e=>setForm({...form, office: e.target.value})} className={inp}>
+            <form onSubmit={handleAddUser} className="space-y-4">
+              <input type="text" placeholder="Full Name" value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className={inp} required />
+              <input type="email" placeholder="Email Address" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} className={inp} required />
+              <input type="text" placeholder="Username" value={form.username} onChange={e=>setForm({...form, username: e.target.value})} className={inp} required />
+              <input type="text" placeholder="Position / Title" value={form.position} onChange={e=>setForm({...form, position: e.target.value})} className={inp} required />
+              <select value={form.role} onChange={e=>setForm({...form, role: e.target.value})} className={inp}>
+                {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
+              </select>
+              <select value={form.office} onChange={e=>setForm({...form, office: e.target.value})} className={inp} disabled={!isSuperAdminOrRoIct}>
                 {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
               </select>
-            )}
-            <button type="submit" className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Create Account</button>
-          </form>
+              <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-black font-black text-xs rounded transition shadow-md">Create Profile</button>
+            </form>
+          </div>
         </div>
       )}
-      
+
       {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-800'}`}>
-            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-2 mb-2">
-              <h3 className="font-bold text-sm text-emerald-800 dark:text-amber-400">Modify Identity Record</h3>
-              <button type="button" onClick={() => setEditingUser(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-amber-400' : 'text-black'}`}>Modify Identity Access</h3>
+              <button type="button" onClick={() => setEditingUser(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
             </div>
-            <input type="text" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name: e.target.value})} className={inp} placeholder="Full Name" required />
-            <input type="text" value={editingUser.username} onChange={e=>setEditingUser({...editingUser, username: e.target.value})} className={inp} placeholder="Username" required />
-            <input type="text" value={editingUser.position} onChange={e=>setEditingUser({...editingUser, position: e.target.value})} className={inp} placeholder="Position/Designation" required />
-            <select value={editingUser.role} onChange={e=>setEditingUser({...editingUser, role: e.target.value})} className={inp}>
-              <option value={SYSTEM_ROLES.FOCAL}>Partnerships Focal</option>
-              <option value={SYSTEM_ROLES.MONITORING}>Monitoring</option>
-              {isSuperAdminOrRoIct && <option value={SYSTEM_ROLES.SUPERADMIN}>Superadmin</option>}
-              {isSuperAdminOrRoIct && <option value={SYSTEM_ROLES.ICT_USER}>ICT Unit</option>}
+            <input type="text" placeholder="Full Name" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name: e.target.value})} className={inp} required />
+            <input type="text" placeholder="Position / Title" value={editingUser.position} onChange={e=>setEditingUser({...editingUser, position: e.target.value})} className={inp} required />
+            <select value={editingUser.role} onChange={e=>setEditingUser({...editingUser, role: e.target.value})} className={inp} disabled={!isSuperAdminOrRoIct}>
+              {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
             </select>
-            <button type="submit" className="w-full py-2 bg-emerald-800 hover:bg-emerald-850 text-white font-bold rounded text-xs transition">Save Changes</button>
+            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-black font-black text-xs rounded transition shadow-md">Update Credentials</button>
           </form>
         </div>
       )}
+    </div>
+  );
+}
+
+function AboutWorkspace({ darkMode }) {
+  return (
+    <div className={`p-8 rounded-2xl border shadow-sm max-w-3xl mx-auto ${darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-200'}`}>
+      <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200 dark:border-zinc-800">
+        <div className="w-16 h-16 rounded-2xl bg-amber-500 flex items-center justify-center shadow-lg text-black overflow-hidden">
+           <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
+           <span className="hidden">R8</span>
+        </div>
+        <div>
+          <h1 className={`text-2xl font-black ${darkMode ? 'text-white' : 'text-black'}`}>Project UGNAY</h1>
+          <p className={`text-sm ${darkMode ? 'text-white' : 'text-black'} font-medium opacity-80`}>Unified Gateway for Needs and Assistance Yields</p>
+        </div>
+      </div>
+      <div className={`space-y-4 text-sm ${darkMode ? 'text-white' : 'text-black'} opacity-90 leading-relaxed`}>
+      <p><strong>Project UGNAY</strong> (Unified Gateway for Needs and Assistance Yields) is the official partnership management and resource coordination platform of DepEd Region VIII. Inspired by the Filipino word <strong>"ugnay,"</strong> which means <em>connection, linkage, or coordination</em>, the project embodies the Department's commitment to strengthening collaboration among schools, offices, stakeholders, and development partners. It serves as a unified gateway where identified needs are matched with available assistance, fostering meaningful partnerships that contribute to improved educational outcomes across the region.</p>
+<p>Anchored on the Filipino value of <strong>ugnayan</strong> or working together toward a common purpose, Project UGNAY promotes a culture of cooperation, transparency, and shared responsibility. It enables DepEd Region VIII to effectively coordinate with government agencies, local government units, private organizations, non-government organizations, alumni associations, civic groups, and other education partners by providing a centralized, data-driven system for identifying priorities and aligning partner support with actual institutional needs.</p>
+<p>The project was developed in response to the growing need for a streamlined and equitable mechanism for managing partnership initiatives and external assistance. Traditionally, partner interventions were often coordinated through separate channels, making it challenging to consolidate needs, monitor commitments, and ensure that resources reached the offices and schools that needed them most. Project UGNAY addresses these challenges by providing a single, integrated platform that enhances planning, coordination, accountability, and monitoring of partnership programs.</p>
+<p>This localized system bridges the gap between identified office needs and the resources provided by external partners, ensuring transparent, data-driven, needs-based, and equitable distribution of support across all offices in DepEd Region VIII. Through real-time monitoring, centralized records, and informed decision-making, Project UGNAY empowers both DepEd offices and partners to maximize the impact of every contribution while promoting accountability, efficiency, and sustainability in partnership initiatives.</p>
+<p>Beyond serving as a repository of requests and assistance, Project UGNAY functions as a strategic decision-support tool that enables regional leaders and partner organizations to identify priority areas, monitor resource allocation, evaluate partnership outcomes, and strengthen collaborative governance. By aligning partner contributions with validated needs, the system helps ensure that every intervention creates meaningful and measurable impact for learners, schools, and communities.</p>
+<p>Project UGNAY is conceptualized and realized through the visionary leadership of <strong>Regional Director Salustiano T. Jimenez, JD, EdD, CESO III</strong>, and <strong>Assistant Regional Director Marilyn B. Siao, PhD, CESO IV</strong>. The initiative is implemented through the <strong>Special Programs and Projects Section</strong> of the <strong>Education Support Services Division (ESSD)</strong>, the designated focal unit for Partnerships in DepEd Region VIII, reinforcing the Region's commitment to innovation, collaboration, and responsive governance in advancing quality basic education.</p>
+        <div className="pt-4 border-t border-slate-200 dark:border-zinc-800 grid grid-cols-2 gap-4 text-xs">
+          <div>
+            <span className="block opacity-60 font-bold uppercase mb-1">Version</span>
+            <span className={`font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>v1.0.0 (Beta)</span>
+          </div>
+          <div>
+            <span className="block opacity-60 font-bold uppercase mb-1">Developed By</span>
+            <span className={`font-bold ${darkMode ? 'text-white' : 'text-black'}`}>ORD-ICT Unit - Region VIII</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
