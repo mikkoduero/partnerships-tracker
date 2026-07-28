@@ -736,7 +736,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
         </head>
         <body>
           <div class="date-note">DATA AS OF ${todayFormatted}</div>
-          <h2>Needs Validation Ledger</h2>
+          <h2>Needs Ledger</h2>
           <table>
             <thead>
               <tr>
