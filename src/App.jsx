@@ -74,7 +74,8 @@ const SYSTEM_ROLES = {
   ICT_USER: 'ICT Unit user',
   FOCAL: 'Partnerships Focal',
   PARTNER: 'External Partner',
-  MONITORING: 'Monitoring'
+  MONITORING: 'Monitoring',
+  END_USER: 'End User'
 };
 
 const initialNeeds = [
@@ -96,6 +97,8 @@ const initialUsers = [
   { id: 3, name: 'Leyte ICT', username: 'leyte.ict', email: 'ict.leyte@deped.gov.ph', role: SYSTEM_ROLES.ICT_USER, position: 'ITO I', office: 'Leyte', password: 'password123' },
   { id: 4, name: 'Region Monitor', username: 'ro.monitor', email: 'mon.ro@deped.gov.ph', role: SYSTEM_ROLES.MONITORING, position: 'Auditor III', office: 'Regional Office', password: 'password123' },
   { id: 5, name: 'Tacloban Focal', username: 'tac.focal', email: 'focal.tac@deped.gov.ph', role: SYSTEM_ROLES.FOCAL, position: 'PDO I', office: 'Tacloban City', password: 'password123' },
+  { id: 6, name: 'Leyte End User', username: 'leyte.enduser', email: 'enduser.leyte@deped.gov.ph', role: SYSTEM_ROLES.END_USER, position: 'Administrative Aide III', office: 'Leyte', password: 'password123' },
+  { id: 7, name: 'TechCorp Foundation', username: 'techcorp.partner', email: 'partner@techcorp.example', role: SYSTEM_ROLES.PARTNER, position: 'Partner Representative', office: 'Regional Office', password: 'password123' },
 ];
 
 const exportToCSV = (data, filename) => {
@@ -274,11 +277,11 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
           {error && <div className={`p-3 text-xs bg-red-500/10 border border-red-500/20 ${darkMode ? 'text-red-400' : 'text-red-600'} font-semibold rounded-lg text-center`}>{error}</div>}
           <div>
             <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Username</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className={`w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-zinc-800 outline-none bg-white dark:bg-zinc-950 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`} required />
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className={`w-full p-2.5 text-xs rounded-lg border outline-none transition focus:border-amber-500 ${darkMode ? 'bg-zinc-950 border-zinc-800 text-white' : 'bg-white border-slate-300 text-black'}`} required />
           </div>
           <div>
             <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-zinc-800 outline-none bg-white dark:bg-zinc-950 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`} required />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 text-xs rounded-lg border outline-none transition focus:border-amber-500 ${darkMode ? 'bg-zinc-950 border-zinc-800 text-white' : 'bg-white border-slate-300 text-black'}`} required />
           </div>
           <button type="submit" className="w-full py-3 bg-zinc-900 hover:bg-black text-amber-500 dark:bg-amber-500 dark:hover:bg-amber-600 dark:text-black font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Sign In</button>
         </form>
@@ -303,9 +306,9 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
 
 function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
   const allTabs = [
-    { id: 'dashboard', label: 'Overview Dashboard', icon: 'dashboard', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
-    { id: 'needs', label: 'Needs', icon: 'needs', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
-    { id: 'contributions', label: 'Contributions', icon: 'contributions', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING] },
+    { id: 'dashboard', label: 'Overview Dashboard', icon: 'dashboard', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
+    { id: 'needs', label: 'Needs', icon: 'needs', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
+    { id: 'contributions', label: 'Contributions', icon: 'contributions', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
     { id: 'users', label: 'User Management', icon: 'users', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.ICT_USER] },
     { id: 'about', label: 'About', icon: 'info', roles: Object.values(SYSTEM_ROLES) }
   ];
@@ -337,23 +340,23 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
 
 function Header({ currentUser, darkMode, setDarkMode, onLogout }) {
   return (
-    <header className="px-6 py-4 border-b border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm flex justify-between items-center gap-4">
+    <header className="px-6 py-4 border-b border-zinc-800 bg-zinc-900 shadow-sm flex justify-between items-center gap-4">
       <div>
-        <span className={`text-[10px] uppercase font-bold tracking-widest ${darkMode ? 'text-amber-400' : 'text-black'}`}>Office</span>
-        <h2 className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-black'} mt-0.5`}>{currentUser.office}</h2>
+        <span className="text-[10px] uppercase font-bold tracking-widest text-amber-400">Office</span>
+        <h2 className="text-xs font-bold text-white mt-0.5">{currentUser.office}</h2>
       </div>
       <div className="flex items-center gap-4 justify-end">
-        <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-lg bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 ${darkMode ? 'text-amber-400' : 'text-black'} transition`} title="Toggle Appearance Mode">
+        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-amber-400 transition" title="Toggle Appearance Mode">
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
-        <div className="flex items-center gap-3 border-l border-slate-200 pl-4 dark:border-zinc-700">
+        <div className="flex items-center gap-3 border-l border-zinc-700 pl-4">
           <div className="text-right hidden sm:block">
-            <p className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-black'}`}>{currentUser.name}</p>
-            <p className={`text-[10px] ${darkMode ? 'text-amber-400' : 'text-amber-600'} font-medium`}>{currentUser.role}</p>
+            <p className="text-xs font-bold text-white">{currentUser.name}</p>
+            <p className="text-[10px] text-amber-400 font-medium">{currentUser.role}</p>
           </div>
           <div className="w-9 h-9 rounded-full bg-zinc-800 text-amber-400 flex items-center justify-center font-bold text-sm border border-amber-500/20">{currentUser.name.split(' ').map(n=>n[0]).join('')}</div>
         </div>
-        <button onClick={onLogout} className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-500/10 hover:bg-red-500/20 ${darkMode ? 'text-red-400' : 'text-red-600'} transition ml-2`}>
+        <button onClick={onLogout} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition ml-2">
           <Icon name="logout" size={14} />
           <span>Sign Out</span>
         </button>
@@ -374,7 +377,7 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
   };
 
   const isConstrained = useMemo(() => {
-    return userContext.office !== 'Regional Office';
+    return userContext.office !== 'Regional Office' && userContext.role !== SYSTEM_ROLES.PARTNER;
   }, [userContext]);
 
   const css = `w-full p-2 text-[11px] font-medium rounded-md border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
@@ -477,6 +480,7 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
 
   const totalNeedsValue = filteredNeeds.reduce((a, b) => a + Number(b.value), 0);
   const totalContsValue = filteredConts.reduce((a, b) => a + Number(b.value), 0);
+  const totalPartners = new Set(filteredConts.map(c => c.partner)).size;
 
   const officeRankings = useMemo(() => {
     return OFFICES.map(off => {
@@ -509,7 +513,7 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} userContext={userContext} />
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className={containerStyle}>
           <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-black'}`}>Total Validated Needs (Value)</span>
           <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-black'} mt-2`}>₱ {totalNeedsValue.toLocaleString()}</p>
@@ -521,43 +525,9 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
         <div className={`${containerStyle} flex flex-col items-center justify-center p-4`}>
           <FuelGaugeChart totalNeeds={totalNeedsValue} totalContributions={totalContsValue} darkMode={darkMode} />
         </div>
-      </div>
-
-      <div className={containerStyle}>
-        <div className="border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
-          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-amber-400' : 'text-black'}`}>Accomplishment Rankings (RO & SDO Matrix)</h3>
-          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Comparative matrix.</p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs whitespace-nowrap">
-            <thead>
-              <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
-                <th className="pb-2 pl-2">Rank</th>
-                <th className="pb-2">Office Name</th>
-                <th className="pb-2 text-right">Target Needs</th>
-                <th className="pb-2 text-right">Received Contributions</th>
-                <th className="pb-2 text-center w-40">Fulfillment Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-zinc-800/60">
-              {officeRankings.map((node, index) => (
-                <tr key={node.office} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
-                  <td className={`py-2.5 pl-2 font-bold ${darkMode ? 'text-white' : 'text-black'}`}>#{index + 1}</td>
-                  <td className="py-2.5 font-bold">{node.office}</td>
-                  <td className="py-2.5 text-right font-medium">₱{node.needs.toLocaleString()}</td>
-                  <td className={`py-2.5 text-right font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>₱{node.contributions.toLocaleString()}</td>
-                  <td className="py-2.5 text-center">
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-16 bg-slate-200 dark:bg-zinc-800 rounded-full h-2 overflow-hidden">
-                        <div className="bg-amber-500 h-full rounded-full" style={{ width: `${Math.min(node.percentage, 100)}%` }}></div>
-                      </div>
-                      <span className="font-black text-[11px] min-w-10 text-right">{node.percentage.toFixed(1)}%</span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className={containerStyle}>
+          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-black'}`}>No. of Partners</span>
+          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-black'} mt-2`}>{totalPartners}</p>
         </div>
       </div>
 
@@ -603,13 +573,52 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
           </div>
         </div>
       </div>
+
+      <div className={containerStyle}>
+        <div className="border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
+          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-amber-400' : 'text-black'}`}>Accomplishment Rankings (RO & SDO Matrix)</h3>
+          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Comparative matrix.</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs whitespace-nowrap">
+            <thead>
+              <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+                <th className="pb-2 pl-2">Rank</th>
+                <th className="pb-2">Office Name</th>
+                <th className="pb-2 text-right">Target Needs</th>
+                <th className="pb-2 text-right">Received Contributions</th>
+                <th className="pb-2 text-center w-40">Fulfillment Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 dark:divide-zinc-800/60">
+              {officeRankings.map((node, index) => (
+                <tr key={node.office} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                  <td className={`py-2.5 pl-2 font-bold ${darkMode ? 'text-white' : 'text-black'}`}>#{index + 1}</td>
+                  <td className="py-2.5 font-bold">{node.office}</td>
+                  <td className="py-2.5 text-right font-medium">₱{node.needs.toLocaleString()}</td>
+                  <td className={`py-2.5 text-right font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>₱{node.contributions.toLocaleString()}</td>
+                  <td className="py-2.5 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-16 bg-slate-200 dark:bg-zinc-800 rounded-full h-2 overflow-hidden">
+                        <div className="bg-amber-500 h-full rounded-full" style={{ width: `${Math.min(node.percentage, 100)}%` }}></div>
+                      </div>
+                      <span className="font-black text-[11px] min-w-10 text-right">{node.percentage.toFixed(1)}%</span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
 
 function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
-  const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING || userContext.role === SYSTEM_ROLES.PARTNER;
-  const isConstrained = userContext.office !== 'Regional Office';
+  const canAddNeeds = userContext.role !== SYSTEM_ROLES.MONITORING && userContext.role !== SYSTEM_ROLES.PARTNER;
+  const canEditDeleteNeeds = canAddNeeds && userContext.role !== SYSTEM_ROLES.END_USER;
+  const isConstrained = userContext.office !== 'Regional Office' && userContext.role !== SYSTEM_ROLES.PARTNER;
   
   const [filters, setFilters] = useState({ 
     office: isConstrained ? userContext.office : '', 
@@ -771,19 +780,19 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
     setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
   };
 
-  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-zinc-700 outline-none bg-white dark:bg-zinc-900 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`;
+  const inp = `w-full p-2 text-xs rounded border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
       
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-zinc-900 p-4 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm">
         <div>
-          <h2 className={`text-sm font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>Needs Inventory</h2>
-          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Scoped items: {currentFilteredView.length}</p>
+          <h2 className="text-sm font-bold text-amber-400">Needs Inventory</h2>
+          <p className="text-[11px] text-white opacity-80">Scoped items: {currentFilteredView.length}</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          {!isReadOnly && (
+          {canAddNeeds && (
             <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
               <Icon name="plus" size={14} /><span>Add Needs</span>
             </button>
@@ -835,7 +844,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </td>
                 <td className="py-2.5 text-center">
                   <div className="flex items-center justify-center gap-1">
-                    {!isReadOnly && (
+                    {canEditDeleteNeeds && (
                       <>
                         <button onClick={() => setEditModal(n)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Modify Record">
                           <Icon name="edit" size={14} />
@@ -890,13 +899,13 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </div>
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Estimated Valuation (₱)"/>
                 <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
-                <button type="button" onClick={handlePushLine} className={`w-full py-2 bg-slate-100 dark:bg-zinc-800 text-xs font-bold rounded border border-slate-200 dark:border-zinc-700 hover:bg-slate-200 ${darkMode ? 'text-amber-500' : 'text-amber-600'} transition`}><Icon name="plus" size={14} /> Add Line Item</button>
+                <button type="button" onClick={handlePushLine} className={`w-full py-2 text-xs font-bold rounded border transition ${darkMode ? 'bg-zinc-800 border-zinc-700 text-amber-500 hover:bg-zinc-700' : 'bg-slate-100 border-slate-200 text-amber-600 hover:bg-slate-200'}`}><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               
               {lines.length > 0 && (
                 <div className="border-t border-slate-200 dark:border-zinc-800 pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'}`}>
+                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 border rounded ${darkMode ? 'bg-zinc-900/40 border-zinc-800 text-white' : 'bg-slate-50 border-slate-200 text-black'}`}>
                       <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
                     </div>
                   ))}
@@ -947,7 +956,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700">
+                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-zinc-800/50 border-zinc-700' : 'bg-slate-50 border-slate-200'}`}>
                   <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-black'} mb-1`}>
                     <span>{t.timestamp}</span>
                     <span className={`font-bold ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>{t.user}</span>
@@ -964,9 +973,10 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
 }
 
 function ContributionsWorkspace({ contributions, setContributions, userContext, darkMode }) {
-  const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING;
-  const isConstrained = userContext.office !== 'Regional Office';
+  const isReadOnly = userContext.role === SYSTEM_ROLES.MONITORING || userContext.role === SYSTEM_ROLES.PARTNER || userContext.role === SYSTEM_ROLES.END_USER;
+  const isConstrained = userContext.office !== 'Regional Office' && userContext.role !== SYSTEM_ROLES.PARTNER;
   const isIctUser = userContext.role === SYSTEM_ROLES.ICT_USER;
+  const isPartnerScoped = userContext.role === SYSTEM_ROLES.PARTNER;
   
   const [subTab, setSubTab] = useState('ledger'); 
   const [searchQuery, setSearchQuery] = useState('');
@@ -990,6 +1000,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
   const currentFilteredView = useMemo(() => {
     return contributions.filter(c => {
+      if (isPartnerScoped && c.partner.toLowerCase() !== userContext.name.toLowerCase()) return false;
       if (isConstrained && c.office !== userContext.office) return false;
       if (filters.office && c.office !== filters.office) return false;
       if (filters.fd && c.fd !== filters.fd) return false;
@@ -1024,6 +1035,43 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
   }, [currentFilteredView, searchQuery]);
 
   const { items: sortedPartnersSummary, requestSort: requestSortPartners, sortConfig: sortConfigPartners } = useSortableData(partnersSummary);
+
+  const [expandedCategories, setExpandedCategories] = useState({});
+  const toggleCategory = (cat) => setExpandedCategories(prev => ({ ...prev, [cat]: !prev[cat] }));
+
+  const categorySummary = useMemo(() => {
+    const byCategory = {};
+    currentFilteredView.forEach(item => {
+      if (!byCategory[item.category]) {
+        byCategory[item.category] = { category: item.category, partners: new Set(), value: 0, offices: new Set(), types: {} };
+      }
+      const catNode = byCategory[item.category];
+      catNode.partners.add(item.partner);
+      catNode.value += Number(item.value);
+      catNode.offices.add(item.office);
+
+      if (!catNode.types[item.specificItem]) {
+        catNode.types[item.specificItem] = { specificItem: item.specificItem, partners: new Set(), value: 0, offices: new Set() };
+      }
+      const typeNode = catNode.types[item.specificItem];
+      typeNode.partners.add(item.partner);
+      typeNode.value += Number(item.value);
+      typeNode.offices.add(item.office);
+    });
+
+    return Object.values(byCategory).map(cat => ({
+      category: cat.category,
+      partners: cat.partners.size,
+      value: cat.value,
+      offices: cat.offices.size,
+      types: Object.values(cat.types).map(t => ({
+        specificItem: t.specificItem,
+        partners: t.partners.size,
+        value: t.value,
+        offices: t.offices.size
+      })).sort((a, b) => b.value - a.value)
+    })).sort((a, b) => b.value - a.value);
+  }, [currentFilteredView]);
 
   const autocompleteSuggestions = useMemo(() => {
     if (!searchQuery.trim()) return [];
@@ -1156,7 +1204,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
   };
 
-  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-zinc-700 outline-none bg-white dark:bg-zinc-900 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`;
+  const inp = `w-full p-2 text-xs rounded border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
 
   return (
     <div className="space-y-6">
@@ -1176,15 +1224,21 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
           >
             Partners
           </button>
+          <button 
+            onClick={() => setSubTab('summary')} 
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'summary' ? `border-amber-500 ${darkMode ? 'text-amber-400' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+          >
+            Summary
+          </button>
         </div>
       )}
 
       {(subTab === 'ledger' || isIctUser) && (
         <>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-zinc-900 p-4 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm">
             <div>
-              <h2 className={`text-sm font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>Contributions Ledger</h2>
-              <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Verified Records: {currentFilteredView.length}</p>
+              <h2 className="text-sm font-bold text-amber-400">Contributions Ledger</h2>
+              <p className="text-[11px] text-white opacity-80">Verified Records: {currentFilteredView.length}</p>
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {!isReadOnly && (
@@ -1253,7 +1307,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
       {subTab === 'partners' && !isIctUser && (
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-zinc-900 p-4 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm">
             
             <div className="relative w-full max-w-md">
               <input 
@@ -1261,21 +1315,21 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search specific partner identity..." 
-                className={`w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-slate-300 dark:border-zinc-800 shadow-sm outline-none transition focus:border-amber-500 bg-white dark:bg-zinc-900 ${darkMode ? 'text-white' : 'text-black'}`}
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-zinc-800 shadow-sm outline-none transition focus:border-amber-500 bg-zinc-900 text-white"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className={`absolute right-2.5 top-3 ${darkMode ? 'text-white' : 'text-black'} opacity-50 hover:opacity-100`}>
+                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100">
                   <Icon name="close" size={14} />
                 </button>
               )}
               
               {autocompleteSuggestions.length > 0 && (
-                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 divide-slate-100 dark:divide-zinc-800/60">
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-zinc-900 border-zinc-800 divide-zinc-800/60">
                   {autocompleteSuggestions.map(itemHint => (
                     <button 
                       key={itemHint} 
                       onClick={() => setSearchQuery(itemHint)}
-                      className={`w-full text-left p-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-zinc-800/40 ${darkMode ? 'text-white' : 'text-black'} transition`}
+                      className="w-full text-left p-2 text-xs font-semibold hover:bg-zinc-800/40 text-white transition"
                     >
                       {itemHint}
                     </button>
@@ -1385,6 +1439,53 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
         </div>
       )}
 
+      {subTab === 'summary' && !isIctUser && (
+        <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
+          <div className="border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
+            <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-amber-400' : 'text-black'}`}>Summary of Contributions</h3>
+            <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Grouped by category. Click a row to view its specific item types.</p>
+          </div>
+          <table className="w-full text-left text-xs whitespace-nowrap">
+            <thead>
+              <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+                <th className="pb-2 pl-2">Category</th>
+                <th className="pb-2 text-center">No. of Partners</th>
+                <th className="pb-2 text-right">Value (₱)</th>
+                <th className="pb-2 text-right pr-2">Beneficiary Offices (RO/SDO)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
+              {categorySummary.map(cat => (
+                <React.Fragment key={cat.category}>
+                  <tr onClick={() => toggleCategory(cat.category)} className={`cursor-pointer hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                    <td className="py-2.5 pl-2 font-bold">
+                      <span className={`inline-block mr-1.5 text-[9px] transition-transform ${expandedCategories[cat.category] ? 'rotate-90' : ''}`}>▶</span>
+                      {cat.category}
+                    </td>
+                    <td className="py-2.5 text-center font-bold">{cat.partners}</td>
+                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>₱ {cat.value.toLocaleString()}</td>
+                    <td className="py-2.5 text-right pr-2 font-bold">{cat.offices}</td>
+                  </tr>
+                  {expandedCategories[cat.category] && cat.types.map(t => (
+                    <tr key={t.specificItem} className={`text-[11px] ${darkMode ? 'bg-zinc-950/40 text-white' : 'bg-slate-50 text-black'} opacity-90`}>
+                      <td className="py-2 pl-8">{t.specificItem}</td>
+                      <td className="py-2 text-center">{t.partners}</td>
+                      <td className="py-2 text-right">₱ {t.value.toLocaleString()}</td>
+                      <td className="py-2 text-right pr-2">{t.offices}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              ))}
+              {categorySummary.length === 0 && (
+                <tr>
+                  <td colSpan="4" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 italic`}>No contribution records match the applied parameter sets.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {selectedPartner && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/70 backdrop-blur-sm">
           <div className={`w-full max-w-4xl p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[85vh] ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
@@ -1400,7 +1501,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
             
             <div className="overflow-y-auto flex-1 border border-slate-200 dark:border-zinc-800/80 rounded-lg">
               <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className={`sticky top-0 bg-slate-100 dark:bg-zinc-950 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider text-[11px] border-b border-slate-200 dark:border-zinc-800`}>
+                <thead className={`sticky top-0 font-bold uppercase tracking-wider text-[11px] border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'bg-zinc-950 text-white' : 'bg-slate-100 text-black'}`}>
                   <tr>
                     <th className="p-2.5">Date</th>
                     <th className="p-2.5">Office</th>
@@ -1456,13 +1557,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   placeholder="Sponsoring Partner / Entity" 
                 />
                 {partnerModalSuggestions.length > 0 && (
-                  <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 divide-slate-100 dark:divide-zinc-800/60">
+                  <div className={`absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y ${darkMode ? 'bg-zinc-900 border-zinc-800 divide-zinc-800/60' : 'bg-white border-slate-200 divide-slate-100'}`}>
                     {partnerModalSuggestions.map(itemHint => (
                       <button 
                         key={itemHint}
                         type="button"
                         onClick={() => setMeta({...meta, partner: itemHint})}
-                        className={`w-full text-left p-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-zinc-800/40 ${darkMode ? 'text-white' : 'text-black'} transition`}
+                        className={`w-full text-left p-2 text-xs font-semibold transition ${darkMode ? 'hover:bg-zinc-800/40 text-white' : 'hover:bg-slate-100 text-black'}`}
                       >
                         {itemHint}
                       </button>
@@ -1497,13 +1598,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Value of Item(s) (₱)"/>
                 <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
                 
-                <button type="button" onClick={handlePushLine} className={`w-full py-2 bg-slate-100 dark:bg-zinc-800 text-xs font-bold rounded border border-slate-200 dark:border-zinc-700 hover:bg-slate-200 ${darkMode ? 'text-amber-500' : 'text-amber-600'} transition`}><Icon name="plus" size={14} /> Add Line Item</button>
+                <button type="button" onClick={handlePushLine} className={`w-full py-2 text-xs font-bold rounded border transition ${darkMode ? 'bg-zinc-800 border-zinc-700 text-amber-500 hover:bg-zinc-700' : 'bg-slate-100 border-slate-200 text-amber-600 hover:bg-slate-200'}`}><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               
               {lines.length > 0 && (
                 <div className="border-t border-slate-200 dark:border-zinc-800 pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 bg-slate-50 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'}`}>
+                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 border rounded ${darkMode ? 'bg-zinc-900/40 border-zinc-800 text-white' : 'bg-slate-50 border-slate-200 text-black'}`}>
                       <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
                     </div>
                   ))}
@@ -1546,7 +1647,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className="text-xs p-3 rounded bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700">
+                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-zinc-800/50 border-zinc-700' : 'bg-slate-50 border-slate-200'}`}>
                   <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-black'} mb-1`}>
                     <span>{t.timestamp}</span>
                     <span className={`font-bold ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>{t.user}</span>
@@ -1605,14 +1706,14 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
     }
   };
 
-  const inp = `w-full p-2 text-xs rounded border border-slate-300 dark:border-zinc-700 outline-none bg-white dark:bg-zinc-900 ${darkMode ? 'text-white' : 'text-black'} focus:border-amber-500 transition`;
+  const inp = `w-full p-2 text-xs rounded border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white dark:bg-zinc-900 p-4 border border-slate-200 dark:border-zinc-800 rounded-xl shadow-sm">
+      <div className="flex justify-between items-center bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm">
         <div>
-          <h2 className={`text-sm font-bold ${darkMode ? 'text-amber-400' : 'text-black'}`}>User Management Directory</h2>
-          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Verified Access Profiles: {displayedUsers.length}</p>
+          <h2 className="text-sm font-bold text-amber-400">User Management Directory</h2>
+          <p className="text-[11px] text-white opacity-80">Verified Access Profiles: {displayedUsers.length}</p>
         </div>
         {hasWriteClearance && (
           <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
