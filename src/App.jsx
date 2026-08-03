@@ -459,8 +459,117 @@ function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
   );
 }
 
+function TrendLineChart({ needs, contributions, darkMode }) {
+  const [trendFilter, setTrendFilter] = useState({ year: 'All', quarter: 'All', month: 'All' });
+
+  const availableYears = useMemo(() => {
+    const years = new Set();
+    [...needs, ...contributions].forEach(item => years.add(new Date(item.dateLogged).getFullYear().toString()));
+    return Array.from(years).sort();
+  }, [needs, contributions]);
+
+  const series = useMemo(() => {
+    const matches = (item) => {
+      const d = new Date(item.dateLogged);
+      if (trendFilter.year !== 'All' && d.getFullYear().toString() !== trendFilter.year) return false;
+      if (trendFilter.month !== 'All' && MONTHS[d.getMonth()] !== trendFilter.month) return false;
+      if (trendFilter.quarter !== 'All' && `Q${Math.floor(d.getMonth() / 3) + 1}` !== trendFilter.quarter) return false;
+      return true;
+    };
+
+    const byMonth = {};
+    needs.filter(matches).forEach(n => {
+      const d = new Date(n.dateLogged);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      if (!byMonth[key]) byMonth[key] = { key, needsValue: 0, contsValue: 0 };
+      byMonth[key].needsValue += Number(n.value);
+    });
+    contributions.filter(matches).forEach(c => {
+      const d = new Date(c.dateLogged);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      if (!byMonth[key]) byMonth[key] = { key, needsValue: 0, contsValue: 0 };
+      byMonth[key].contsValue += Number(c.value);
+    });
+
+    return Object.values(byMonth).sort((a, b) => a.key.localeCompare(b.key)).map(p => ({
+      ...p,
+      label: `${MONTHS[parseInt(p.key.split('-')[1], 10) - 1].slice(0, 3)} '${p.key.split('-')[0].slice(2)}`
+    }));
+  }, [needs, contributions, trendFilter]);
+
+  const width = 480, height = 170, padding = { top: 10, right: 10, bottom: 24, left: 10 };
+  const innerW = width - padding.left - padding.right;
+  const innerH = height - padding.top - padding.bottom;
+  const maxVal = Math.max(1, ...series.map(p => Math.max(p.needsValue, p.contsValue)));
+  const xStep = series.length > 1 ? innerW / (series.length - 1) : 0;
+  const scaleY = (v) => padding.top + innerH - (v / maxVal) * innerH;
+  const scaleX = (i) => padding.left + (series.length > 1 ? i * xStep : innerW / 2);
+  const needsPoints = series.map((p, i) => `${scaleX(i)},${scaleY(p.needsValue)}`).join(' ');
+  const contsPoints = series.map((p, i) => `${scaleX(i)},${scaleY(p.contsValue)}`).join(' ');
+  const labelStep = series.length > 8 ? Math.ceil(series.length / 8) : 1;
+
+  const selectCls = `text-[10px] px-2 py-1 rounded border outline-none transition ${darkMode ? 'bg-zinc-800 border-zinc-700 text-white' : 'bg-slate-100 border-slate-200 text-black'}`;
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-black'}`}>Needs vs. Contributions Trend</h3>
+        <div className="flex items-center gap-2">
+          <select value={trendFilter.year} onChange={e => setTrendFilter({ ...trendFilter, year: e.target.value })} className={selectCls}>
+            <option value="All">All Years</option>
+            {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
+          </select>
+          <select value={trendFilter.quarter} onChange={e => setTrendFilter({ ...trendFilter, quarter: e.target.value })} className={selectCls}>
+            <option value="All">All Quarters</option>
+            {['Q1', 'Q2', 'Q3', 'Q4'].map(q => <option key={q} value={q}>{q}</option>)}
+          </select>
+          <select value={trendFilter.month} onChange={e => setTrendFilter({ ...trendFilter, month: e.target.value })} className={selectCls}>
+            <option value="All">All Months</option>
+            {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {series.length === 0 ? (
+        <div className={`flex items-center justify-center h-32 text-xs ${darkMode ? 'text-white' : 'text-black'} opacity-60 italic`}>No data points for the selected period.</div>
+      ) : (
+        <>
+          <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-40">
+            {[0, 0.25, 0.5, 0.75, 1].map(t => (
+              <line key={t} x1={padding.left} x2={width - padding.right} y1={padding.top + innerH * (1 - t)} y2={padding.top + innerH * (1 - t)} stroke={darkMode ? '#27272a' : '#e2e8f0'} strokeWidth="1" />
+            ))}
+            <polyline points={needsPoints} fill="none" stroke={darkMode ? '#f8fafc' : '#0f172a'} strokeWidth="2" />
+            <polyline points={contsPoints} fill="none" stroke="#f59e0b" strokeWidth="2" />
+            {series.map((p, i) => <circle key={'n' + i} cx={scaleX(i)} cy={scaleY(p.needsValue)} r="2.5" fill={darkMode ? '#f8fafc' : '#0f172a'} />)}
+            {series.map((p, i) => <circle key={'c' + i} cx={scaleX(i)} cy={scaleY(p.contsValue)} r="2.5" fill="#f59e0b" />)}
+            {series.map((p, i) => (
+              i % labelStep === 0 && (
+                <text key={'t' + i} x={scaleX(i)} y={height - 6} fontSize="8" textAnchor="middle" fill={darkMode ? '#a1a1aa' : '#64748b'}>{p.label}</text>
+              )
+            ))}
+          </svg>
+          <div className="flex items-center gap-4 mt-1">
+            <div className="flex items-center gap-1.5">
+              <span className={`w-3 h-0.5 ${darkMode ? 'bg-white' : 'bg-black'} inline-block`}></span>
+              <span className={`text-[10px] font-semibold ${darkMode ? 'text-white' : 'text-black'}`}>Needs</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-0.5 bg-amber-500 inline-block"></span>
+              <span className={`text-[10px] font-semibold ${darkMode ? 'text-white' : 'text-black'}`}>Contributions</span>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function Dashboard({ needs, contributions, userContext, darkMode }) {
   const [filters, setFilters] = useState({ office: '', fd: '', section: '', year: 'All', quarter: 'All', month: 'All' });
+
+  const scopedContributions = useMemo(() => {
+    return userContext.role === SYSTEM_ROLES.PARTNER ? contributions.filter(c => c.partner.toLowerCase() === userContext.name.toLowerCase()) : contributions;
+  }, [contributions, userContext]);
 
   const { filteredNeeds, filteredConts } = useMemo(() => {
     const filterRecordSet = (list) => list.filter(item => {
@@ -474,13 +583,13 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
       return true;
     });
     
-    const scopeConts = userContext.role === SYSTEM_ROLES.PARTNER ? contributions.filter(c => c.partner.toLowerCase() === userContext.name.toLowerCase()) : contributions;
-    return { filteredNeeds: filterRecordSet(needs), filteredConts: filterRecordSet(scopeConts) };
-  }, [needs, contributions, filters, userContext]);
+    return { filteredNeeds: filterRecordSet(needs), filteredConts: filterRecordSet(scopedContributions) };
+  }, [needs, scopedContributions, filters]);
 
   const totalNeedsValue = filteredNeeds.reduce((a, b) => a + Number(b.value), 0);
   const totalContsValue = filteredConts.reduce((a, b) => a + Number(b.value), 0);
   const totalPartners = new Set(filteredConts.map(c => c.partner)).size;
+  const totalContsCount = filteredConts.length;
 
   const officeRankings = useMemo(() => {
     return OFFICES.map(off => {
@@ -528,6 +637,13 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
         <div className={containerStyle}>
           <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-black'}`}>No. of Partners</span>
           <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-black'} mt-2`}>{totalPartners}</p>
+        </div>
+        <div className={containerStyle}>
+          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-black'}`}>No. of Contributions</span>
+          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-black'} mt-2`}>{totalContsCount}</p>
+        </div>
+        <div className={`${containerStyle} lg:col-span-3`}>
+          <TrendLineChart needs={needs} contributions={scopedContributions} darkMode={darkMode} />
         </div>
       </div>
 
@@ -655,6 +771,112 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
 
   const { items: sortedFilteredView, requestSort, sortConfig } = useSortableData(currentFilteredView);
 
+  const [subTab, setSubTab] = useState('inventory');
+
+  const [needsSummarySearch, setNeedsSummarySearch] = useState('');
+  const [expandedNeedsCategories, setExpandedNeedsCategories] = useState({});
+  const toggleNeedsCategory = (cat) => setExpandedNeedsCategories(prev => ({ ...prev, [cat]: !prev[cat] }));
+
+  const needsCategorySummary = useMemo(() => {
+    const byCategory = {};
+    currentFilteredView.forEach(item => {
+      if (!byCategory[item.category]) {
+        byCategory[item.category] = { category: item.category, qty: 0, value: 0, offices: new Set(), types: {} };
+      }
+      const catNode = byCategory[item.category];
+      catNode.qty += Number(item.qty);
+      catNode.value += Number(item.value);
+      catNode.offices.add(item.office);
+
+      if (!catNode.types[item.specificItem]) {
+        catNode.types[item.specificItem] = { specificItem: item.specificItem, qty: 0, value: 0, offices: new Set() };
+      }
+      const typeNode = catNode.types[item.specificItem];
+      typeNode.qty += Number(item.qty);
+      typeNode.value += Number(item.value);
+      typeNode.offices.add(item.office);
+    });
+
+    return Object.values(byCategory).map(cat => ({
+      category: cat.category,
+      qty: cat.qty,
+      value: cat.value,
+      offices: cat.offices.size,
+      types: Object.values(cat.types).map(t => ({
+        specificItem: t.specificItem, qty: t.qty, value: t.value, offices: t.offices.size
+      })).sort((a, b) => b.value - a.value)
+    })).sort((a, b) => b.value - a.value);
+  }, [currentFilteredView]);
+
+  const filteredNeedsCategorySummary = useMemo(() => {
+    if (!needsSummarySearch.trim()) return needsCategorySummary;
+    const q = needsSummarySearch.toLowerCase().trim();
+    return needsCategorySummary.map(cat => {
+      const catMatches = cat.category.toLowerCase().includes(q);
+      const matchingTypes = cat.types.filter(t => t.specificItem.toLowerCase().includes(q));
+      if (catMatches) return cat;
+      if (matchingTypes.length > 0) return { ...cat, types: matchingTypes };
+      return null;
+    }).filter(Boolean);
+  }, [needsCategorySummary, needsSummarySearch]);
+
+  const { items: sortedNeedsCategorySummary, requestSort: requestSortNeedsCategory, sortConfig: sortConfigNeedsCategory } = useSortableData(filteredNeedsCategorySummary);
+
+  const needsSummarySuggestions = useMemo(() => {
+    if (!needsSummarySearch.trim()) return [];
+    const q = needsSummarySearch.toLowerCase().trim();
+    const names = new Set();
+    currentFilteredView.forEach(item => {
+      if (item.category.toLowerCase().includes(q)) names.add(item.category);
+      if (item.specificItem.toLowerCase().includes(q)) names.add(item.specificItem);
+    });
+    return Array.from(names).filter(n => n.toLowerCase() !== q).slice(0, 5);
+  }, [currentFilteredView, needsSummarySearch]);
+
+  const [officeSearch, setOfficeSearch] = useState('');
+  const [expandedOffices, setExpandedOffices] = useState({});
+  const toggleOffice = (off) => setExpandedOffices(prev => ({ ...prev, [off]: !prev[off] }));
+
+  const officesSummary = useMemo(() => {
+    const byOffice = {};
+    currentFilteredView.forEach(item => {
+      if (!byOffice[item.office]) {
+        byOffice[item.office] = { office: item.office, needsCount: 0, value: 0, divisions: {} };
+      }
+      const officeNode = byOffice[item.office];
+      officeNode.needsCount += 1;
+      officeNode.value += Number(item.value);
+
+      if (!officeNode.divisions[item.fd]) {
+        officeNode.divisions[item.fd] = { fd: item.fd, needsCount: 0, value: 0 };
+      }
+      const fdNode = officeNode.divisions[item.fd];
+      fdNode.needsCount += 1;
+      fdNode.value += Number(item.value);
+    });
+
+    return OFFICES.filter(off => byOffice[off]).map(off => ({
+      office: byOffice[off].office,
+      needsCount: byOffice[off].needsCount,
+      value: byOffice[off].value,
+      divisions: Object.values(byOffice[off].divisions).sort((a, b) => b.value - a.value)
+    }));
+  }, [currentFilteredView]);
+
+  const filteredOfficesSummary = useMemo(() => {
+    if (!officeSearch.trim()) return officesSummary;
+    const q = officeSearch.toLowerCase().trim();
+    return officesSummary.filter(o => o.office.toLowerCase().includes(q));
+  }, [officesSummary, officeSearch]);
+
+  const { items: sortedOfficesSummary, requestSort: requestSortOffices, sortConfig: sortConfigOffices } = useSortableData(filteredOfficesSummary);
+
+  const officeSuggestions = useMemo(() => {
+    if (!officeSearch.trim()) return [];
+    const q = officeSearch.toLowerCase().trim();
+    return OFFICES.filter(o => o.toLowerCase().includes(q) && o.toLowerCase() !== q).slice(0, 5);
+  }, [officeSearch]);
+
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(null);
   const [trailModal, setTrailModal] = useState(null);
@@ -780,12 +1002,169 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
     setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
   };
 
+  const handlePrintNeedsSummary = () => {
+    const printWindow = window.open('', '_blank');
+    const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Summary of Needs</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
+            .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #333; }
+            h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #000; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
+            .text-right { text-align: right; }
+            .text-center { text-align: center; }
+            .type-row td { padding-left: 28px; font-size: 12px; color: #444; }
+          </style>
+        </head>
+        <body>
+          <div class="date-note">DATA AS OF ${todayFormatted}</div>
+          <h2>Summary of Needs</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Category / Specific Item</th>
+                <th class="text-right">Quantity</th>
+                <th class="text-right">Estimated Value (PHP)</th>
+                <th class="text-center">Req'g Offices</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedNeedsCategorySummary.map(cat => `
+                <tr>
+                  <td><strong>${cat.category}</strong></td>
+                  <td class="text-right">${cat.qty}</td>
+                  <td class="text-right">P ${Number(cat.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                  <td class="text-center">${cat.offices}</td>
+                </tr>
+                ${cat.types.map(t => `
+                  <tr class="type-row">
+                    <td>${t.specificItem}</td>
+                    <td class="text-right">${t.qty}</td>
+                    <td class="text-right">P ${Number(t.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td class="text-center">${t.offices}</td>
+                  </tr>
+                `).join('')}
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
+  };
+
+  const handleExportNeedsSummary = () => {
+    const exportPayload = [];
+    sortedNeedsCategorySummary.forEach(cat => {
+      exportPayload.push({ 'Category': cat.category, 'Specific Item': '(All Types)', 'Quantity': cat.qty, 'Estimated Value (PHP)': cat.value, "Req'g Offices": cat.offices });
+      cat.types.forEach(t => {
+        exportPayload.push({ 'Category': cat.category, 'Specific Item': t.specificItem, 'Quantity': t.qty, 'Estimated Value (PHP)': t.value, "Req'g Offices": t.offices });
+      });
+    });
+    exportToCSV(exportPayload, 'PROJECT_UGNAY_NEEDS_SUMMARY_EXPORT');
+  };
+
+  const handlePrintOffices = () => {
+    const printWindow = window.open('', '_blank');
+    const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Offices Matrix</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
+            .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #333; }
+            h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #000; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
+            .text-right { text-align: right; }
+            .div-row td { padding-left: 28px; font-size: 12px; color: #444; }
+          </style>
+        </head>
+        <body>
+          <div class="date-note">DATA AS OF ${todayFormatted}</div>
+          <h2>Offices Matrix</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Office / Division</th>
+                <th class="text-right">No. of Needs</th>
+                <th class="text-right">Total Estimated Value (PHP)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedOfficesSummary.map(o => `
+                <tr>
+                  <td><strong>${o.office}</strong></td>
+                  <td class="text-right">${o.needsCount}</td>
+                  <td class="text-right">P ${Number(o.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                </tr>
+                ${o.divisions.map(d => `
+                  <tr class="div-row">
+                    <td>${d.fd}</td>
+                    <td class="text-right">${d.needsCount}</td>
+                    <td class="text-right">P ${Number(d.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                  </tr>
+                `).join('')}
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
+  };
+
+  const handleExportOffices = () => {
+    const exportPayload = [];
+    sortedOfficesSummary.forEach(o => {
+      exportPayload.push({ 'Office': o.office, 'Division/Section/Unit': '(All Divisions)', 'No. of Needs': o.needsCount, 'Total Estimated Value (PHP)': o.value });
+      o.divisions.forEach(d => {
+        exportPayload.push({ 'Office': o.office, 'Division/Section/Unit': d.fd, 'No. of Needs': d.needsCount, 'Total Estimated Value (PHP)': d.value });
+      });
+    });
+    exportToCSV(exportPayload, 'PROJECT_UGNAY_OFFICES_EXPORT');
+  };
+
   const inp = `w-full p-2 text-xs rounded border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
-      
+
+      <div className="flex border-b border-slate-200 dark:border-zinc-800">
+        <button 
+          onClick={() => setSubTab('inventory')} 
+          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'inventory' ? `border-amber-500 ${darkMode ? 'text-amber-400' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+        >
+          Inventory
+        </button>
+        <button 
+          onClick={() => setSubTab('summary')} 
+          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'summary' ? `border-amber-500 ${darkMode ? 'text-amber-400' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+        >
+          Summary
+        </button>
+        <button 
+          onClick={() => setSubTab('offices')} 
+          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'offices' ? `border-amber-500 ${darkMode ? 'text-amber-400' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+        >
+          Offices
+        </button>
+      </div>
+
+      {subTab === 'inventory' && (
+      <>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm">
         <div>
           <h2 className="text-sm font-bold text-amber-400">Needs Inventory</h2>
@@ -864,6 +1243,153 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
           </tbody>
         </table>
       </div>
+      </>
+      )}
+
+      {subTab === 'summary' && (
+        <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm mb-4">
+            <div className="relative w-full max-w-md">
+              <input 
+                type="text" 
+                value={needsSummarySearch}
+                onChange={e => setNeedsSummarySearch(e.target.value)}
+                placeholder="Search Category or Specific Item..." 
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-zinc-800 shadow-sm outline-none transition focus:border-amber-500 bg-zinc-900 text-white"
+              />
+              {needsSummarySearch && (
+                <button onClick={() => setNeedsSummarySearch('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100">
+                  <Icon name="close" size={14} />
+                </button>
+              )}
+              {needsSummarySuggestions.length > 0 && (
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-zinc-900 border-zinc-800 divide-zinc-800/60">
+                  {needsSummarySuggestions.map(itemHint => (
+                    <button key={itemHint} onClick={() => setNeedsSummarySearch(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-zinc-800/40 text-white transition">
+                      {itemHint}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+              <button onClick={handlePrintNeedsSummary} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                <Icon name="print" size={14} /><span>Print</span>
+              </button>
+              <button onClick={handleExportNeedsSummary} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700 transition">
+                <Icon name="download" size={14} /><span>Export Matrix</span>
+              </button>
+            </div>
+          </div>
+          <table className="w-full text-left text-xs whitespace-nowrap">
+            <thead>
+              <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortNeedsCategory('category')}>Category <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="category" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortNeedsCategory('qty')}>Quantity <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="qty" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortNeedsCategory('value')}>Estimated Value (₱) <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="value" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortNeedsCategory('offices')}>Req'g Offices <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="offices" darkMode={darkMode} /></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
+              {sortedNeedsCategorySummary.map(cat => (
+                <React.Fragment key={cat.category}>
+                  <tr onClick={() => toggleNeedsCategory(cat.category)} className={`cursor-pointer hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                    <td className="py-2.5 pl-2 font-bold">
+                      <span className={`inline-block mr-1.5 text-[9px] transition-transform ${(needsSummarySearch.trim() || expandedNeedsCategories[cat.category]) ? 'rotate-90' : ''}`}>▶</span>
+                      {cat.category}
+                    </td>
+                    <td className="py-2.5 text-right font-bold">{cat.qty}</td>
+                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>₱ {cat.value.toLocaleString()}</td>
+                    <td className="py-2.5 text-right pr-2 font-bold">{cat.offices}</td>
+                  </tr>
+                  {(needsSummarySearch.trim() || expandedNeedsCategories[cat.category]) && cat.types.map(t => (
+                    <tr key={t.specificItem} className={`text-[11px] ${darkMode ? 'bg-zinc-950/40 text-white' : 'bg-slate-50 text-black'} opacity-90`}>
+                      <td className="py-2 pl-8">{t.specificItem}</td>
+                      <td className="py-2 text-right">{t.qty}</td>
+                      <td className="py-2 text-right">₱ {t.value.toLocaleString()}</td>
+                      <td className="py-2 text-right pr-2">{t.offices}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              ))}
+              {sortedNeedsCategorySummary.length === 0 && (
+                <tr><td colSpan="4" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 italic`}>No needs records match the applied parameter sets.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {subTab === 'offices' && (
+        <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm mb-4">
+            <div className="relative w-full max-w-md">
+              <input 
+                type="text" 
+                value={officeSearch}
+                onChange={e => setOfficeSearch(e.target.value)}
+                placeholder="Search Office..." 
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-zinc-800 shadow-sm outline-none transition focus:border-amber-500 bg-zinc-900 text-white"
+              />
+              {officeSearch && (
+                <button onClick={() => setOfficeSearch('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100">
+                  <Icon name="close" size={14} />
+                </button>
+              )}
+              {officeSuggestions.length > 0 && (
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-zinc-900 border-zinc-800 divide-zinc-800/60">
+                  {officeSuggestions.map(itemHint => (
+                    <button key={itemHint} onClick={() => setOfficeSearch(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-zinc-800/40 text-white transition">
+                      {itemHint}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+              <button onClick={handlePrintOffices} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                <Icon name="print" size={14} /><span>Print</span>
+              </button>
+              <button onClick={handleExportOffices} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700 transition">
+                <Icon name="download" size={14} /><span>Export Matrix</span>
+              </button>
+            </div>
+          </div>
+          <table className="w-full text-left text-xs whitespace-nowrap">
+            <thead>
+              <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortOffices('office')}>Office <SortIndicator sortConfig={sortConfigOffices} sortKey="office" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortOffices('needsCount')}>No. of Needs <SortIndicator sortConfig={sortConfigOffices} sortKey="needsCount" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortOffices('value')}>Total Estimated Value (₱) <SortIndicator sortConfig={sortConfigOffices} sortKey="value" darkMode={darkMode} /></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
+              {sortedOfficesSummary.map(o => (
+                <React.Fragment key={o.office}>
+                  <tr onClick={() => toggleOffice(o.office)} className={`cursor-pointer hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                    <td className="py-2.5 pl-2 font-bold">
+                      <span className={`inline-block mr-1.5 text-[9px] transition-transform ${(officeSearch.trim() || expandedOffices[o.office]) ? 'rotate-90' : ''}`}>▶</span>
+                      {o.office}
+                    </td>
+                    <td className="py-2.5 text-right font-bold">{o.needsCount}</td>
+                    <td className={`py-2.5 text-right pr-2 font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>₱ {o.value.toLocaleString()}</td>
+                  </tr>
+                  {(officeSearch.trim() || expandedOffices[o.office]) && o.divisions.map(d => (
+                    <tr key={d.fd} className={`text-[11px] ${darkMode ? 'bg-zinc-950/40 text-white' : 'bg-slate-50 text-black'} opacity-90`}>
+                      <td className="py-2 pl-8">{d.fd}</td>
+                      <td className="py-2 text-right">{d.needsCount}</td>
+                      <td className="py-2 text-right pr-2">₱ {d.value.toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              ))}
+              {sortedOfficesSummary.length === 0 && (
+                <tr><td colSpan="3" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 italic`}>No offices match the applied parameter sets.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {addModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
@@ -1072,6 +1598,102 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       })).sort((a, b) => b.value - a.value)
     })).sort((a, b) => b.value - a.value);
   }, [currentFilteredView]);
+
+  const [summarySearchQuery, setSummarySearchQuery] = useState('');
+
+  const filteredCategorySummary = useMemo(() => {
+    if (!summarySearchQuery.trim()) return categorySummary;
+    const q = summarySearchQuery.toLowerCase().trim();
+    return categorySummary.map(cat => {
+      const catMatches = cat.category.toLowerCase().includes(q);
+      const matchingTypes = cat.types.filter(t => t.specificItem.toLowerCase().includes(q));
+      if (catMatches) return cat;
+      if (matchingTypes.length > 0) return { ...cat, types: matchingTypes };
+      return null;
+    }).filter(Boolean);
+  }, [categorySummary, summarySearchQuery]);
+
+  const { items: sortedCategorySummary, requestSort: requestSortCategory, sortConfig: sortConfigCategory } = useSortableData(filteredCategorySummary);
+
+  const summarySuggestions = useMemo(() => {
+    if (!summarySearchQuery.trim()) return [];
+    const q = summarySearchQuery.toLowerCase().trim();
+    const names = new Set();
+    currentFilteredView.forEach(item => {
+      if (item.category.toLowerCase().includes(q)) names.add(item.category);
+      if (item.specificItem.toLowerCase().includes(q)) names.add(item.specificItem);
+    });
+    return Array.from(names).filter(n => n.toLowerCase() !== q).slice(0, 5);
+  }, [currentFilteredView, summarySearchQuery]);
+
+  const handlePrintSummary = () => {
+    const printWindow = window.open('', '_blank');
+    const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Summary of Contributions</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
+            .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #333; }
+            h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #000; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
+            .text-right { text-align: right; }
+            .text-center { text-align: center; }
+            .type-row td { padding-left: 28px; font-size: 12px; color: #444; }
+          </style>
+        </head>
+        <body>
+          <div class="date-note">DATA AS OF ${todayFormatted}</div>
+          <h2>Summary of Contributions</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Category / Specific Item</th>
+                <th class="text-center">No. of Partners (Donors)</th>
+                <th class="text-right">Amount/Value (PHP)</th>
+                <th class="text-center">No. of Offices (RO/SDO)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedCategorySummary.map(cat => `
+                <tr>
+                  <td><strong>${cat.category}</strong></td>
+                  <td class="text-center">${cat.partners}</td>
+                  <td class="text-right">P ${Number(cat.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                  <td class="text-center">${cat.offices}</td>
+                </tr>
+                ${cat.types.map(t => `
+                  <tr class="type-row">
+                    <td>${t.specificItem}</td>
+                    <td class="text-center">${t.partners}</td>
+                    <td class="text-right">P ${Number(t.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td class="text-center">${t.offices}</td>
+                  </tr>
+                `).join('')}
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
+  };
+
+  const handleExportSummary = () => {
+    const exportPayload = [];
+    sortedCategorySummary.forEach(cat => {
+      exportPayload.push({ 'Category': cat.category, 'Specific Item': '(All Types)', 'No. of Partners (Donors)': cat.partners, 'Amount/Value (PHP)': cat.value, 'No. of Offices (RO/SDO)': cat.offices });
+      cat.types.forEach(t => {
+        exportPayload.push({ 'Category': cat.category, 'Specific Item': t.specificItem, 'No. of Partners (Donors)': t.partners, 'Amount/Value (PHP)': t.value, 'No. of Offices (RO/SDO)': t.offices });
+      });
+    });
+    exportToCSV(exportPayload, 'PROJECT_UGNAY_CONTRIBUTIONS_SUMMARY_EXPORT');
+  };
 
   const autocompleteSuggestions = useMemo(() => {
     if (!searchQuery.trim()) return [];
@@ -1340,7 +1962,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
             <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
               <button onClick={() => {
-                const sortedList = [...partnersSummary].sort((a, b) => a.name.localeCompare(b.name));
+                const sortedList = sortedPartnersSummary;
                 const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
                 const printWindow = window.open('', '_blank');
                 
@@ -1395,7 +2017,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
               </button>
               
               <button onClick={() => {
-                const exportPayload = partnersSummary.map(p => ({
+                const exportPayload = sortedPartnersSummary.map(p => ({
                   'Partner Name': p.name,
                   'Total Transactions': p.aggregateLogs.length,
                   'Total Valuation (PHP)': p.totalValuation
@@ -1441,32 +2063,61 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
       {subTab === 'summary' && !isIctUser && (
         <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
-          <div className="border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
-            <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-amber-400' : 'text-black'}`}>Summary of Contributions</h3>
-            <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>Grouped by category. Click a row to view its specific item types.</p>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm mb-4">
+            <div className="relative w-full max-w-md">
+              <input 
+                type="text" 
+                value={summarySearchQuery}
+                onChange={e => setSummarySearchQuery(e.target.value)}
+                placeholder="Search Category or Specific Item..." 
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-zinc-800 shadow-sm outline-none transition focus:border-amber-500 bg-zinc-900 text-white"
+              />
+              {summarySearchQuery && (
+                <button onClick={() => setSummarySearchQuery('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100">
+                  <Icon name="close" size={14} />
+                </button>
+              )}
+              {summarySuggestions.length > 0 && (
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-zinc-900 border-zinc-800 divide-zinc-800/60">
+                  {summarySuggestions.map(itemHint => (
+                    <button key={itemHint} onClick={() => setSummarySearchQuery(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-zinc-800/40 text-white transition">
+                      {itemHint}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+              <button onClick={handlePrintSummary} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                <Icon name="print" size={14} /><span>Print</span>
+              </button>
+              <button onClick={handleExportSummary} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700 transition">
+                <Icon name="download" size={14} /><span>Export Matrix</span>
+              </button>
+            </div>
           </div>
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
               <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
-                <th className="pb-2 pl-2">Category</th>
-                <th className="pb-2 text-center">No. of Partners</th>
-                <th className="pb-2 text-right">Value (₱)</th>
-                <th className="pb-2 text-right pr-2">Beneficiary Offices (RO/SDO)</th>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortCategory('category')}>Category <SortIndicator sortConfig={sortConfigCategory} sortKey="category" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-center cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortCategory('partners')}>No. of Partners (Donors) <SortIndicator sortConfig={sortConfigCategory} sortKey="partners" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortCategory('value')}>Amount/Value (₱) <SortIndicator sortConfig={sortConfigCategory} sortKey="value" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortCategory('offices')}>No. of Offices (RO/SDO) <SortIndicator sortConfig={sortConfigCategory} sortKey="offices" darkMode={darkMode} /></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
-              {categorySummary.map(cat => (
+              {sortedCategorySummary.map(cat => (
                 <React.Fragment key={cat.category}>
                   <tr onClick={() => toggleCategory(cat.category)} className={`cursor-pointer hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
                     <td className="py-2.5 pl-2 font-bold">
-                      <span className={`inline-block mr-1.5 text-[9px] transition-transform ${expandedCategories[cat.category] ? 'rotate-90' : ''}`}>▶</span>
+                      <span className={`inline-block mr-1.5 text-[9px] transition-transform ${(summarySearchQuery.trim() || expandedCategories[cat.category]) ? 'rotate-90' : ''}`}>▶</span>
                       {cat.category}
                     </td>
                     <td className="py-2.5 text-center font-bold">{cat.partners}</td>
                     <td className={`py-2.5 text-right font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>₱ {cat.value.toLocaleString()}</td>
                     <td className="py-2.5 text-right pr-2 font-bold">{cat.offices}</td>
                   </tr>
-                  {expandedCategories[cat.category] && cat.types.map(t => (
+                  {(summarySearchQuery.trim() || expandedCategories[cat.category]) && cat.types.map(t => (
                     <tr key={t.specificItem} className={`text-[11px] ${darkMode ? 'bg-zinc-950/40 text-white' : 'bg-slate-50 text-black'} opacity-90`}>
                       <td className="py-2 pl-8">{t.specificItem}</td>
                       <td className="py-2 text-center">{t.partners}</td>
@@ -1476,7 +2127,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   ))}
                 </React.Fragment>
               ))}
-              {categorySummary.length === 0 && (
+              {sortedCategorySummary.length === 0 && (
                 <tr>
                   <td colSpan="4" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 italic`}>No contribution records match the applied parameter sets.</td>
                 </tr>
@@ -1744,7 +2395,7 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
                 <td className={`py-2.5 font-semibold ${darkMode ? 'text-white' : 'text-black'}`}>{u.username}</td>
                 <td className="py-2.5">{u.position || '-'}</td>
                 <td className="py-2.5">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 dark:bg-amber-900/30 dark:text-amber-400">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-900/30 text-amber-400">
                     {u.role}
                   </span>
                 </td>
@@ -1834,7 +2485,7 @@ function AboutWorkspace({ darkMode }) {
         <div className="pt-4 border-t border-slate-200 dark:border-zinc-800 grid grid-cols-2 gap-4 text-xs">
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Version</span>
-            <span className={`font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>v1.0.0 (Beta)</span>
+            <span className={`font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>v1.0.5 (Beta)</span>
           </div>
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Developed By</span>
