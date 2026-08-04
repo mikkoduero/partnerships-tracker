@@ -1110,7 +1110,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
         </head>
         <body>
           <div class="date-note">DATA AS OF ${todayFormatted}</div>
-          <h2>Needs Ledger</h2>
+          <h2>Needs Matrix</h2>
           <table>
             <thead>
               <tr>
@@ -1220,7 +1220,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Offices Matrix</title>
+          <title>Office Needs Summary</title>
           <style>
             body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
             .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #333; }
@@ -1923,7 +1923,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     printWindow.document.write(`
       <html>
         <head>
-          <title>Contributions Ledger Matrix</title>
+          <title>List of Contributions</title>
           <style>
             body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
             .date-note { text-align: right; font-size: 12px; font-weight: bold; margin-bottom: 20px; color: #333; }
@@ -2285,7 +2285,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
           <div className={`w-full max-w-4xl p-6 rounded-2xl border shadow-2xl flex flex-col max-h-[85vh] ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
             <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-3 mb-4">
               <div>
-                <span className={`text-[10px] tracking-wider uppercase font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>Resource Summary Ledger</span>
+                <span className={`text-[10px] tracking-wider uppercase font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>Donation Summary</span>
                 <h3 className={`font-black text-base ${darkMode ? 'text-amber-400' : 'text-black'}`}>{selectedPartner.name}</h3>
               </div>
               <button onClick={() => setSelectedPartner(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white transition opacity-60 hover:opacity-100`}>
