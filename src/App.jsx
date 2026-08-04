@@ -19,7 +19,10 @@ function Icon({ name, size = 18, className = '' }) {
     history: <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />,
     logout: <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />,
     lock: <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>,
-    info: <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+    info: <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />,
+    key: <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />,
+    eye: <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />,
+    eyeOff: <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.44-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z" />
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -71,7 +74,7 @@ const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 
 const SYSTEM_ROLES = {
   SUPERADMIN: 'Superadmin',
-  ICT_USER: 'ICT Unit user',
+  ICT_USER: 'User Manager',
   FOCAL: 'Partnerships Focal',
   PARTNER: 'External Partner',
   MONITORING: 'Monitoring',
@@ -94,7 +97,7 @@ const initialContributions = [
 const initialUsers = [
   { id: 1, name: 'Regional Chief', username: 'ro.chief', email: 'chief@deped.gov.ph', role: SYSTEM_ROLES.SUPERADMIN, position: 'Chief Admin Officer', office: 'Regional Office', password: 'password123' },
   { id: 2, name: 'Samar Focal', username: 'samar.focal', email: 'focal.samar@deped.gov.ph', role: SYSTEM_ROLES.FOCAL, position: 'PDO II', office: 'Samar', password: 'password123' },
-  { id: 3, name: 'Leyte ICT', username: 'leyte.ict', email: 'ict.leyte@deped.gov.ph', role: SYSTEM_ROLES.ICT_USER, position: 'ITO I', office: 'Leyte', password: 'password123' },
+  { id: 3, name: 'Leyte ICT', username: 'leyte.usermgr', email: 'ict.leyte@deped.gov.ph', role: SYSTEM_ROLES.ICT_USER, position: 'ITO I', office: 'Leyte', password: 'password123' },
   { id: 4, name: 'Region Monitor', username: 'ro.monitor', email: 'mon.ro@deped.gov.ph', role: SYSTEM_ROLES.MONITORING, position: 'Auditor III', office: 'Regional Office', password: 'password123' },
   { id: 5, name: 'Tacloban Focal', username: 'tac.focal', email: 'focal.tac@deped.gov.ph', role: SYSTEM_ROLES.FOCAL, position: 'PDO I', office: 'Tacloban City', password: 'password123' },
   { id: 6, name: 'Leyte End User', username: 'leyte.enduser', email: 'enduser.leyte@deped.gov.ph', role: SYSTEM_ROLES.END_USER, position: 'Administrative Aide III', office: 'Leyte', password: 'password123' },
@@ -194,10 +197,16 @@ export default function App() {
     setActiveTab('dashboard');
   };
 
+  const handleUpdateProfile = (updatedUser) => {
+    setUsers(users.map(u => u.id === updatedUser.id ? updatedUser : u));
+    setCurrentUser(updatedUser);
+  };
+
   if (!isAuthenticated) {
     return (
       <LoginScreen 
         users={users} 
+        setUsers={setUsers}
         onLoginSuccess={(user) => {
           setCurrentUser(user);
           setIsAuthenticated(true);
@@ -220,6 +229,7 @@ export default function App() {
           darkMode={darkMode} 
           setDarkMode={setDarkMode} 
           onLogout={handleLogout} 
+          onUpdateProfile={handleUpdateProfile}
         />
         
         <main className="p-4 md:p-6 lg:p-8 flex-1 overflow-y-auto">
@@ -235,17 +245,32 @@ export default function App() {
 }
 
 // --- LOGIN GATEWAY ---
-function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
+function LoginScreen({ users, setUsers, onLoginSuccess, darkMode, setDarkMode }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const [resetUser, setResetUser] = useState(null);
+  const [newPassword1, setNewPassword1] = useState('');
+  const [newPassword2, setNewPassword2] = useState('');
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [resetError, setResetError] = useState('');
+
+  const attemptLogin = (targetUser) => {
+    if (targetUser.passwordResetRequired) {
+      setResetUser(targetUser);
+      setResetError('');
+      return;
+    }
+    onLoginSuccess(targetUser);
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setError('');
     const targetUser = users.find(u => u.username.toLowerCase() === username.toLowerCase().trim());
-    if (targetUser && (password === 'password123' || targetUser.password === password)) {
-      onLoginSuccess(targetUser);
+    if (targetUser && (targetUser.passwordResetRequired || password === 'password123' || targetUser.password === password)) {
+      attemptLogin(targetUser);
     } else {
       setError('Invalid alignment credentials. Try simulation quick select keys below.');
     }
@@ -254,7 +279,26 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
   const handleQuickSelect = (user) => {
     setUsername(user.username);
     setPassword('password123');
-    onLoginSuccess(user);
+    attemptLogin(user);
+  };
+
+  const handleSetNewPassword = (e) => {
+    e.preventDefault();
+    if (!newPassword1 || !newPassword2) {
+      setResetError('Please fill in both fields.');
+      return;
+    }
+    if (newPassword1 !== newPassword2) {
+      setResetError('The two passwords do not match.');
+      return;
+    }
+    if (newPassword1.length < 6) {
+      setResetError('Password must be at least 6 characters.');
+      return;
+    }
+    const updatedUser = { ...resetUser, password: newPassword1, passwordResetRequired: false };
+    setUsers(users.map(u => u.id === resetUser.id ? updatedUser : u));
+    onLoginSuccess(updatedUser);
   };
 
   return (
@@ -264,15 +308,50 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
       </div>
-      <div className={`w-full max-w-md p-8 rounded-2xl border shadow-xl ${darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-300'}`}>
+      <div className={`w-full max-w-md rounded-2xl border shadow-xl overflow-hidden ${darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-300'}`}>
+        <div className="h-1.5 w-full flex">
+          <div className="flex-1 bg-orange-800"></div>
+          <div className="flex-1 bg-amber-500"></div>
+        </div>
+        <div className="p-8">
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-xl bg-amber-500 text-black flex items-center justify-center text-2xl font-black shadow-md mb-3 overflow-hidden">
+          <div className="w-16 h-16 rounded-full bg-amber-500 text-black flex items-center justify-center text-2xl font-black shadow-md mb-3 overflow-hidden ring-2 ring-blue-800 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900">
              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
              <span className="hidden">R8</span>
           </div>
+          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-blue-400' : 'text-blue-800'} mb-1`}>Republic of the Philippines · Department of Education</p>
           <h1 className={`text-xl font-black tracking-tight ${darkMode ? 'text-amber-400' : 'text-black'}`}>Project UGNAY</h1>
           <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-black'} mt-1`}>by DepEd Region VIII</p>
         </div>
+
+        {resetUser ? (
+          <form onSubmit={handleSetNewPassword} className="space-y-4">
+            <div className={`p-3 text-xs bg-amber-500/10 border border-amber-500/20 ${darkMode ? 'text-amber-400' : 'text-amber-700'} font-semibold rounded-lg text-center`}>
+              Your password was reset by an administrator. Please set a new password for <strong>{resetUser.username}</strong> to continue.
+            </div>
+            {resetError && <div className={`p-3 text-xs bg-red-500/10 border border-red-500/20 ${darkMode ? 'text-red-400' : 'text-red-600'} font-semibold rounded-lg text-center`}>{resetError}</div>}
+            <div>
+              <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-black'} mb-1`}>New Password</label>
+              <div className="relative">
+                <input type={showResetPassword ? 'text' : 'password'} value={newPassword1} onChange={(e) => setNewPassword1(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 pr-9 text-xs rounded-lg border outline-none transition focus:border-amber-500 ${darkMode ? 'bg-zinc-950 border-zinc-800 text-white' : 'bg-white border-slate-300 text-black'}`} required />
+                <button type="button" onClick={() => setShowResetPassword(!showResetPassword)} className={`absolute right-2.5 top-2.5 ${darkMode ? 'text-white' : 'text-black'} opacity-50 hover:opacity-100`}>
+                  <Icon name={showResetPassword ? 'eyeOff' : 'eye'} size={14} />
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-black'} mb-1`}>Confirm New Password</label>
+              <div className="relative">
+                <input type={showResetPassword ? 'text' : 'password'} value={newPassword2} onChange={(e) => setNewPassword2(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 pr-9 text-xs rounded-lg border outline-none transition focus:border-amber-500 ${darkMode ? 'bg-zinc-950 border-zinc-800 text-white' : 'bg-white border-slate-300 text-black'}`} required />
+                <button type="button" onClick={() => setShowResetPassword(!showResetPassword)} className={`absolute right-2.5 top-2.5 ${darkMode ? 'text-white' : 'text-black'} opacity-50 hover:opacity-100`}>
+                  <Icon name={showResetPassword ? 'eyeOff' : 'eye'} size={14} />
+                </button>
+              </div>
+            </div>
+            <button type="submit" className="w-full py-3 bg-zinc-900 hover:bg-black text-amber-500 dark:bg-amber-500 dark:hover:bg-amber-600 dark:text-black font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Set New Password &amp; Continue</button>
+            <button type="button" onClick={() => { setResetUser(null); setNewPassword1(''); setNewPassword2(''); setResetError(''); }} className={`w-full text-[11px] font-semibold ${darkMode ? 'text-white' : 'text-black'} opacity-60 hover:opacity-100`}>Cancel</button>
+          </form>
+        ) : (
         <form onSubmit={handleFormSubmit} className="space-y-4">
           {error && <div className={`p-3 text-xs bg-red-500/10 border border-red-500/20 ${darkMode ? 'text-red-400' : 'text-red-600'} font-semibold rounded-lg text-center`}>{error}</div>}
           <div>
@@ -285,6 +364,9 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
           </div>
           <button type="submit" className="w-full py-3 bg-zinc-900 hover:bg-black text-amber-500 dark:bg-amber-500 dark:hover:bg-amber-600 dark:text-black font-bold rounded-lg text-xs tracking-wider uppercase shadow-md transition duration-150">Sign In</button>
         </form>
+        )}
+
+        {!resetUser && (
         <div className="mt-8 border-t border-slate-200 dark:border-zinc-800 pt-5">
           <span className={`block text-[10px] uppercase font-black ${darkMode ? 'text-white' : 'text-black'} tracking-widest text-center mb-3`}>Simulation User Accounts</span>
           <div className="grid grid-cols-2 gap-2">
@@ -299,6 +381,8 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
             ))}
           </div>
         </div>
+        )}
+        </div>
       </div>
     </div>
   );
@@ -306,7 +390,7 @@ function LoginScreen({ users, onLoginSuccess, darkMode, setDarkMode }) {
 
 function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
   const allTabs = [
-    { id: 'dashboard', label: 'Overview Dashboard', icon: 'dashboard', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
+    { id: 'dashboard', label: 'Dashboard', icon: 'dashboard', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
     { id: 'needs', label: 'Needs', icon: 'needs', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
     { id: 'contributions', label: 'Contributions', icon: 'contributions', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
     { id: 'users', label: 'User Management', icon: 'users', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.ICT_USER] },
@@ -316,19 +400,24 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
 
   return (
     <aside className={`w-full md:w-64 border-b md:border-b-0 md:border-r transition-all ${darkMode ? 'bg-black border-zinc-900 text-zinc-100' : 'bg-zinc-900 border-zinc-950 text-white'} flex flex-col`}>
+      <div className="h-1.5 w-full flex">
+        <div className="flex-1 bg-orange-800"></div>
+        <div className="flex-1 bg-amber-500"></div>
+      </div>
       <div className="p-5 flex items-center gap-3 border-b border-zinc-800">
-        <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center text-black font-black shadow-md overflow-hidden">
+        <div className="w-11 h-11 rounded-full bg-amber-500 flex items-center justify-center text-black font-black shadow-md overflow-hidden ring-2 ring-amber-800 ring-offset-2 ring-offset-zinc-900">
           <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
           <span className="hidden">R8</span>
         </div>
         <div>
-          <h1 className="font-bold text-sm tracking-tight text-amber-400">Project UGNAY</h1>
-          <p className="text-[10px] uppercase tracking-wider text-white opacity-80 font-medium">DepEd Region VIII</p>
+          <p className="text-[10px] uppercase tracking-wider text-white-400 font-bold leading-none mb-0.5">DepEd Region VIII</p>
+          <h1 className="text-[18px] font-bold text-sm tracking-tight text-amber-400"><strong>Project UGNAY</strong></h1>
+          <p className="text-[8px] uppercase tracking-wider text-white opacity-80 font-medium">Unified Gateway for Needs and Assistance Yields</p>
         </div>
       </div>
       <div className="flex-1 p-3 space-y-1 flex md:flex-col overflow-x-auto">
         {filteredTabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-lg whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-amber-500 text-black font-bold shadow-md' : 'hover:bg-zinc-800 text-white'}`}>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-lg whitespace-nowrap transition-all border-l-2 ${activeTab === tab.id ? 'bg-amber-500 text-black font-bold shadow-md border-blue-800' : 'hover:bg-zinc-800 text-white border-transparent'}`}>
             <Icon name={tab.icon} size={16} />
             <span>{tab.label}</span>
           </button>
@@ -338,30 +427,116 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
   );
 }
 
-function Header({ currentUser, darkMode, setDarkMode, onLogout }) {
+function EditProfileModal({ currentUser, onSave, onClose, darkMode }) {
+  const [form, setForm] = useState({ name: currentUser.name, email: currentUser.email, position: currentUser.position || '' });
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+
+  const inp = `w-full p-2 text-xs rounded border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newPassword || confirmPassword) {
+      if (newPassword !== confirmPassword) {
+        setError("New password and confirmation do not match.");
+        return;
+      }
+      if (newPassword.length < 6) {
+        setError("New password must be at least 6 characters.");
+        return;
+      }
+    }
+    setError('');
+    onSave({
+      ...currentUser,
+      name: form.name,
+      email: form.email,
+      position: form.position,
+      ...(newPassword ? { password: newPassword } : {})
+    });
+  };
+
   return (
-    <header className="px-6 py-4 border-b border-zinc-800 bg-zinc-900 shadow-sm flex justify-between items-center gap-4">
-      <div>
-        <span className="text-[10px] uppercase font-bold tracking-widest text-amber-400">Office</span>
-        <h2 className="text-xs font-bold text-white mt-0.5">{currentUser.office}</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+      <form onSubmit={handleSubmit} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+        <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-2">
+          <h3 className={`font-bold text-sm ${darkMode ? 'text-amber-400' : 'text-black'}`}>Edit My Profile</h3>
+          <button type="button" onClick={onClose} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
+        </div>
+
+        <div>
+          <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-black'} mb-1 opacity-60`}>Username (cannot be changed)</label>
+          <input type="text" value={currentUser.username} disabled className={`${inp} opacity-50 cursor-not-allowed`} />
+        </div>
+        <input type="text" placeholder="Full Name" value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className={inp} required />
+        <input type="email" placeholder="Email Address" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} className={inp} required />
+        <input type="text" placeholder="Position / Title" value={form.position} onChange={e=>setForm({...form, position: e.target.value})} className={inp} />
+
+        <div className="border-t border-slate-200 dark:border-zinc-800 pt-3 space-y-2">
+          <p className={`text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-black'} opacity-60`}>Change Password (optional)</p>
+          <div className="relative">
+            <input type={showPassword ? 'text' : 'password'} placeholder="New Password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} className={`${inp} pr-9`} />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-2.5 top-2 ${darkMode ? 'text-white' : 'text-black'} opacity-50 hover:opacity-100`}>
+              <Icon name={showPassword ? 'eyeOff' : 'eye'} size={14} />
+            </button>
+          </div>
+          <div className="relative">
+            <input type={showPassword ? 'text' : 'password'} placeholder="Confirm New Password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} className={`${inp} pr-9`} />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-2.5 top-2 ${darkMode ? 'text-white' : 'text-black'} opacity-50 hover:opacity-100`}>
+              <Icon name={showPassword ? 'eyeOff' : 'eye'} size={14} />
+            </button>
+          </div>
+        </div>
+
+        {error && <p className="text-red-500 text-[11px] font-semibold">{error}</p>}
+
+        <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-black font-black text-xs rounded transition shadow-md">Save Changes</button>
+      </form>
+    </div>
+  );
+}
+
+function Header({ currentUser, darkMode, setDarkMode, onLogout, onUpdateProfile }) {
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  return (
+    <div>
+      <div className="h-1 w-full flex">
+        <div className="flex-1 bg-orange-800"></div>
+        <div className="flex-1 bg-amber-500"></div>
       </div>
-      <div className="flex items-center gap-4 justify-end">
-        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-amber-400 transition" title="Toggle Appearance Mode">
+      <header className="px-6 py-4 border-b border-zinc-800 bg-zinc-900 shadow-sm flex justify-between items-center gap-4">
+        <div>
+          <span className="text-[10px] uppercase font-bold tracking-widest text-amber-400">Office</span>
+          <h2 className="text-xs font-bold text-white mt-0.5">{currentUser.office}</h2>
+        </div>
+        <div className="flex items-center gap-4 justify-end">
+          <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-amber-400 transition" title="Toggle Appearance Mode">
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
-        <div className="flex items-center gap-3 border-l border-zinc-700 pl-4">
+        <button onClick={() => setShowEditProfile(true)} className="flex items-center gap-3 border-l border-zinc-700 pl-4 hover:opacity-80 transition" title="Edit My Profile">
           <div className="text-right hidden sm:block">
             <p className="text-xs font-bold text-white">{currentUser.name}</p>
             <p className="text-[10px] text-amber-400 font-medium">{currentUser.role}</p>
           </div>
           <div className="w-9 h-9 rounded-full bg-zinc-800 text-amber-400 flex items-center justify-center font-bold text-sm border border-amber-500/20">{currentUser.name.split(' ').map(n=>n[0]).join('')}</div>
-        </div>
+        </button>
         <button onClick={onLogout} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition ml-2">
           <Icon name="logout" size={14} />
           <span>Sign Out</span>
         </button>
       </div>
-    </header>
+      {showEditProfile && (
+        <EditProfileModal 
+          currentUser={currentUser} 
+          darkMode={darkMode} 
+          onClose={() => setShowEditProfile(false)} 
+          onSave={(updated) => { onUpdateProfile(updated); setShowEditProfile(false); }} 
+        />
+      )}
+      </header>
+    </div>
   );
 }
 
@@ -460,31 +635,15 @@ function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
 }
 
 function TrendLineChart({ needs, contributions, darkMode }) {
-  const [trendFilter, setTrendFilter] = useState({ year: 'All', quarter: 'All', month: 'All' });
-
-  const availableYears = useMemo(() => {
-    const years = new Set();
-    [...needs, ...contributions].forEach(item => years.add(new Date(item.dateLogged).getFullYear().toString()));
-    return Array.from(years).sort();
-  }, [needs, contributions]);
-
   const series = useMemo(() => {
-    const matches = (item) => {
-      const d = new Date(item.dateLogged);
-      if (trendFilter.year !== 'All' && d.getFullYear().toString() !== trendFilter.year) return false;
-      if (trendFilter.month !== 'All' && MONTHS[d.getMonth()] !== trendFilter.month) return false;
-      if (trendFilter.quarter !== 'All' && `Q${Math.floor(d.getMonth() / 3) + 1}` !== trendFilter.quarter) return false;
-      return true;
-    };
-
     const byMonth = {};
-    needs.filter(matches).forEach(n => {
+    needs.forEach(n => {
       const d = new Date(n.dateLogged);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
       if (!byMonth[key]) byMonth[key] = { key, needsValue: 0, contsValue: 0 };
       byMonth[key].needsValue += Number(n.value);
     });
-    contributions.filter(matches).forEach(c => {
+    contributions.forEach(c => {
       const d = new Date(c.dateLogged);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
       if (!byMonth[key]) byMonth[key] = { key, needsValue: 0, contsValue: 0 };
@@ -495,7 +654,7 @@ function TrendLineChart({ needs, contributions, darkMode }) {
       ...p,
       label: `${MONTHS[parseInt(p.key.split('-')[1], 10) - 1].slice(0, 3)} '${p.key.split('-')[0].slice(2)}`
     }));
-  }, [needs, contributions, trendFilter]);
+  }, [needs, contributions]);
 
   const width = 480, height = 170, padding = { top: 10, right: 10, bottom: 24, left: 10 };
   const innerW = width - padding.left - padding.right;
@@ -508,26 +667,10 @@ function TrendLineChart({ needs, contributions, darkMode }) {
   const contsPoints = series.map((p, i) => `${scaleX(i)},${scaleY(p.contsValue)}`).join(' ');
   const labelStep = series.length > 8 ? Math.ceil(series.length / 8) : 1;
 
-  const selectCls = `text-[10px] px-2 py-1 rounded border outline-none transition ${darkMode ? 'bg-zinc-800 border-zinc-700 text-white' : 'bg-slate-100 border-slate-200 text-black'}`;
-
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
         <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-black'}`}>Needs vs. Contributions Trend</h3>
-        <div className="flex items-center gap-2">
-          <select value={trendFilter.year} onChange={e => setTrendFilter({ ...trendFilter, year: e.target.value })} className={selectCls}>
-            <option value="All">All Years</option>
-            {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
-          </select>
-          <select value={trendFilter.quarter} onChange={e => setTrendFilter({ ...trendFilter, quarter: e.target.value })} className={selectCls}>
-            <option value="All">All Quarters</option>
-            {['Q1', 'Q2', 'Q3', 'Q4'].map(q => <option key={q} value={q}>{q}</option>)}
-          </select>
-          <select value={trendFilter.month} onChange={e => setTrendFilter({ ...trendFilter, month: e.target.value })} className={selectCls}>
-            <option value="All">All Months</option>
-            {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
-          </select>
-        </div>
       </div>
 
       {series.length === 0 ? (
@@ -643,7 +786,7 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
           <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-black'} mt-2`}>{totalContsCount}</p>
         </div>
         <div className={`${containerStyle} lg:col-span-3`}>
-          <TrendLineChart needs={needs} contributions={scopedContributions} darkMode={darkMode} />
+          <TrendLineChart needs={filteredNeeds} contributions={filteredConts} darkMode={darkMode} />
         </div>
       </div>
 
@@ -2013,7 +2156,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   printWindow.close();
                 }, 200);
               }} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
-                <Icon name="print" size={14} /><span>Print List</span>
+                <Icon name="print" size={14} /><span>Print</span>
               </button>
               
               <button onClick={() => {
@@ -2315,28 +2458,61 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 }
 
 // --- TAB: USER MANAGEMENT ---
+const MANAGEABLE_ROLES_FOR_ICT = [SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER, SYSTEM_ROLES.PARTNER];
+
 function UserWorkspace({ users, setUsers, userContext, darkMode }) {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
-  
+  const [officeFilter, setOfficeFilter] = useState('');
+  const [roleFilter, setRoleFilter] = useState('');
+
+  const isSuperAdmin = userContext.role === SYSTEM_ROLES.SUPERADMIN;
   const isSuperAdminOrRoIct = userContext.role === SYSTEM_ROLES.SUPERADMIN || (userContext.role === SYSTEM_ROLES.ICT_USER && userContext.office === 'Regional Office');
   const hasWriteClearance = userContext.role === SYSTEM_ROLES.SUPERADMIN || userContext.role === SYSTEM_ROLES.ICT_USER; 
+
+  const assignableRoles = isSuperAdmin ? Object.values(SYSTEM_ROLES) : (hasWriteClearance ? MANAGEABLE_ROLES_FOR_ICT : []);
+
+  const canManageTarget = (target) => {
+    if (isSuperAdmin) return true;
+    if (userContext.role === SYSTEM_ROLES.ICT_USER) {
+      if (!MANAGEABLE_ROLES_FOR_ICT.includes(target.role)) return false;
+      if (target.role === SYSTEM_ROLES.PARTNER) return true;
+      return target.office === userContext.office;
+    }
+    return false;
+  };
+
+  const defaultOfficeForRole = (role) => {
+    if (isSuperAdmin) return 'Regional Office';
+    if (role === SYSTEM_ROLES.PARTNER) return 'Regional Office';
+    return userContext.office;
+  };
   
-  const displayedUsers = users.filter(u => isSuperAdminOrRoIct || u.office === userContext.office);
+  const displayedUsers = users.filter(u => {
+    if (!(isSuperAdminOrRoIct || u.office === userContext.office)) return false;
+    if (officeFilter && u.office !== officeFilter) return false;
+    if (roleFilter && u.role !== roleFilter) return false;
+    return true;
+  });
   const { items: sortedUsers, requestSort, sortConfig } = useSortableData(displayedUsers);
 
   const [form, setForm] = useState({ 
-    name: '', username: '', email: '', role: SYSTEM_ROLES.FOCAL, position: '', 
-    office: isSuperAdminOrRoIct ? 'Regional Office' : userContext.office 
+    name: '', username: '', email: '', role: assignableRoles[0] || SYSTEM_ROLES.FOCAL, position: '', 
+    office: defaultOfficeForRole(assignableRoles[0] || SYSTEM_ROLES.FOCAL)
   });
+
+  const handleRoleChange = (newRole) => {
+    setForm({ ...form, role: newRole, office: defaultOfficeForRole(newRole) });
+  };
 
   const handleAddUser = (e) => {
     e.preventDefault();
     if (!form.name || !form.username || !form.email) return;
+    if (!assignableRoles.includes(form.role)) return;
     setUsers([...users, { ...form, id: users.length + 1, password: 'password123' }]);
     setForm({ 
-      name: '', username: '', email: '', role: SYSTEM_ROLES.FOCAL, position: '', 
-      office: isSuperAdminOrRoIct ? 'Regional Office' : userContext.office 
+      name: '', username: '', email: '', role: assignableRoles[0] || SYSTEM_ROLES.FOCAL, position: '', 
+      office: defaultOfficeForRole(assignableRoles[0] || SYSTEM_ROLES.FOCAL)
     });
     setIsAddOpen(false);
   };
@@ -2357,20 +2533,37 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
     }
   };
 
+  const handleResetPassword = (target) => {
+    if (window.confirm(`Reset password for ${target.name}? Their current password will stop working, and they'll be asked to set a new one the next time they log in.`)) {
+      setUsers(users.map(u => u.id === target.id ? { ...u, passwordResetRequired: true } : u));
+    }
+  };
+
   const inp = `w-full p-2 text-xs rounded border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
+  const filterCls = `text-xs px-3 py-1.5 rounded-lg border outline-none transition ${darkMode ? 'bg-zinc-800 border-zinc-700 text-white' : 'bg-slate-100 border-slate-200 text-black'}`;
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm">
         <div>
           <h2 className="text-sm font-bold text-amber-400">User Management Directory</h2>
           <p className="text-[11px] text-white opacity-80">Verified Access Profiles: {displayedUsers.length}</p>
         </div>
-        {hasWriteClearance && (
-          <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
-            <Icon name="plus" size={14} /><span>Add Account</span>
-          </button>
-        )}
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <select value={officeFilter} onChange={e => setOfficeFilter(e.target.value)} className={filterCls}>
+            <option value="">Office</option>
+            {OFFICES.map(o => <option key={o} value={o}>{o}</option>)}
+          </select>
+          <select value={roleFilter} onChange={e => setRoleFilter(e.target.value)} className={filterCls}>
+            <option value="">Access Level</option>
+            {Object.values(SYSTEM_ROLES).map(r => <option key={r} value={r}>{r}</option>)}
+          </select>
+          {hasWriteClearance && (
+            <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+              <Icon name="plus" size={14} /><span>Add Account</span>
+            </button>
+          )}
+        </div>
       </div>
 
       <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
@@ -2392,7 +2585,12 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
                   <p className="font-bold">{u.name}</p>
                   <p className={`text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-80`}>{u.email}</p>
                 </td>
-                <td className={`py-2.5 font-semibold ${darkMode ? 'text-white' : 'text-black'}`}>{u.username}</td>
+                <td className={`py-2.5 font-semibold ${darkMode ? 'text-white' : 'text-black'}`}>
+                  {u.username}
+                  {u.passwordResetRequired && (
+                    <span className="ml-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-500/15 text-red-500">Reset Pending</span>
+                  )}
+                </td>
                 <td className="py-2.5">{u.position || '-'}</td>
                 <td className="py-2.5">
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-900/30 text-amber-400">
@@ -2403,12 +2601,23 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
                 {hasWriteClearance && (
                   <td className="py-2.5 text-center">
                     <div className="flex items-center justify-center gap-1">
-                      <button onClick={() => setEditingUser(u)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Modify Access">
-                        <Icon name="edit" size={14} />
-                      </button>
-                      <button onClick={() => handleDeleteUser(u.id)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-red-600 dark:hover:text-red-500 transition`} title="Purge Record">
-                        <Icon name="trash" size={14} />
-                      </button>
+                      {canManageTarget(u) ? (
+                        <>
+                          <button onClick={() => setEditingUser(u)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Modify Access">
+                            <Icon name="edit" size={14} />
+                          </button>
+                          {u.id !== userContext.id && (
+                            <button onClick={() => handleResetPassword(u)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="Reset Password">
+                              <Icon name="key" size={14} />
+                            </button>
+                          )}
+                          <button onClick={() => handleDeleteUser(u.id)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-red-600 dark:hover:text-red-500 transition`} title="Purge Record">
+                            <Icon name="trash" size={14} />
+                          </button>
+                        </>
+                      ) : (
+                        <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-40 italic`}>Restricted</span>
+                      )}
                     </div>
                   </td>
                 )}
@@ -2430,10 +2639,10 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
               <input type="email" placeholder="Email Address" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} className={inp} required />
               <input type="text" placeholder="Username" value={form.username} onChange={e=>setForm({...form, username: e.target.value})} className={inp} required />
               <input type="text" placeholder="Position / Title" value={form.position} onChange={e=>setForm({...form, position: e.target.value})} className={inp} required />
-              <select value={form.role} onChange={e=>setForm({...form, role: e.target.value})} className={inp}>
-                {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
+              <select value={form.role} onChange={e=>handleRoleChange(e.target.value)} className={inp}>
+                {assignableRoles.map(r=><option key={r} value={r}>{r}</option>)}
               </select>
-              <select value={form.office} onChange={e=>setForm({...form, office: e.target.value})} className={inp} disabled={!isSuperAdminOrRoIct}>
+              <select value={form.office} onChange={e=>setForm({...form, office: e.target.value})} className={inp} disabled={!isSuperAdmin && form.role !== SYSTEM_ROLES.PARTNER}>
                 {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
               </select>
               <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-black font-black text-xs rounded transition shadow-md">Create Profile</button>
@@ -2451,8 +2660,11 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
             </div>
             <input type="text" placeholder="Full Name" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name: e.target.value})} className={inp} required />
             <input type="text" placeholder="Position / Title" value={editingUser.position} onChange={e=>setEditingUser({...editingUser, position: e.target.value})} className={inp} required />
-            <select value={editingUser.role} onChange={e=>setEditingUser({...editingUser, role: e.target.value})} className={inp} disabled={!isSuperAdminOrRoIct}>
-              {Object.values(SYSTEM_ROLES).map(r=><option key={r} value={r}>{r}</option>)}
+            <select value={editingUser.role} onChange={e=>setEditingUser({...editingUser, role: e.target.value})} className={inp} disabled={!isSuperAdmin}>
+              {(isSuperAdmin ? Object.values(SYSTEM_ROLES) : MANAGEABLE_ROLES_FOR_ICT).map(r=><option key={r} value={r}>{r}</option>)}
+            </select>
+            <select value={editingUser.office} onChange={e=>setEditingUser({...editingUser, office: e.target.value})} className={inp} disabled={!isSuperAdmin && editingUser.role !== SYSTEM_ROLES.PARTNER}>
+              {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
             </select>
             <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-black font-black text-xs rounded transition shadow-md">Update Credentials</button>
           </form>
@@ -2485,7 +2697,7 @@ function AboutWorkspace({ darkMode }) {
         <div className="pt-4 border-t border-slate-200 dark:border-zinc-800 grid grid-cols-2 gap-4 text-xs">
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Version</span>
-            <span className={`font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>v1.0.5 (Beta)</span>
+            <span className={`font-black ${darkMode ? 'text-amber-500' : 'text-amber-600'}`}>v1.0.12 (Beta)</span>
           </div>
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Developed By</span>
