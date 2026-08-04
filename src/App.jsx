@@ -315,11 +315,11 @@ function LoginScreen({ users, setUsers, onLoginSuccess, darkMode, setDarkMode })
         </div>
         <div className="p-8">
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-amber-500 text-black flex items-center justify-center text-2xl font-black shadow-md mb-3 overflow-hidden ring-2 ring-blue-800 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900">
+          <div className="w-16 h-16 rounded-full bg-amber-500 text-black flex items-center justify-center text-2xl font-black shadow-md mb-3 overflow-hidden ring-2 ring-orange-800 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900">
              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
              <span className="hidden">R8</span>
           </div>
-          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-blue-400' : 'text-blue-800'} mb-1`}>Republic of the Philippines · Department of Education</p>
+          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-orange-400' : 'text-orange-800'} mb-1`}>Republic of the Philippines · Department of Education</p>
           <h1 className={`text-xl font-black tracking-tight ${darkMode ? 'text-amber-400' : 'text-black'}`}>Project UGNAY</h1>
           <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-black'} mt-1`}>by DepEd Region VIII</p>
         </div>
@@ -417,7 +417,7 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
       </div>
       <div className="flex-1 p-3 space-y-1 flex md:flex-col overflow-x-auto">
         {filteredTabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-lg whitespace-nowrap transition-all border-l-2 ${activeTab === tab.id ? 'bg-amber-500 text-black font-bold shadow-md border-blue-800' : 'hover:bg-zinc-800 text-white border-transparent'}`}>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-lg whitespace-nowrap transition-all border-l-2 ${activeTab === tab.id ? 'bg-amber-500 text-black font-bold shadow-md border-orange-800' : 'hover:bg-zinc-800 text-white border-transparent'}`}>
             <Icon name={tab.icon} size={16} />
             <span>{tab.label}</span>
           </button>
