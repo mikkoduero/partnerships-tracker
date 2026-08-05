@@ -22,7 +22,9 @@ function Icon({ name, size = 18, className = '' }) {
     info: <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />,
     key: <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />,
     eye: <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />,
-    eyeOff: <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.44-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z" />
+    eyeOff: <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.44-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z" />,
+    transfer: <path d="M9.01 14H2v2h7.01v3L13 15l-3.99-4v3zm5.98-1v-3H22V8h-7.01V5L11 9l3.99 4z" />,
+    check: <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -137,17 +139,22 @@ const PRINT_HEADER_STYLES = `
   .print-header-old-eng { font-family: 'Old English Text MT', 'Blackletter686 BT', 'UnifrakturMaguntia', serif; }
   .print-header-line1 { font-size: 12pt; }
   .print-header-line2 { font-size: 18pt; }
-  .print-header-line3 { font-family: 'Trajan Pro', 'Times New Roman', serif; font-size: 13pt; letter-spacing: 0.04em; margin-top: 2px; }
+  .print-header-line3 { font-family: 'Trajan Pro', 'Times New Roman', serif; font-size: 10pt; letter-spacing: 0.04em; margin-top: 2px; }
   .print-header-rule { border: none; border-top: 1px solid #000; margin: 8px 0 18px; }
   .print-meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; margin-bottom: 16px; color: #333; }
+  .print-running-header { font-family: 'Trajan Pro', 'Times New Roman', serif; font-size: 8pt !important; text-align: center; padding: 4px 0 8px !important; border-bottom: 1px solid #000 !important; background-color: #fff !important; text-transform: none !important; letter-spacing: 0.02em; color: #000 !important; }
   tfoot td { border-top: 2px solid #000 !important; font-weight: 800; background-color: #f9f9f9; }
 `;
 
-const buildPrintHeaderHtml = (officeFilterValue, isPartnerRole) => {
-  const isRegional = isPartnerRole || !officeFilterValue || officeFilterValue === 'Regional Office';
+// The account's own office determines the institutional identity shown in the header
+// (Partner accounts always present as Regional Office regardless of their record's office value).
+const isRegionalIdentity = (accountOffice, isPartnerRole) => isPartnerRole || !accountOffice || accountOffice === 'Regional Office';
+
+const buildPrintHeaderHtml = (accountOffice, isPartnerRole) => {
+  const isRegional = isRegionalIdentity(accountOffice, isPartnerRole);
   const officeLine = isRegional
     ? `<div class="print-header-line3">Region VIII &ndash; Eastern Visayas</div>`
-    : `<div class="print-header-line3">Region VIII</div><div class="print-header-line3">Schools Division of ${officeFilterValue}</div>`;
+    : `<div class="print-header-line3">Region VIII</div><div class="print-header-line3">Schools Division of ${accountOffice}</div>`;
   return `
     <div class="print-header">
       <img src="/logo.png" class="print-seal" onerror="this.style.display='none'" />
@@ -157,6 +164,16 @@ const buildPrintHeaderHtml = (officeFilterValue, isPartnerRole) => {
     </div>
     <hr class="print-header-rule" />
   `;
+};
+
+// Repeats on every printed page (browsers repeat <thead> rows automatically) — placed as the
+// first row of each table's <thead>, above the actual column-header row.
+const buildRunningHeaderRow = (accountOffice, isPartnerRole, colspan) => {
+  const isRegional = isRegionalIdentity(accountOffice, isPartnerRole);
+  const text = isRegional
+    ? 'Department of Education Regional Office VIII (Eastern Visayas)'
+    : `Department of Education Schools Division of ${accountOffice}`;
+  return `<tr><th colspan="${colspan}" class="print-running-header">${text}</th></tr>`;
 };
 
 const buildPrintMetaRow = (officeFilterValue, todayFormatted) => `
@@ -227,6 +244,7 @@ export default function App() {
   const [needs, setNeeds] = useState(initialNeeds);
   const [contributions, setContributions] = useState(initialContributions);
   const [users, setUsers] = useState(initialUsers);
+  const [transfers, setTransfers] = useState([]);
 
   useEffect(() => {
     if (darkMode) document.documentElement.classList.add('dark');
@@ -263,7 +281,7 @@ export default function App() {
     <div className={`min-h-screen font-sans flex flex-col md:flex-row transition-colors duration-200 ${
       darkMode ? 'bg-zinc-950 text-white' : 'bg-slate-50 text-black'
     }`}>
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} darkMode={darkMode} role={currentUser.role} />
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} darkMode={darkMode} role={currentUser.role} transfers={transfers} userContext={currentUser} />
       
       <div className="flex-1 flex flex-col min-w-0">
         <Header 
@@ -278,6 +296,7 @@ export default function App() {
           {activeTab === 'dashboard' && <Dashboard needs={needs} contributions={contributions} userContext={currentUser} darkMode={darkMode} />}
           {activeTab === 'needs' && <NeedsWorkspace needs={needs} setNeeds={setNeeds} userContext={currentUser} darkMode={darkMode} />}
           {activeTab === 'contributions' && <ContributionsWorkspace contributions={contributions} setContributions={setContributions} userContext={currentUser} darkMode={darkMode} />}
+          {activeTab === 'transfers' && <TransferWorkspace contributions={contributions} transfers={transfers} setTransfers={setTransfers} userContext={currentUser} darkMode={darkMode} />}
           {activeTab === 'users' && <UserWorkspace users={users} setUsers={setUsers} userContext={currentUser} darkMode={darkMode} />}
           {activeTab === 'about' && <AboutWorkspace darkMode={darkMode} />}
         </main>
@@ -352,18 +371,18 @@ function LoginScreen({ users, setUsers, onLoginSuccess, darkMode, setDarkMode })
       </div>
       <div className={`w-full max-w-md rounded-2xl border shadow-xl overflow-hidden ${darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-slate-300'}`}>
         <div className="h-1.5 w-full flex">
-          <div className="flex-1 bg-blue-800"></div>
+          <div className="flex-1 bg-amber-800"></div>
           <div className="flex-1 bg-amber-500"></div>
         </div>
         <div className="p-8">
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-amber-500 text-black flex items-center justify-center text-2xl font-black shadow-md mb-3 overflow-hidden ring-2 ring-blue-800 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900">
+          <div className="w-16 h-16 rounded-full bg-amber-500 text-black flex items-center justify-center text-2xl font-black shadow-md mb-3 overflow-hidden ring-2 ring-amber-800 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900">
              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
              <span className="hidden">R8</span>
           </div>
-          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-blue-400' : 'text-blue-800'} mb-1`}>Republic of the Philippines · Department of Education</p>
+          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-amber-400' : 'text-amber-800'} mb-1`}>Department of Education Region VIII</p>
           <h1 className={`text-xl font-black tracking-tight ${darkMode ? 'text-amber-400' : 'text-black'}`}>Project UGNAY</h1>
-          <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-black'} mt-1`}>by DepEd Region VIII</p>
+          <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-black'} mt-1`}>Unified Gateway for Needs and Assistance Yields</p>
         </div>
 
         {resetUser ? (
@@ -430,38 +449,58 @@ function LoginScreen({ users, setUsers, onLoginSuccess, darkMode, setDarkMode })
   );
 }
 
-function Sidebar({ activeTab, setActiveTab, darkMode, role }) {
+function Sidebar({ activeTab, setActiveTab, darkMode, role, transfers, userContext }) {
   const allTabs = [
     { id: 'dashboard', label: 'Overview Dashboard', icon: 'dashboard', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
     { id: 'needs', label: 'Needs', icon: 'needs', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
     { id: 'contributions', label: 'Contributions', icon: 'contributions', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.PARTNER, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER] },
+    { id: 'transfers', label: 'Transfers', icon: 'transfer', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.END_USER] },
     { id: 'users', label: 'User Management', icon: 'users', roles: [SYSTEM_ROLES.SUPERADMIN, SYSTEM_ROLES.ICT_USER] },
     { id: 'about', label: 'About', icon: 'info', roles: Object.values(SYSTEM_ROLES) }
   ];
   const filteredTabs = allTabs.filter(t => t.roles.includes(role));
 
+  const pendingApprovalCount = useMemo(() => {
+    if (!transfers || !userContext) return 0;
+    if (userContext.role === SYSTEM_ROLES.SUPERADMIN) {
+      return transfers.filter(t => t.status === 'Pending').length;
+    }
+    if (userContext.role === SYSTEM_ROLES.FOCAL) {
+      return transfers.filter(t => {
+        if (t.status !== 'Pending') return false;
+        const isCrossOffice = t.fromOffice !== t.toOffice;
+        if (isCrossOffice) return userContext.office === 'Regional Office';
+        return t.fromOffice === userContext.office;
+      }).length;
+    }
+    return 0;
+  }, [transfers, userContext]);
+
   return (
     <aside className={`w-full md:w-64 border-b md:border-b-0 md:border-r transition-all ${darkMode ? 'bg-black border-zinc-900 text-zinc-100' : 'bg-zinc-900 border-zinc-950 text-white'} flex flex-col`}>
       <div className="h-1.5 w-full flex">
-        <div className="flex-1 bg-blue-800"></div>
+        <div className="flex-1 bg-orange-800"></div>
         <div className="flex-1 bg-amber-500"></div>
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-zinc-800">
-        <div className="w-11 h-11 rounded-full bg-amber-500 flex items-center justify-center text-black font-black shadow-md overflow-hidden ring-2 ring-blue-800 ring-offset-2 ring-offset-zinc-900">
+        <div className="w-11 h-11 rounded-full bg-amber-500 flex items-center justify-center text-black font-black shadow-md overflow-hidden ring-2 ring-orange-800 ring-offset-2 ring-offset-zinc-900">
           <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
           <span className="hidden">R8</span>
         </div>
         <div>
-          <p className="text-[8px] uppercase tracking-wider text-blue-400 font-bold leading-none mb-0.5">Republic of the Philippines · Dep. of Education</p>
+          <p className="text-[10px] uppercase tracking-wider text-orange-400 font-bold leading-none mb-0.5">DepEd Region VIII</p>
           <h1 className="font-bold text-sm tracking-tight text-amber-400">Project UGNAY</h1>
-          <p className="text-[10px] uppercase tracking-wider text-white opacity-80 font-medium">DepEd Region VIII</p>
+          <p className="text-[7px] uppercase tracking-wider text-white opacity-80 font-medium">Unified Gateway for Needs and Assistance Yields</p>
         </div>
       </div>
       <div className="flex-1 p-3 space-y-1 flex md:flex-col overflow-x-auto">
         {filteredTabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-lg whitespace-nowrap transition-all border-l-2 ${activeTab === tab.id ? 'bg-amber-500 text-black font-bold shadow-md border-blue-800' : 'hover:bg-zinc-800 text-white border-transparent'}`}>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-lg whitespace-nowrap transition-all border-l-2 ${activeTab === tab.id ? 'bg-amber-500 text-black font-bold shadow-md border-orange-800' : 'hover:bg-zinc-800 text-white border-transparent'}`}>
             <Icon name={tab.icon} size={16} />
             <span>{tab.label}</span>
+            {tab.id === 'transfers' && pendingApprovalCount > 0 && (
+              <span className="ml-auto bg-red-500 text-white text-[10px] font-black rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">{pendingApprovalCount}</span>
+            )}
           </button>
         ))}
       </div>
@@ -545,7 +584,7 @@ function Header({ currentUser, darkMode, setDarkMode, onLogout, onUpdateProfile 
   return (
     <div>
       <div className="h-1 w-full flex">
-        <div className="flex-1 bg-blue-800"></div>
+        <div className="flex-1 bg-orange-800"></div>
         <div className="flex-1 bg-amber-500"></div>
       </div>
       <header className="px-6 py-4 border-b border-zinc-800 bg-zinc-900 shadow-sm flex justify-between items-center gap-4">
@@ -1165,11 +1204,12 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
           </style>
         </head>
         <body>
-          ${buildPrintHeaderHtml(filters.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+          ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
           ${buildPrintMetaRow(filters.office, todayFormatted)}
           <h2>Needs Ledger</h2>
           <table>
             <thead>
+              ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 7)}
               <tr>
                 <th>Date</th>
                 <th>Office</th>
@@ -1193,6 +1233,14 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </tr>
               `).join('')}
             </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" style="text-align:right;"><strong>TOTAL</strong></td>
+                <td class="text-right"><strong>${sortedFilteredView.reduce((a, n) => a + Number(n.qty), 0)}</strong></td>
+                <td class="text-right"><strong>P ${sortedFilteredView.reduce((a, n) => a + Number(n.value), 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
         </body>
       </html>
@@ -1223,11 +1271,12 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
           </style>
         </head>
         <body>
-          ${buildPrintHeaderHtml(filters.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+          ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
           ${buildPrintMetaRow(filters.office, todayFormatted)}
           <h2>Summary of Needs</h2>
           <table>
             <thead>
+              ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 4)}
               <tr>
                 <th>Category / Specific Item</th>
                 <th class="text-right">Quantity</th>
@@ -1253,6 +1302,14 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 `).join('')}
               `).join('')}
             </tbody>
+            <tfoot>
+              <tr>
+                <td style="text-align:right;"><strong>TOTAL</strong></td>
+                <td class="text-right"><strong>${sortedNeedsCategorySummary.reduce((a, c) => a + c.qty, 0)}</strong></td>
+                <td class="text-right"><strong>P ${sortedNeedsCategorySummary.reduce((a, c) => a + c.value, 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
         </body>
       </html>
@@ -1290,16 +1347,18 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
             th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
             .text-right { text-align: right; }
             .div-row td { padding-left: 28px; font-size: 12px; color: #444; }
+            .section-row td { padding-left: 44px; font-size: 11px; color: #666; }
           </style>
         </head>
         <body>
-          ${buildPrintHeaderHtml(filters.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+          ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
           ${buildPrintMetaRow(filters.office, todayFormatted)}
           <h2>Offices Matrix</h2>
           <table>
             <thead>
+              ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 3)}
               <tr>
-                <th>Office / Division</th>
+                <th>Office / Division / Section</th>
                 <th class="text-right">No. of Needs</th>
                 <th class="text-right">Total Estimated Value (PHP)</th>
               </tr>
@@ -1317,9 +1376,23 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                     <td class="text-right">${d.needsCount}</td>
                     <td class="text-right">P ${Number(d.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                   </tr>
+                  ${d.sections.map(s => `
+                    <tr class="section-row">
+                      <td>${s.section}</td>
+                      <td class="text-right">${s.needsCount}</td>
+                      <td class="text-right">P ${Number(s.value).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    </tr>
+                  `).join('')}
                 `).join('')}
               `).join('')}
             </tbody>
+            <tfoot>
+              <tr>
+                <td style="text-align:right;"><strong>TOTAL</strong></td>
+                <td class="text-right"><strong>${sortedOfficesSummary.reduce((a, o) => a + o.needsCount, 0)}</strong></td>
+                <td class="text-right"><strong>P ${sortedOfficesSummary.reduce((a, o) => a + o.value, 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+              </tr>
+            </tfoot>
           </table>
         </body>
       </html>
@@ -1332,9 +1405,12 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
   const handleExportOffices = () => {
     const exportPayload = [];
     sortedOfficesSummary.forEach(o => {
-      exportPayload.push({ 'Office': o.office, 'Division/Section/Unit': '(All Divisions)', 'No. of Needs': o.needsCount, 'Total Estimated Value (PHP)': o.value });
+      exportPayload.push({ 'Office': o.office, 'Division': '(All Divisions)', 'Section/Unit': '', 'No. of Needs': o.needsCount, 'Total Estimated Value (PHP)': o.value });
       o.divisions.forEach(d => {
-        exportPayload.push({ 'Office': o.office, 'Division/Section/Unit': d.fd, 'No. of Needs': d.needsCount, 'Total Estimated Value (PHP)': d.value });
+        exportPayload.push({ 'Office': o.office, 'Division': d.fd, 'Section/Unit': '(All Sections)', 'No. of Needs': d.needsCount, 'Total Estimated Value (PHP)': d.value });
+        d.sections.forEach(s => {
+          exportPayload.push({ 'Office': o.office, 'Division': d.fd, 'Section/Unit': s.section, 'No. of Needs': s.needsCount, 'Total Estimated Value (PHP)': s.value });
+        });
       });
     });
     exportToCSV(exportPayload, 'PROJECT_UGNAY_OFFICES_EXPORT');
@@ -1831,12 +1907,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
           </style>
         </head>
         <body>
-          ${buildPrintHeaderHtml(filters.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+          ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
           ${buildPrintMetaRow(filters.office, todayFormatted)}
           <h2>Resource Summary Ledger</h2>
           <h3>${selectedPartner.name}</h3>
           <table>
             <thead>
+              ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 8)}
               <tr>
                 <th>Date</th>
                 <th>Office</th>
@@ -1963,11 +2040,12 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
           </style>
         </head>
         <body>
-          ${buildPrintHeaderHtml(filters.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+          ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
           ${buildPrintMetaRow(filters.office, todayFormatted)}
           <h2>Summary of Contributions</h2>
           <table>
             <thead>
+              ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 4)}
               <tr>
                 <th>Category / Specific Item</th>
                 <th class="text-center">No. of Partners (Donors)</th>
@@ -1993,6 +2071,14 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 `).join('')}
               `).join('')}
             </tbody>
+            <tfoot>
+              <tr>
+                <td style="text-align:right;"><strong>TOTAL</strong></td>
+                <td></td>
+                <td class="text-right"><strong>P ${sortedCategorySummary.reduce((a, c) => a + c.value, 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
         </body>
       </html>
@@ -2111,11 +2197,12 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
           </style>
         </head>
         <body>
-          ${buildPrintHeaderHtml(filters.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+          ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
           ${buildPrintMetaRow(filters.office, todayFormatted)}
           <h2>Contributions Ledger</h2>
           <table>
             <thead>
+              ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 6)}
               <tr>
                 <th>Date</th>
                 <th>Partner</th>
@@ -2137,6 +2224,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 </tr>
               `).join('')}
             </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" style="text-align:right;"><strong>TOTAL</strong></td>
+                <td class="text-right"><strong>${sortedFilteredView.reduce((a, c) => a + Number(c.qty), 0)}</strong></td>
+                <td class="text-right"><strong>P ${sortedFilteredView.reduce((a, c) => a + Number(c.value), 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+              </tr>
+            </tfoot>
           </table>
         </body>
       </html>
@@ -2313,11 +2407,12 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                       </style>
                     </head>
                     <body>
-                      ${buildPrintHeaderHtml(filters.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+                      ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
           ${buildPrintMetaRow(filters.office, todayFormatted)}
                       <h2>List of Partners</h2>
                       <table>
                         <thead>
+                          ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 3)}
                           <tr>
                             <th>Partner Name</th>
                             <th class="text-center">No. of Contributions</th>
@@ -2333,6 +2428,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                             </tr>
                           `).join('')}
                         </tbody>
+                        <tfoot>
+                          <tr>
+                            <td style="text-align:right;"><strong>TOTAL</strong></td>
+                            <td class="text-center"><strong>${sortedList.reduce((a, p) => a + p.aggregateLogs.length, 0)} transactions</strong></td>
+                            <td class="text-right"><strong>P ${sortedList.reduce((a, p) => a + Number(p.totalValuation), 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+                          </tr>
+                        </tfoot>
                       </table>
                     </body>
                   </html>
@@ -2680,6 +2782,571 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 }
 
 // --- TAB: USER MANAGEMENT ---
+function TransferWorkspace({ contributions, transfers, setTransfers, userContext, darkMode }) {
+  const isSuperAdmin = userContext.role === SYSTEM_ROLES.SUPERADMIN;
+  const isFocal = userContext.role === SYSTEM_ROLES.FOCAL;
+  const isRoFocal = isFocal && userContext.office === 'Regional Office';
+  const isEndUser = userContext.role === SYSTEM_ROLES.END_USER;
+  const isConstrained = userContext.office !== 'Regional Office' && userContext.role !== SYSTEM_ROLES.PARTNER;
+
+  const [subTab, setSubTab] = useState('inventory');
+  const [filters, setFilters] = useState({ office: isConstrained ? userContext.office : '', fd: '', section: '', category: '', specificItem: '', year: 'All', quarter: 'All', month: 'All' });
+
+  // --- Available stock, derived from contributions received plus approved/pending transfers ---
+  const stockMap = useMemo(() => {
+    const map = {};
+    const keyOf = (o, f, s, c, i, u) => [o, f, s, c, i, u].join('|||');
+    const ensure = (k, meta) => { if (!map[k]) map[k] = { ...meta, qty: 0 }; };
+
+    contributions.forEach(c => {
+      const k = keyOf(c.office, c.fd, c.section, c.category, c.specificItem, c.uom);
+      ensure(k, { office: c.office, fd: c.fd, section: c.section, category: c.category, specificItem: c.specificItem, uom: c.uom });
+      map[k].qty += Number(c.qty);
+    });
+
+    transfers.forEach(t => {
+      const outK = keyOf(t.fromOffice, t.fromFd, t.fromSection, t.category, t.specificItem, t.uom);
+      ensure(outK, { office: t.fromOffice, fd: t.fromFd, section: t.fromSection, category: t.category, specificItem: t.specificItem, uom: t.uom });
+      if (t.status === 'Transferred') {
+        map[outK].qty -= Number(t.qty);
+        const inK = keyOf(t.toOffice, t.toFd, t.toSection, t.category, t.specificItem, t.uom);
+        ensure(inK, { office: t.toOffice, fd: t.toFd, section: t.toSection, category: t.category, specificItem: t.specificItem, uom: t.uom });
+        map[inK].qty += Number(t.qty);
+      } else if (t.status === 'Pending') {
+        map[outK].qty -= Number(t.qty); // reserved, can't be double-committed while awaiting approval
+      }
+    });
+
+    return map;
+  }, [contributions, transfers]);
+
+  const inventoryRows = useMemo(() => Object.values(stockMap).filter(r => r.qty > 0), [stockMap]);
+
+  const canInitiateFrom = (row) => {
+    if (isSuperAdmin) return true;
+    if (isFocal) return row.office === userContext.office;
+    if (isEndUser) return row.office === userContext.office;
+    return false;
+  };
+
+  const scopedInventory = useMemo(() => {
+    return inventoryRows.filter(r => {
+      if (isConstrained && r.office !== userContext.office) return false;
+      if (filters.office && r.office !== filters.office) return false;
+      if (filters.fd && r.fd !== filters.fd) return false;
+      if (filters.section && r.section !== filters.section) return false;
+      if (filters.category && r.category !== filters.category) return false;
+      if (filters.specificItem && r.specificItem !== filters.specificItem) return false;
+      return true;
+    });
+  }, [inventoryRows, filters, isConstrained, userContext]);
+
+  const [inventorySearch, setInventorySearch] = useState('');
+  const filteredInventory = useMemo(() => {
+    if (!inventorySearch.trim()) return scopedInventory;
+    const q = inventorySearch.toLowerCase().trim();
+    return scopedInventory.filter(r => r.category.toLowerCase().includes(q) || r.specificItem.toLowerCase().includes(q) || r.office.toLowerCase().includes(q));
+  }, [scopedInventory, inventorySearch]);
+
+  const { items: sortedInventory, requestSort: requestSortInventory, sortConfig: sortConfigInventory } = useSortableData(filteredInventory);
+
+  const inventorySuggestions = useMemo(() => {
+    if (!inventorySearch.trim()) return [];
+    const q = inventorySearch.toLowerCase().trim();
+    const names = new Set();
+    scopedInventory.forEach(r => {
+      if (r.specificItem.toLowerCase().includes(q)) names.add(r.specificItem);
+      if (r.category.toLowerCase().includes(q)) names.add(r.category);
+    });
+    return Array.from(names).filter(n => n.toLowerCase() !== q).slice(0, 5);
+  }, [scopedInventory, inventorySearch]);
+
+  // --- Transfer ledger (requests, pending + resolved) ---
+  const matchesDate = (dateStr) => {
+    const d = new Date(dateStr);
+    if (filters.year !== 'All' && d.getFullYear().toString() !== filters.year) return false;
+    if (filters.month !== 'All' && MONTHS[d.getMonth()] !== filters.month) return false;
+    if (filters.quarter !== 'All' && `Q${Math.floor(d.getMonth() / 3) + 1}` !== filters.quarter) return false;
+    return true;
+  };
+
+  const scopedTransfers = useMemo(() => {
+    return transfers.filter(t => {
+      if (isConstrained && t.fromOffice !== userContext.office && t.toOffice !== userContext.office) return false;
+      if (filters.office && t.fromOffice !== filters.office && t.toOffice !== filters.office) return false;
+      if (filters.category && t.category !== filters.category) return false;
+      if (filters.specificItem && t.specificItem !== filters.specificItem) return false;
+      if (!matchesDate(t.dateInitiated)) return false;
+      return true;
+    });
+  }, [transfers, filters, isConstrained, userContext]);
+
+  const [ledgerSearch, setLedgerSearch] = useState('');
+  const filteredLedger = useMemo(() => {
+    if (!ledgerSearch.trim()) return scopedTransfers;
+    const q = ledgerSearch.toLowerCase().trim();
+    return scopedTransfers.filter(t => t.specificItem.toLowerCase().includes(q) || t.category.toLowerCase().includes(q) || t.fromOffice.toLowerCase().includes(q) || t.toOffice.toLowerCase().includes(q));
+  }, [scopedTransfers, ledgerSearch]);
+
+  const { items: sortedLedger, requestSort: requestSortLedger, sortConfig: sortConfigLedger } = useSortableData(filteredLedger);
+
+  const canApprove = (t) => {
+    if (t.status !== 'Pending') return false;
+    if (isSuperAdmin) return true;
+    if (!isFocal) return false;
+    const isCrossOffice = t.fromOffice !== t.toOffice;
+    if (isCrossOffice) return isRoFocal;
+    return t.fromOffice === userContext.office;
+  };
+
+  const [transferModal, setTransferModal] = useState(null);
+  const [form, setForm] = useState({ toOffice: '', toFd: '', toSection: '', qty: '', remarks: '' });
+  const [formError, setFormError] = useState('');
+
+  const openTransferModal = (row) => {
+    setTransferModal(row);
+    setFormError('');
+    const sameOfficeOnly = !(isSuperAdmin || isRoFocal);
+    setForm({ toOffice: sameOfficeOnly ? row.office : '', toFd: '', toSection: '', qty: '', remarks: '' });
+  };
+
+  const toFdOptions = form.toOffice ? Object.keys(STRUCTURE[form.toOffice === 'Regional Office' ? 'Regional Office' : 'SDO']) : [];
+  const toSectionOptions = (form.toOffice && form.toFd) ? (STRUCTURE[form.toOffice === 'Regional Office' ? 'Regional Office' : 'SDO'][form.toFd] || []) : [];
+
+  const handleSubmitTransfer = (e) => {
+    e.preventDefault();
+    if (!transferModal) return;
+    const qtyNum = Number(form.qty);
+    if (!qtyNum || qtyNum <= 0) { setFormError('Enter a valid quantity.'); return; }
+    if (qtyNum > transferModal.qty) { setFormError(`Only ${transferModal.qty} ${transferModal.uom} available at this location.`); return; }
+    if (!form.toOffice || !form.toFd || !form.toSection) { setFormError('Please complete the destination office, division, and section.'); return; }
+    if (form.toOffice === transferModal.office && form.toFd === transferModal.fd && form.toSection === transferModal.section) { setFormError('Destination must differ from the source.'); return; }
+
+    const isCrossOffice = form.toOffice !== transferModal.office;
+    if (isCrossOffice && !isSuperAdmin && !isRoFocal) { setFormError('Transfers between offices require initiation by the Regional Office Partnerships Focal.'); return; }
+
+    const newTransfer = {
+      id: 'TR' + (transfers.length + 1) + '-' + Date.now().toString().slice(-4),
+      dateInitiated: new Date().toISOString().split('T')[0],
+      category: transferModal.category,
+      specificItem: transferModal.specificItem,
+      uom: transferModal.uom,
+      qty: qtyNum,
+      fromOffice: transferModal.office,
+      fromFd: transferModal.fd,
+      fromSection: transferModal.section,
+      toOffice: form.toOffice,
+      toFd: form.toFd,
+      toSection: form.toSection,
+      remarks: form.remarks,
+      status: 'Pending',
+      initiatedBy: userContext.name,
+      initiatedByRole: userContext.role,
+      approvedBy: null,
+      history: [{ timestamp: new Date().toLocaleString(), user: userContext.name, action: `Transfer request initiated for ${qtyNum} ${transferModal.uom} of ${transferModal.specificItem}, from ${transferModal.office} to ${form.toOffice}.` }]
+    };
+    setTransfers([...transfers, newTransfer]);
+    setTransferModal(null);
+  };
+
+  const handleApprove = (t) => {
+    if (!canApprove(t)) return;
+    if (window.confirm(`Approve transfer of ${t.qty} ${t.uom} ${t.specificItem} from ${t.fromOffice} to ${t.toOffice}?`)) {
+      setTransfers(transfers.map(x => x.id === t.id ? {
+        ...x, status: 'Transferred', approvedBy: userContext.name,
+        history: [...x.history, { timestamp: new Date().toLocaleString(), user: userContext.name, action: 'Transfer approved. Inventory updated at destination.' }]
+      } : x));
+    }
+  };
+
+  const handleReject = (t) => {
+    if (!canApprove(t)) return;
+    if (window.confirm(`Reject this transfer request? The reserved quantity will be released back to the source.`)) {
+      setTransfers(transfers.map(x => x.id === t.id ? {
+        ...x, status: 'Rejected',
+        history: [...x.history, { timestamp: new Date().toLocaleString(), user: userContext.name, action: 'Transfer request rejected.' }]
+      } : x));
+    }
+  };
+
+  const [trailModal, setTrailModal] = useState(null);
+
+  const handlePrintInventory = () => {
+    const printWindow = window.open('', '_blank');
+    const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Resource Inventory</title>
+          <style>
+            ${PRINT_HEADER_STYLES}
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
+            h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #000; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
+            .text-right { text-align: right; }
+          </style>
+        </head>
+        <body>
+          ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+          ${buildPrintMetaRow(filters.office, todayFormatted)}
+          <h2>Resource Inventory</h2>
+          <table>
+            <thead>
+              ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 6)}
+              <tr>
+                <th>Office</th>
+                <th>Division</th>
+                <th>Section/Unit</th>
+                <th>Category</th>
+                <th>Item</th>
+                <th class="text-right">Available Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedInventory.map(r => `
+                <tr>
+                  <td><strong>${r.office}</strong></td>
+                  <td>${r.fd}</td>
+                  <td>${r.section}</td>
+                  <td>${r.category}</td>
+                  <td>${r.specificItem}</td>
+                  <td class="text-right">${r.qty} ${r.uom}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5" style="text-align:right;"><strong>TOTAL</strong></td>
+                <td class="text-right"><strong>${sortedInventory.reduce((a, r) => a + Number(r.qty), 0)}</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
+  };
+
+  const handleExportInventory = () => {
+    exportToCSV(sortedInventory.map(r => ({
+      'Office': r.office, 'Division': r.fd, 'Section/Unit': r.section, 'Category': r.category, 'Item': r.specificItem, 'Available Qty': r.qty, 'UOM': r.uom
+    })), 'PROJECT_UGNAY_INVENTORY_EXPORT');
+  };
+
+  const handlePrintTransferLedger = () => {
+    const printWindow = window.open('', '_blank');
+    const todayFormatted = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Transfer Ledger</title>
+          <style>
+            ${PRINT_HEADER_STYLES}
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 30px; color: #000; line-height: 1.5; }
+            h2 { text-align: center; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; font-weight: 800; color: #000; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: #000; }
+            .text-right { text-align: right; }
+            .text-center { text-align: center; }
+          </style>
+        </head>
+        <body>
+          ${buildPrintHeaderHtml(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER)}
+          ${buildPrintMetaRow(filters.office, todayFormatted)}
+          <h2>Transfer Ledger</h2>
+          <table>
+            <thead>
+              ${buildRunningHeaderRow(userContext.office, userContext.role === SYSTEM_ROLES.PARTNER, 7)}
+              <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th class="text-right">Qty</th>
+                <th>From</th>
+                <th>To</th>
+                <th class="text-center">Status</th>
+                <th>Initiated By</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sortedLedger.map(t => `
+                <tr>
+                  <td>${t.dateInitiated}</td>
+                  <td>${t.specificItem}</td>
+                  <td class="text-right">${t.qty} ${t.uom}</td>
+                  <td>${t.fromOffice}</td>
+                  <td>${t.toOffice}</td>
+                  <td class="text-center">${t.status}</td>
+                  <td>${t.initiatedBy}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align:right;"><strong>TOTAL</strong></td>
+                <td class="text-right"><strong>${sortedLedger.reduce((a, t) => a + Number(t.qty), 0)}</strong></td>
+                <td colspan="4"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
+  };
+
+  const handleExportTransferLedger = () => {
+    exportToCSV(sortedLedger.map(t => ({
+      'Date': t.dateInitiated, 'Category': t.category, 'Item': t.specificItem, 'Qty': t.qty, 'UOM': t.uom,
+      'From Office': t.fromOffice, 'From Division': t.fromFd, 'From Section': t.fromSection,
+      'To Office': t.toOffice, 'To Division': t.toFd, 'To Section': t.toSection,
+      'Status': t.status, 'Initiated By': t.initiatedBy, 'Approved By': t.approvedBy || '', 'Remarks': t.remarks
+    })), 'PROJECT_UGNAY_TRANSFER_LEDGER_EXPORT');
+  };
+
+  const inp = `w-full p-2 text-xs rounded border outline-none transition ${darkMode ? 'bg-zinc-900 border-zinc-700 text-white' : 'bg-white border-slate-300 text-black'} focus:border-amber-500`;
+
+  return (
+    <div className="space-y-6">
+      <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
+
+      <div className="flex border-b border-slate-200 dark:border-zinc-800">
+        <button onClick={() => setSubTab('inventory')} className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'inventory' ? `border-amber-500 ${darkMode ? 'text-amber-400' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}>
+          Inventory
+        </button>
+        <button onClick={() => setSubTab('ledger')} className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? `border-amber-500 ${darkMode ? 'text-amber-400' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}>
+          Transfer Ledger
+        </button>
+      </div>
+
+      {subTab === 'inventory' && (
+        <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm mb-4">
+            <div className="relative w-full max-w-md">
+              <input type="text" value={inventorySearch} onChange={e => setInventorySearch(e.target.value)} placeholder="Search Category or Item..." className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-zinc-800 shadow-sm outline-none transition focus:border-amber-500 bg-zinc-900 text-white" />
+              {inventorySearch && (
+                <button onClick={() => setInventorySearch('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100"><Icon name="close" size={14} /></button>
+              )}
+              {inventorySuggestions.length > 0 && (
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-lg shadow-xl z-30 overflow-hidden divide-y bg-zinc-900 border-zinc-800 divide-zinc-800/60">
+                  {inventorySuggestions.map(hint => (
+                    <button key={hint} onClick={() => setInventorySearch(hint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-zinc-800/40 text-white transition">{hint}</button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+              <button onClick={handlePrintInventory} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                <Icon name="print" size={14} /><span>Print</span>
+              </button>
+              <button onClick={handleExportInventory} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700 transition">
+                <Icon name="download" size={14} /><span>Export Matrix</span>
+              </button>
+            </div>
+          </div>
+          <table className="w-full text-left text-xs whitespace-nowrap">
+            <thead>
+              <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortInventory('office')}>Office <SortIndicator sortConfig={sortConfigInventory} sortKey="office" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortInventory('fd')}>Division <SortIndicator sortConfig={sortConfigInventory} sortKey="fd" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortInventory('section')}>Section/Unit <SortIndicator sortConfig={sortConfigInventory} sortKey="section" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortInventory('category')}>Category <SortIndicator sortConfig={sortConfigInventory} sortKey="category" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortInventory('specificItem')}>Item <SortIndicator sortConfig={sortConfigInventory} sortKey="specificItem" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortInventory('qty')}>Available Qty <SortIndicator sortConfig={sortConfigInventory} sortKey="qty" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-center pr-2 ${darkMode ? 'text-white' : 'text-black'}`}>Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
+              {sortedInventory.map((row, idx) => (
+                <tr key={idx} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                  <td className="py-2.5 pl-2 font-bold">{row.office}</td>
+                  <td className="py-2.5">{row.fd}</td>
+                  <td className="py-2.5">{row.section}</td>
+                  <td className="py-2.5">{row.category}</td>
+                  <td className="py-2.5 font-semibold">{row.specificItem}</td>
+                  <td className={`py-2.5 text-right font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>{row.qty} {row.uom}</td>
+                  <td className="py-2.5 text-center pr-2">
+                    {canInitiateFrom(row) ? (
+                      <button onClick={() => openTransferModal(row)} className="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-black rounded text-[10px] font-bold transition inline-flex items-center gap-1">
+                        <Icon name="transfer" size={11} /> Transfer
+                      </button>
+                    ) : (
+                      <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-40 italic`}>&mdash;</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+              {sortedInventory.length === 0 && (
+                <tr><td colSpan="7" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 italic`}>No inventory items match the applied parameter sets.</td></tr>
+              )}
+            </tbody>
+            {sortedInventory.length > 0 && (
+              <tfoot>
+                <tr className={`border-t-2 border-slate-300 dark:border-zinc-700 font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+                  <td className="py-2.5 pl-2" colSpan="5">TOTAL</td>
+                  <td className="py-2.5 text-right">{sortedInventory.reduce((a, r) => a + Number(r.qty), 0)}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            )}
+          </table>
+        </div>
+      )}
+
+      {subTab === 'ledger' && (
+        <div className={`p-5 rounded-xl border shadow-sm overflow-x-auto ${darkMode ? 'bg-zinc-900/60 border-zinc-800' : 'bg-white border-slate-200'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-zinc-900 p-4 border border-zinc-800 rounded-xl shadow-sm mb-4">
+            <div className="relative w-full max-w-md">
+              <input type="text" value={ledgerSearch} onChange={e => setLedgerSearch(e.target.value)} placeholder="Search item, office..." className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-lg border border-zinc-800 shadow-sm outline-none transition focus:border-amber-500 bg-zinc-900 text-white" />
+              {ledgerSearch && (
+                <button onClick={() => setLedgerSearch('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100"><Icon name="close" size={14} /></button>
+              )}
+            </div>
+            <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+              <button onClick={handlePrintTransferLedger} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold shadow hover:bg-amber-600 transition">
+                <Icon name="print" size={14} /><span>Print</span>
+              </button>
+              <button onClick={handleExportTransferLedger} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-800 text-amber-400 rounded-lg text-xs font-bold border border-amber-500/20 hover:bg-zinc-700 transition">
+                <Icon name="download" size={14} /><span>Export Matrix</span>
+              </button>
+            </div>
+          </div>
+          <table className="w-full text-left text-xs whitespace-nowrap">
+            <thead>
+              <tr className={`border-b border-slate-200 dark:border-zinc-800 ${darkMode ? 'text-white' : 'text-black'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortLedger('dateInitiated')}>Date <SortIndicator sortConfig={sortConfigLedger} sortKey="dateInitiated" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortLedger('specificItem')}>Item <SortIndicator sortConfig={sortConfigLedger} sortKey="specificItem" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortLedger('qty')}>Qty <SortIndicator sortConfig={sortConfigLedger} sortKey="qty" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortLedger('fromOffice')}>From <SortIndicator sortConfig={sortConfigLedger} sortKey="fromOffice" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortLedger('toOffice')}>To <SortIndicator sortConfig={sortConfigLedger} sortKey="toOffice" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-center cursor-pointer hover:text-amber-600 dark:hover:text-amber-400 select-none ${darkMode ? 'text-white' : 'text-black'}`} onClick={() => requestSortLedger('status')}>Status <SortIndicator sortConfig={sortConfigLedger} sortKey="status" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-center pr-2 ${darkMode ? 'text-white' : 'text-black'}`}>Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
+              {sortedLedger.map(t => (
+                <tr key={t.id} className={`hover:bg-slate-50 dark:hover:bg-zinc-800/30 ${darkMode ? 'text-white' : 'text-black'}`}>
+                  <td className="py-2.5 pl-2">{t.dateInitiated}</td>
+                  <td className="py-2.5 font-semibold">{t.specificItem}</td>
+                  <td className="py-2.5 text-right font-medium">{t.qty} {t.uom}</td>
+                  <td className="py-2.5">{t.fromOffice}<div className={`text-[9px] ${darkMode ? 'text-white' : 'text-black'} opacity-60`}>{t.fromFd} &middot; {t.fromSection}</div></td>
+                  <td className="py-2.5">{t.toOffice}<div className={`text-[9px] ${darkMode ? 'text-white' : 'text-black'} opacity-60`}>{t.toFd} &middot; {t.toSection}</div></td>
+                  <td className="py-2.5 text-center">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                      t.status === 'Pending' ? 'bg-orange-500/15 text-orange-500' :
+                      t.status === 'Transferred' ? 'bg-green-500/15 text-green-500' :
+                      'bg-red-500/15 text-red-500'
+                    }`}>{t.status}</span>
+                  </td>
+                  <td className="py-2.5 text-center pr-2">
+                    <div className="flex items-center justify-center gap-1">
+                      {canApprove(t) && (
+                        <>
+                          <button onClick={() => handleApprove(t)} className="p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded text-green-600 hover:text-green-500 transition" title="Approve Transfer">
+                            <Icon name="check" size={14} />
+                          </button>
+                          <button onClick={() => handleReject(t)} className="p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded text-red-600 hover:text-red-500 transition" title="Reject Transfer">
+                            <Icon name="close" size={14} />
+                          </button>
+                        </>
+                      )}
+                      <button onClick={() => setTrailModal(t)} className={`p-1 hover:bg-slate-200 dark:hover:bg-zinc-800 rounded ${darkMode ? 'text-white' : 'text-black'} hover:text-amber-600 dark:hover:text-amber-500 transition`} title="View History">
+                        <Icon name="history" size={14} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {sortedLedger.length === 0 && (
+                <tr><td colSpan="7" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-black'} opacity-60 italic`}>No transfer records match the applied parameter sets.</td></tr>
+              )}
+            </tbody>
+            {sortedLedger.length > 0 && (
+              <tfoot>
+                <tr className={`border-t-2 border-slate-300 dark:border-zinc-700 font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+                  <td className="py-2.5 pl-2" colSpan="2">TOTAL</td>
+                  <td className="py-2.5 text-right">{sortedLedger.reduce((a, t) => a + Number(t.qty), 0)}</td>
+                  <td colSpan="4"></td>
+                </tr>
+              </tfoot>
+            )}
+          </table>
+        </div>
+      )}
+
+      {transferModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <form onSubmit={handleSubmitTransfer} className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl space-y-4 ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-amber-400' : 'text-black'}`}>Initiate Transfer</h3>
+              <button type="button" onClick={() => setTransferModal(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
+            </div>
+
+            <div className={`p-3 rounded-lg text-[11px] border ${darkMode ? 'bg-zinc-950/40 border-zinc-800' : 'bg-slate-50 border-slate-200'}`}>
+              <p className="font-bold">{transferModal.specificItem} <span className="opacity-60">({transferModal.category})</span></p>
+              <p className="opacity-80 mt-0.5">From: {transferModal.office} &middot; {transferModal.fd} &middot; {transferModal.section}</p>
+              <p className={`mt-1 font-black ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>Available: {transferModal.qty} {transferModal.uom}</p>
+            </div>
+
+            <select value={form.toOffice} onChange={e => setForm({ ...form, toOffice: e.target.value, toFd: '', toSection: '' })} className={inp} disabled={!(isSuperAdmin || isRoFocal)} required>
+              <option value="">Destination Office</option>
+              {OFFICES.map(o => <option key={o} value={o}>{o}</option>)}
+            </select>
+            <select value={form.toFd} onChange={e => setForm({ ...form, toFd: e.target.value, toSection: '' })} className={inp} disabled={!form.toOffice} required>
+              <option value="">Destination Division</option>
+              {toFdOptions.map(fd => <option key={fd} value={fd}>{fd}</option>)}
+            </select>
+            <select value={form.toSection} onChange={e => setForm({ ...form, toSection: e.target.value })} className={inp} disabled={!form.toFd} required>
+              <option value="">Destination Section/Unit</option>
+              {toSectionOptions.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <input type="number" min="1" max={transferModal.qty} value={form.qty} onChange={e => setForm({ ...form, qty: e.target.value })} placeholder={`Quantity (max ${transferModal.qty})`} className={inp} required />
+            <input type="text" value={form.remarks} onChange={e => setForm({ ...form, remarks: e.target.value })} placeholder="Remarks (optional)" className={inp} />
+
+            {formError && <p className="text-red-500 text-[11px] font-semibold">{formError}</p>}
+
+            <p className={`text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-60`}>
+              {form.toOffice && form.toOffice !== transferModal.office
+                ? 'Cross-office transfer — requires Regional Office Focal approval.'
+                : 'Intra-office transfer — requires approval from this office\'s Partnerships Focal.'}
+            </p>
+
+            <button type="submit" className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-black font-black text-xs rounded transition shadow-md">Submit Transfer Request</button>
+          </form>
+        </div>
+      )}
+
+      {trailModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-6 rounded-2xl border shadow-2xl ${darkMode ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-white border-slate-200 text-black'}`}>
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-zinc-800 pb-2 mb-3">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-black'}`}>Transfer Audit Trail</h3>
+              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-black'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
+            </div>
+            <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
+              {trailModal.history?.map((t, i) => (
+                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-zinc-800/50 border-zinc-700' : 'bg-slate-50 border-slate-200'}`}>
+                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-black'} opacity-60 mb-1`}>
+                    <span>{t.user}</span>
+                    <span>{t.timestamp}</span>
+                  </div>
+                  <p className={`${darkMode ? 'text-white' : 'text-black'}`}>{t.action}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const MANAGEABLE_ROLES_FOR_ICT = [SYSTEM_ROLES.FOCAL, SYSTEM_ROLES.MONITORING, SYSTEM_ROLES.END_USER, SYSTEM_ROLES.PARTNER];
 
 function UserWorkspace({ users, setUsers, userContext, darkMode }) {
@@ -2915,7 +3582,7 @@ function AboutWorkspace({ darkMode }) {
 <p>The project was developed in response to the growing need for a streamlined and equitable mechanism for managing partnership initiatives and external assistance. Traditionally, partner interventions were often coordinated through separate channels, making it challenging to consolidate needs, monitor commitments, and ensure that resources reached the offices and schools that needed them most. Project UGNAY addresses these challenges by providing a single, integrated platform that enhances planning, coordination, accountability, and monitoring of partnership programs.</p>
 <p>This localized system bridges the gap between identified office needs and the resources provided by external partners, ensuring transparent, data-driven, needs-based, and equitable distribution of support across all offices in DepEd Region VIII. Through real-time monitoring, centralized records, and informed decision-making, Project UGNAY empowers both DepEd offices and partners to maximize the impact of every contribution while promoting accountability, efficiency, and sustainability in partnership initiatives.</p>
 <p>Beyond serving as a repository of requests and assistance, Project UGNAY functions as a strategic decision-support tool that enables regional leaders and partner organizations to identify priority areas, monitor resource allocation, evaluate partnership outcomes, and strengthen collaborative governance. By aligning partner contributions with validated needs, the system helps ensure that every intervention creates meaningful and measurable impact for learners, schools, and communities.</p>
-<p>Project UGNAY is conceptualized and realized through the visionary leadership of <strong>Regional Director Salustiano T. Jimenez, JD, EdD, CESO III</strong>, and <strong>Assistant Regional Director Marilyn B. Siao, PhD, CESO IV</strong>. The initiative is implemented through the <strong>Special Programs and Projects Section</strong> of the <strong>Education Support Services Division (ESSD)</strong>, the focal unit for Partnerships in DepEd Region VIII, reinforcing the Region's commitment to innovation, collaboration, and responsive governance in advancing quality basic education.</p>
+<p>Project UGNAY is conceptualized and realized through the visionary leadership of <strong>Regional Director Salustiano T. Jimenez, JD, EdD, CESO III</strong>, and <strong>Assistant Regional Director Marilyn B. Siao, PhD, CESO IV</strong>. The initiative is implemented through the <strong>Special Programs and Projects Section</strong> of the <strong>Education Support Services Division (ESSD)</strong>, the designated focal unit for Partnerships in DepEd Region VIII, reinforcing the Region's commitment to innovation, collaboration, and responsive governance in advancing quality basic education.</p>
         <div className="pt-4 border-t border-slate-200 dark:border-zinc-800 grid grid-cols-2 gap-4 text-xs">
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Version</span>
