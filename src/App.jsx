@@ -230,8 +230,8 @@ function useSortableData(items, config = null) {
 }
 
 const SortIndicator = ({ sortConfig, sortKey, darkMode }) => {
-  if (!sortConfig || sortConfig.key !== sortKey) return <span className={`ml-1 ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-40 dark:opacity-40 text-[10px]`}>↕</span>;
-  return <span className="ml-1 text-[10px] text-[#FFC145]">{sortConfig.direction === 'ascending' ? '▲' : '▼'}</span>;
+  if (!sortConfig || sortConfig.key !== sortKey) return <span className={`ml-1 ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-40 dark:opacity-40 text-[10px]`}>↕</span>;
+  return <span className="ml-1 text-[10px] text-[#FFC72C]">{sortConfig.direction === 'ascending' ? '▲' : '▼'}</span>;
 };
 
 // --- MAIN WRAPPER COMPONENT ---
@@ -279,7 +279,7 @@ export default function App() {
 
   return (
     <div className={`min-h-screen font-sans flex flex-col md:flex-row transition-colors duration-200 ${
-      darkMode ? 'bg-[#151129] text-white' : 'bg-[#F3EFFE] text-[#2D2650]'
+      darkMode ? 'bg-[#0C1638] text-white' : 'bg-[#FFFBF0] text-[#16213E]'
     }`}>
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} darkMode={darkMode} role={currentUser.role} transfers={transfers} userContext={currentUser} />
       
@@ -363,80 +363,80 @@ function LoginScreen({ users, setUsers, onLoginSuccess, darkMode, setDarkMode })
   };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-200 ${darkMode ? 'bg-[#151129] text-white' : 'bg-[#F3EFFE] text-[#2D2650]'}`}>
+    <div className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-200 ${darkMode ? 'bg-[#0C1638] text-white' : 'bg-[#FFFBF0] text-[#16213E]'}`}>
       <div className="absolute top-4 right-4">
-        <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-2xl border-2 shadow-[3px_3px_0px_rgba(0,0,0,0.1)] transition ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-[#FFC145]' : 'bg-white border-[#E4DEFB] text-[#8B5CF6]'}`}>
+        <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-2xl border-2 shadow-[3px_3px_0px_rgba(0,0,0,0.1)] transition ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-[#FFC72C]' : 'bg-white border-[#F5E6C8] text-[#2A3B8F]'}`}>
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
       </div>
-      <div className={`w-full max-w-md rounded-[32px] border-2 shadow-[10px_10px_0px_rgba(139,92,246,0.25)] overflow-hidden ${darkMode ? 'bg-[#211D3D] border-[#3A3266]' : 'bg-white border-white'}`}>
+      <div className={`w-full max-w-md rounded-[32px] border-2 shadow-[10px_10px_0px_rgba(27,138,74,0.22)] overflow-hidden ${darkMode ? 'bg-[#12204A] border-[#1E2D6E]' : 'bg-white border-white'}`}>
         <div className="h-1.5 w-full flex">
-          <div className="flex-1 bg-[#8B5CF6]"></div>
-          <div className="flex-1 bg-[#FF6B4A]"></div>
+          <div className="flex-1 bg-[#2A3B8F]"></div>
+          <div className="flex-1 bg-[#1B8A4A]"></div>
         </div>
         <div className="p-8">
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-[#FF6B4A] text-white flex items-center justify-center text-2xl font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] mb-3 overflow-hidden ring-4 ring-[#8B5CF6]/30 ring-offset-2 ring-offset-white dark:ring-offset-[#211D3D]">
+          <div className="w-16 h-16 rounded-full bg-[#1B8A4A] text-white flex items-center justify-center text-2xl font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] mb-3 overflow-hidden ring-4 ring-[#2A3B8F]/30 ring-offset-2 ring-offset-white dark:ring-offset-[#12204A]">
              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
              <span className="hidden">R8</span>
           </div>
-          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-[#B9A9FF]' : 'text-[#8B5CF6]'} mb-1`}>Republic of the Philippines · Department of Education</p>
-          <h1 className={`text-xl font-black tracking-tight ${darkMode ? 'text-[#FFC145]' : 'text-[#2D2650]'}`}>Project UGNAY</h1>
-          <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-[#2D2650]'} mt-1`}>by DepEd Region VIII</p>
+          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-[#F5D485]' : 'text-[#2A3B8F]'} mb-1`}>Republic of the Philippines · Department of Education</p>
+          <h1 className={`text-xl font-black tracking-tight ${darkMode ? 'text-[#FFC72C]' : 'text-[#16213E]'}`}>Project UGNAY</h1>
+          <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'} mt-1`}>by DepEd Region VIII</p>
         </div>
 
         {resetUser ? (
           <form onSubmit={handleSetNewPassword} className="space-y-4">
-            <div className={`p-3 text-xs bg-[#FF6B4A]/10 border-2 border-[#FF6B4A]/20 ${darkMode ? 'text-[#FFC145]' : 'text-[#B45309]'} font-semibold rounded-2xl text-center`}>
+            <div className={`p-3 text-xs bg-[#1B8A4A]/10 border-2 border-[#1B8A4A]/20 ${darkMode ? 'text-[#FFC72C]' : 'text-[#B45309]'} font-semibold rounded-2xl text-center`}>
               Your password was reset by an administrator. Please set a new password for <strong>{resetUser.username}</strong> to continue.
             </div>
-            {resetError && <div className={`p-3 text-xs bg-[#FF4D6D]/10 border-2 border-[#FF4D6D]/20 ${darkMode ? 'text-[#FF8FA3]' : 'text-[#FF4D6D]'} font-semibold rounded-2xl text-center`}>{resetError}</div>}
+            {resetError && <div className={`p-3 text-xs bg-[#D62828]/10 border-2 border-[#D62828]/20 ${darkMode ? 'text-[#FCA5A5]' : 'text-[#D62828]'} font-semibold rounded-2xl text-center`}>{resetError}</div>}
             <div>
-              <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>New Password</label>
+              <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>New Password</label>
               <div className="relative">
-                <input type={showResetPassword ? 'text' : 'password'} value={newPassword1} onChange={(e) => setNewPassword1(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 pr-9 text-xs rounded-2xl border-2 outline-none transition focus:border-[#8B5CF6] ${darkMode ? 'bg-[#151129] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'}`} required />
-                <button type="button" onClick={() => setShowResetPassword(!showResetPassword)} className={`absolute right-2.5 top-2.5 ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-50 hover:opacity-100`}>
+                <input type={showResetPassword ? 'text' : 'password'} value={newPassword1} onChange={(e) => setNewPassword1(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 pr-9 text-xs rounded-2xl border-2 outline-none transition focus:border-[#2A3B8F] ${darkMode ? 'bg-[#0C1638] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'}`} required />
+                <button type="button" onClick={() => setShowResetPassword(!showResetPassword)} className={`absolute right-2.5 top-2.5 ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-50 hover:opacity-100`}>
                   <Icon name={showResetPassword ? 'eyeOff' : 'eye'} size={14} />
                 </button>
               </div>
             </div>
             <div>
-              <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>Confirm New Password</label>
+              <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>Confirm New Password</label>
               <div className="relative">
-                <input type={showResetPassword ? 'text' : 'password'} value={newPassword2} onChange={(e) => setNewPassword2(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 pr-9 text-xs rounded-2xl border-2 outline-none transition focus:border-[#8B5CF6] ${darkMode ? 'bg-[#151129] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'}`} required />
-                <button type="button" onClick={() => setShowResetPassword(!showResetPassword)} className={`absolute right-2.5 top-2.5 ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-50 hover:opacity-100`}>
+                <input type={showResetPassword ? 'text' : 'password'} value={newPassword2} onChange={(e) => setNewPassword2(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 pr-9 text-xs rounded-2xl border-2 outline-none transition focus:border-[#2A3B8F] ${darkMode ? 'bg-[#0C1638] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'}`} required />
+                <button type="button" onClick={() => setShowResetPassword(!showResetPassword)} className={`absolute right-2.5 top-2.5 ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-50 hover:opacity-100`}>
                   <Icon name={showResetPassword ? 'eyeOff' : 'eye'} size={14} />
                 </button>
               </div>
             </div>
-            <button type="submit" className="w-full py-3 bg-[#8B5CF6] hover:bg-[#7C4DEF] text-white font-black rounded-2xl text-xs tracking-wider uppercase shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">Set New Password &amp; Continue</button>
-            <button type="button" onClick={() => { setResetUser(null); setNewPassword1(''); setNewPassword2(''); setResetError(''); }} className={`w-full text-[11px] font-semibold ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 hover:opacity-100`}>Cancel</button>
+            <button type="submit" className="w-full py-3 bg-[#2A3B8F] hover:bg-[#146B39] text-white font-black rounded-2xl text-xs tracking-wider uppercase shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">Set New Password &amp; Continue</button>
+            <button type="button" onClick={() => { setResetUser(null); setNewPassword1(''); setNewPassword2(''); setResetError(''); }} className={`w-full text-[11px] font-semibold ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 hover:opacity-100`}>Cancel</button>
           </form>
         ) : (
         <form onSubmit={handleFormSubmit} className="space-y-4">
-          {error && <div className={`p-3 text-xs bg-[#FF4D6D]/10 border-2 border-[#FF4D6D]/20 ${darkMode ? 'text-[#FF8FA3]' : 'text-[#FF4D6D]'} font-semibold rounded-2xl text-center`}>{error}</div>}
+          {error && <div className={`p-3 text-xs bg-[#D62828]/10 border-2 border-[#D62828]/20 ${darkMode ? 'text-[#FCA5A5]' : 'text-[#D62828]'} font-semibold rounded-2xl text-center`}>{error}</div>}
           <div>
-            <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>Username</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className={`w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition focus:border-[#8B5CF6] ${darkMode ? 'bg-[#151129] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'}`} required />
+            <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>Username</label>
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. juan.super" className={`w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition focus:border-[#2A3B8F] ${darkMode ? 'bg-[#0C1638] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'}`} required />
           </div>
           <div>
-            <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition focus:border-[#8B5CF6] ${darkMode ? 'bg-[#151129] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'}`} required />
+            <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>Password</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={`w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition focus:border-[#2A3B8F] ${darkMode ? 'bg-[#0C1638] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'}`} required />
           </div>
-          <button type="submit" className="w-full py-3 bg-[#8B5CF6] hover:bg-[#7C4DEF] text-white font-black rounded-2xl text-xs tracking-wider uppercase shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">Sign In</button>
+          <button type="submit" className="w-full py-3 bg-[#2A3B8F] hover:bg-[#146B39] text-white font-black rounded-2xl text-xs tracking-wider uppercase shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">Sign In</button>
         </form>
         )}
 
         {!resetUser && (
-        <div className={`mt-8 border-t-2 pt-5 ${darkMode ? 'border-[#3A3266]' : 'border-[#E4DEFB]'}`}>
-          <span className={`block text-[10px] uppercase font-black ${darkMode ? 'text-white' : 'text-[#2D2650]'} tracking-widest text-center mb-3`}>Simulation User Accounts</span>
+        <div className={`mt-8 border-t-2 pt-5 ${darkMode ? 'border-[#1E2D6E]' : 'border-[#F5E6C8]'}`}>
+          <span className={`block text-[10px] uppercase font-black ${darkMode ? 'text-white' : 'text-[#16213E]'} tracking-widest text-center mb-3`}>Simulation User Accounts</span>
           <div className="grid grid-cols-2 gap-2">
             {users.map((u) => (
-              <button key={u.id} onClick={() => handleQuickSelect(u)} className={`p-2 text-left text-[10px] font-semibold border-2 rounded-2xl hover:border-[#8B5CF6] transition flex items-center gap-2 ${darkMode ? 'border-[#3A3266] hover:bg-[#151129]' : 'border-[#E4DEFB] hover:bg-[#F3EFFE]'}`}>
-                <div className="w-2 h-2 rounded-full bg-[#FF6B4A]"></div>
+              <button key={u.id} onClick={() => handleQuickSelect(u)} className={`p-2 text-left text-[10px] font-semibold border-2 rounded-2xl hover:border-[#2A3B8F] transition flex items-center gap-2 ${darkMode ? 'border-[#1E2D6E] hover:bg-[#0C1638]' : 'border-[#F5E6C8] hover:bg-[#FFFBF0]'}`}>
+                <div className="w-2 h-2 rounded-full bg-[#1B8A4A]"></div>
                 <div className="truncate">
-                  <p className={`font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'} truncate`}>{u.name}</p>
-                  <p className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-80 text-[9px] truncate`}>{u.role} ({u.office})</p>
+                  <p className={`font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'} truncate`}>{u.name}</p>
+                  <p className={`${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-80 text-[9px] truncate`}>{u.role} ({u.office})</p>
                 </div>
               </button>
             ))}
@@ -477,29 +477,29 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role, transfers, userConte
   }, [transfers, userContext]);
 
   return (
-    <aside className={`w-full md:w-64 border-b md:border-b-0 md:border-r-2 transition-all ${darkMode ? 'bg-[#1A1730] border-[#3A3266] text-white' : 'bg-[#2D2650] border-[#453C7A] text-white'} flex flex-col`}>
+    <aside className={`w-full md:w-64 border-b md:border-b-0 md:border-r-2 transition-all ${darkMode ? 'bg-[#0C1638] border-[#1E2D6E] text-white' : 'bg-[#16213E] border-[#2A3B8F] text-white'} flex flex-col`}>
       <div className="h-1.5 w-full flex">
-        <div className="flex-1 bg-[#8B5CF6]"></div>
-        <div className="flex-1 bg-[#FF6B4A]"></div>
+        <div className="flex-1 bg-[#2A3B8F]"></div>
+        <div className="flex-1 bg-[#1B8A4A]"></div>
       </div>
-      <div className="p-5 flex items-center gap-3 border-b-2 border-[#3A3266]">
-        <div className="w-11 h-11 rounded-full bg-[#FF6B4A] flex items-center justify-center text-white font-black shadow-[3px_3px_0px_rgba(0,0,0,0.25)] overflow-hidden ring-4 ring-[#8B5CF6]/40 ring-offset-2 ring-offset-[#2D2650]">
+      <div className="p-5 flex items-center gap-3 border-b-2 border-[#1E2D6E]">
+        <div className="w-11 h-11 rounded-full bg-[#1B8A4A] flex items-center justify-center text-white font-black shadow-[3px_3px_0px_rgba(0,0,0,0.25)] overflow-hidden ring-4 ring-[#2A3B8F]/40 ring-offset-2 ring-offset-[#16213E]">
           <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
           <span className="hidden">R8</span>
         </div>
         <div>
-          <p className="text-[8px] uppercase tracking-wider text-[#B9A9FF] font-bold leading-none mb-0.5">Republic of the Philippines · Dep. of Education</p>
-          <h1 className="font-black text-sm tracking-tight text-[#FFC145]">Project UGNAY</h1>
+          <p className="text-[8px] uppercase tracking-wider text-[#F5D485] font-bold leading-none mb-0.5">Republic of the Philippines · Dep. of Education</p>
+          <h1 className="font-black text-sm tracking-tight text-[#FFC72C]">Project UGNAY</h1>
           <p className="text-[10px] uppercase tracking-wider text-white opacity-80 font-medium">DepEd Region VIII</p>
         </div>
       </div>
       <div className="flex-1 p-3 space-y-1.5 flex md:flex-col overflow-x-auto">
         {filteredTabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-2xl whitespace-nowrap transition-all border-2 ${activeTab === tab.id ? 'bg-[#FF6B4A] text-white font-black shadow-[3px_3px_0px_rgba(0,0,0,0.25)] border-[#8B5CF6]' : 'hover:bg-[#332B5E] text-white border-transparent'}`}>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 text-xs font-semibold rounded-2xl whitespace-nowrap transition-all border-2 ${activeTab === tab.id ? 'bg-[#1B8A4A] text-white font-black shadow-[3px_3px_0px_rgba(0,0,0,0.25)] border-[#2A3B8F]' : 'hover:bg-[#16234F] text-white border-transparent'}`}>
             <Icon name={tab.icon} size={16} />
             <span>{tab.label}</span>
             {tab.id === 'transfers' && pendingApprovalCount > 0 && (
-              <span className="ml-auto bg-[#FF4D6D] text-white text-[10px] font-black rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">{pendingApprovalCount}</span>
+              <span className="ml-auto bg-[#D62828] text-white text-[10px] font-black rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">{pendingApprovalCount}</span>
             )}
           </button>
         ))}
@@ -515,7 +515,7 @@ function EditProfileModal({ currentUser, onSave, onClose, darkMode }) {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
-  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'} focus:border-[#8B5CF6]`;
+  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'} focus:border-[#2A3B8F]`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -540,32 +540,32 @@ function EditProfileModal({ currentUser, onSave, onClose, darkMode }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-      <form onSubmit={handleSubmit} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-        <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-2">
-          <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>Edit My Profile</h3>
-          <button type="button" onClick={onClose} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+      <form onSubmit={handleSubmit} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+        <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-2">
+          <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>Edit My Profile</h3>
+          <button type="button" onClick={onClose} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
         </div>
 
         <div>
-          <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1 opacity-60`}>Username (cannot be changed)</label>
+          <label className={`block text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1 opacity-60`}>Username (cannot be changed)</label>
           <input type="text" value={currentUser.username} disabled className={`${inp} opacity-50 cursor-not-allowed`} />
         </div>
         <input type="text" placeholder="Full Name" value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className={inp} required />
         <input type="email" placeholder="Email Address" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} className={inp} required />
         <input type="text" placeholder="Position / Title" value={form.position} onChange={e=>setForm({...form, position: e.target.value})} className={inp} />
 
-        <div className="border-t border-[#E4DEFB] dark:border-[#3A3266] pt-3 space-y-2">
-          <p className={`text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60`}>Change Password (optional)</p>
+        <div className="border-t border-[#F5E6C8] dark:border-[#1E2D6E] pt-3 space-y-2">
+          <p className={`text-[10px] uppercase font-black tracking-wider ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60`}>Change Password (optional)</p>
           <div className="relative">
             <input type={showPassword ? 'text' : 'password'} placeholder="New Password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} className={`${inp} pr-9`} />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-2.5 top-2 ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-50 hover:opacity-100`}>
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-2.5 top-2 ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-50 hover:opacity-100`}>
               <Icon name={showPassword ? 'eyeOff' : 'eye'} size={14} />
             </button>
           </div>
           <div className="relative">
             <input type={showPassword ? 'text' : 'password'} placeholder="Confirm New Password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} className={`${inp} pr-9`} />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-2.5 top-2 ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-50 hover:opacity-100`}>
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-2.5 top-2 ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-50 hover:opacity-100`}>
               <Icon name={showPassword ? 'eyeOff' : 'eye'} size={14} />
             </button>
           </div>
@@ -573,7 +573,7 @@ function EditProfileModal({ currentUser, onSave, onClose, darkMode }) {
 
         {error && <p className="text-red-500 text-[11px] font-semibold">{error}</p>}
 
-        <button type="submit" className="w-full py-2 bg-[#FF6B4A] hover:bg-[#FF5230] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]">Save Changes</button>
+        <button type="submit" className="w-full py-2 bg-[#1B8A4A] hover:bg-[#146B39] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]">Save Changes</button>
       </form>
     </div>
   );
@@ -584,26 +584,26 @@ function Header({ currentUser, darkMode, setDarkMode, onLogout, onUpdateProfile 
   return (
     <div>
       <div className="h-1 w-full flex">
-        <div className="flex-1 bg-[#8B5CF6]"></div>
-        <div className="flex-1 bg-[#FF6B4A]"></div>
+        <div className="flex-1 bg-[#2A3B8F]"></div>
+        <div className="flex-1 bg-[#1B8A4A]"></div>
       </div>
-      <header className="px-6 py-4 border-b-2 border-[#3A3266] bg-[#2D2650] shadow-sm flex justify-between items-center gap-4">
+      <header className="px-6 py-4 border-b-2 border-[#1E2D6E] bg-[#16213E] shadow-sm flex justify-between items-center gap-4">
         <div>
-          <span className="text-[10px] uppercase font-bold tracking-widest text-[#FFC145]">Office</span>
+          <span className="text-[10px] uppercase font-bold tracking-widest text-[#FFC72C]">Office</span>
           <h2 className="text-xs font-bold text-white mt-0.5">{currentUser.office}</h2>
         </div>
         <div className="flex items-center gap-4 justify-end">
-          <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-2xl bg-[#3A3266] hover:bg-[#453C7A] text-[#FFC145] transition border-2 border-[#4E4488]" title="Toggle Appearance Mode">
+          <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-2xl bg-[#1E2D6E] hover:bg-[#2A3B8F] text-[#FFC72C] transition border-2 border-[#2A3B8F]" title="Toggle Appearance Mode">
           <Icon name={darkMode ? 'sun' : 'moon'} size={16} />
         </button>
-        <button onClick={() => setShowEditProfile(true)} className="flex items-center gap-3 border-l-2 border-[#453C7A] pl-4 hover:opacity-80 transition" title="Edit My Profile">
+        <button onClick={() => setShowEditProfile(true)} className="flex items-center gap-3 border-l-2 border-[#2A3B8F] pl-4 hover:opacity-80 transition" title="Edit My Profile">
           <div className="text-right hidden sm:block">
             <p className="text-xs font-bold text-white">{currentUser.name}</p>
-            <p className="text-[10px] text-[#FFC145] font-medium">{currentUser.role}</p>
+            <p className="text-[10px] text-[#FFC72C] font-medium">{currentUser.role}</p>
           </div>
-          <div className="w-9 h-9 rounded-full bg-[#3A3266] text-[#FFC145] flex items-center justify-center font-bold text-sm border-2 border-[#8B5CF6]/40">{currentUser.name.split(' ').map(n=>n[0]).join('')}</div>
+          <div className="w-9 h-9 rounded-full bg-[#1E2D6E] text-[#FFC72C] flex items-center justify-center font-bold text-sm border-2 border-[#2A3B8F]/40">{currentUser.name.split(' ').map(n=>n[0]).join('')}</div>
         </button>
-        <button onClick={onLogout} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-2xl bg-[#FF4D6D]/15 hover:bg-[#FF4D6D]/25 text-[#FF4D6D] transition ml-2 border-2 border-[#FF4D6D]/20">
+        <button onClick={onLogout} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-2xl bg-[#D62828]/15 hover:bg-[#D62828]/25 text-[#D62828] transition ml-2 border-2 border-[#D62828]/20">
           <Icon name="logout" size={14} />
           <span>Sign Out</span>
         </button>
@@ -637,12 +637,12 @@ function SystemFilters({ filters, setFilters, darkMode, includeCategoryFilters =
     return userContext.office !== 'Regional Office' && userContext.role !== SYSTEM_ROLES.PARTNER;
   }, [userContext]);
 
-  const css = `w-full p-2 text-[11px] font-bold rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'} focus:border-[#8B5CF6]`;
+  const css = `w-full p-2 text-[11px] font-bold rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'} focus:border-[#2A3B8F]`;
   
   return (
-    <div className={`p-4 rounded-xl border mb-6 shadow-sm ${darkMode ? 'bg-[#211D3D]/40 border-[#3A3266]' : 'bg-white border-[#E4DEFB]'}`}>
+    <div className={`p-4 rounded-xl border mb-6 shadow-sm ${darkMode ? 'bg-[#12204A]/40 border-[#1E2D6E]' : 'bg-white border-[#F5E6C8]'}`}>
       <div className={`grid grid-cols-2 sm:grid-cols-4 ${includeCategoryFilters ? 'lg:grid-cols-8' : 'lg:grid-cols-7'} gap-3`}>
-        <select value={filters.office} onChange={e=>updateF('office', e.target.value)} className={`${css} ${darkMode ? 'text-white' : 'text-[#2D2650]'} ${isConstrained ? 'opacity-60 cursor-not-allowed' : ''}`} disabled={isConstrained}>
+        <select value={filters.office} onChange={e=>updateF('office', e.target.value)} className={`${css} ${darkMode ? 'text-white' : 'text-[#16213E]'} ${isConstrained ? 'opacity-60 cursor-not-allowed' : ''}`} disabled={isConstrained}>
           <option value="">Region VIII (All Offices)</option>
           {OFFICES.map(o => <option key={o} value={o}>{o}</option>)}
         </select>
@@ -709,8 +709,8 @@ function FuelGaugeChart({ totalNeeds, totalContributions, darkMode }) {
         </g>
       </svg>
       <div className="absolute bottom-0 flex flex-col items-center">
-        <span className={`text-xl font-black ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>{percent.toFixed(1)}%</span>
-        <span className={`text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Fulfilled</span>
+        <span className={`text-xl font-black ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>{percent.toFixed(1)}%</span>
+        <span className={`text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Fulfilled</span>
       </div>
     </div>
   );
@@ -752,11 +752,11 @@ function TrendLineChart({ needs, contributions, darkMode }) {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-        <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Needs vs. Contributions Trend</h3>
+        <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Needs vs. Contributions Trend</h3>
       </div>
 
       {series.length === 0 ? (
-        <div className={`flex items-center justify-center h-32 text-xs ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 italic`}>No data points for the selected period.</div>
+        <div className={`flex items-center justify-center h-32 text-xs ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 italic`}>No data points for the selected period.</div>
       ) : (
         <>
           <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-40">
@@ -776,11 +776,11 @@ function TrendLineChart({ needs, contributions, darkMode }) {
           <div className="flex items-center gap-4 mt-1">
             <div className="flex items-center gap-1.5">
               <span className={`w-3 h-0.5 ${darkMode ? 'bg-white' : 'bg-black'} inline-block`}></span>
-              <span className={`text-[10px] font-semibold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Needs</span>
+              <span className={`text-[10px] font-semibold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Needs</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3 h-0.5 bg-[#FF6B4A] inline-block"></span>
-              <span className={`text-[10px] font-semibold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Contributions</span>
+              <span className="w-3 h-0.5 bg-[#1B8A4A] inline-block"></span>
+              <span className={`text-[10px] font-semibold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Contributions</span>
             </div>
           </div>
         </>
@@ -841,7 +841,7 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
     return Object.entries(groups).sort((a,b)=>b[1]-a[1]).slice(0, 10);
   }, [filteredNeeds]);
 
-  const containerStyle = `p-6 rounded-[28px] border-2 ${darkMode ? 'bg-[#211D3D] border-[#3A3266] shadow-[8px_8px_0px_rgba(0,0,0,0.25)]' : 'bg-white border-white shadow-[8px_8px_20px_rgba(139,92,246,0.18),-6px_-6px_16px_rgba(255,255,255,0.9)]'}`;
+  const containerStyle = `p-6 rounded-[28px] border-2 ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] shadow-[8px_8px_0px_rgba(0,0,0,0.25)]' : 'bg-white border-white shadow-[8px_8px_20px_rgba(27,138,74,0.16),-6px_-6px_16px_rgba(255,255,255,0.9)]'}`;
 
   return (
     <div className="space-y-6">
@@ -849,23 +849,23 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className={containerStyle}>
-          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Total Validated Needs (Value)</span>
-          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-[#2D2650]'} mt-2`}>₱ {totalNeedsValue.toLocaleString()}</p>
+          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Total Validated Needs (Value)</span>
+          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-[#16213E]'} mt-2`}>₱ {totalNeedsValue.toLocaleString()}</p>
         </div>
         <div className={containerStyle}>
-          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>Total Validated Contributions (Value)</span>
-          <p className={`text-3xl font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'} mt-2`}>₱ {totalContsValue.toLocaleString()}</p>
+          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>Total Validated Contributions (Value)</span>
+          <p className={`text-3xl font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'} mt-2`}>₱ {totalContsValue.toLocaleString()}</p>
         </div>
         <div className={`${containerStyle} flex flex-col items-center justify-center p-4`}>
           <FuelGaugeChart totalNeeds={totalNeedsValue} totalContributions={totalContsValue} darkMode={darkMode} />
         </div>
         <div className={containerStyle}>
-          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>No. of Partners</span>
-          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-[#2D2650]'} mt-2`}>{totalPartners}</p>
+          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>No. of Partners</span>
+          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-[#16213E]'} mt-2`}>{totalPartners}</p>
         </div>
         <div className={containerStyle}>
-          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>No. of Contributions</span>
-          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-[#2D2650]'} mt-2`}>{totalContsCount}</p>
+          <span className={`text-[10px] uppercase font-black tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>No. of Contributions</span>
+          <p className={`text-3xl font-black ${darkMode ? 'text-white' : 'text-[#16213E]'} mt-2`}>{totalContsCount}</p>
         </div>
         <div className={`${containerStyle} lg:col-span-3`}>
           <TrendLineChart needs={filteredNeeds} contributions={filteredConts} darkMode={darkMode} />
@@ -874,19 +874,19 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className={containerStyle}>
-          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-4`}>Top Donors</h3>
+          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-4`}>Top Donors</h3>
           <div className="space-y-3">
             {topDonors.map(([name, val], idx) => {
               const max = topDonors[0]?.[1] || 1;
               const pct = (val / max) * 100;
               return (
                 <div key={name} className="space-y-1">
-                  <div className={`flex justify-between text-xs font-semibold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
-                    <span className="truncate max-w-[200px]"><span className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 font-bold mr-1`}>#{idx+1}</span>{name}</span>
-                    <span className={`${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱{val.toLocaleString()}</span>
+                  <div className={`flex justify-between text-xs font-semibold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
+                    <span className="truncate max-w-[200px]"><span className={`${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 font-bold mr-1`}>#{idx+1}</span>{name}</span>
+                    <span className={`${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱{val.toLocaleString()}</span>
                   </div>
-                  <div className="w-full bg-[#EDE7FC] dark:bg-[#3A3266] h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-gradient-to-r from-[#8B5CF6] to-[#FF6B4A] h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
+                  <div className="w-full bg-[#FDF4DC] dark:bg-[#1E2D6E] h-2.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-[#2A3B8F] to-[#1B8A4A] h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
                   </div>
                 </div>
               );
@@ -894,19 +894,19 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
           </div>
         </div>
         <div className={containerStyle}>
-          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-4`}>Priority Needs</h3>
+          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-4`}>Priority Needs</h3>
           <div className="space-y-3">
             {priorityNeeds.map(([name, val], idx) => {
               const max = priorityNeeds[0]?.[1] || 1;
               const pct = (val / max) * 100;
               return (
                 <div key={name} className="space-y-1">
-                  <div className={`flex justify-between text-xs font-semibold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
-                    <span className="truncate max-w-[200px]"><span className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 font-bold mr-1`}>#{idx+1}</span>{name}</span>
-                    <span className={`${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱{val.toLocaleString()}</span>
+                  <div className={`flex justify-between text-xs font-semibold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
+                    <span className="truncate max-w-[200px]"><span className={`${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 font-bold mr-1`}>#{idx+1}</span>{name}</span>
+                    <span className={`${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱{val.toLocaleString()}</span>
                   </div>
-                  <div className="w-full bg-[#EDE7FC] dark:bg-[#3A3266] h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-gradient-to-r from-[#8B5CF6] to-[#FF6B4A] h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
+                  <div className="w-full bg-[#FDF4DC] dark:bg-[#1E2D6E] h-2.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-[#2A3B8F] to-[#1B8A4A] h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
                   </div>
                 </div>
               );
@@ -916,14 +916,14 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
       </div>
 
       <div className={containerStyle}>
-        <div className="border-b border-[#E4DEFB] dark:border-[#3A3266] pb-3 mb-4">
-          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>Accomplishment Rankings (RO & SDO Matrix)</h3>
-          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-80`}>Comparative matrix.</p>
+        <div className="border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-3 mb-4">
+          <h3 className={`text-xs font-black uppercase tracking-widest ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>Accomplishment Rankings (RO & SDO Matrix)</h3>
+          <p className={`text-[11px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-80`}>Comparative matrix.</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
-              <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
+              <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
                 <th className="pb-2 pl-2">Rank</th>
                 <th className="pb-2">Office Name</th>
                 <th className="pb-2 text-right">Target Needs</th>
@@ -931,17 +931,17 @@ function Dashboard({ needs, contributions, userContext, darkMode }) {
                 <th className="pb-2 text-center w-40">Fulfillment Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+            <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
               {officeRankings.map((node, index) => (
-                <tr key={node.office} className={`hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
-                  <td className={`py-2.5 pl-2 font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>#{index + 1}</td>
+                <tr key={node.office} className={`hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
+                  <td className={`py-2.5 pl-2 font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>#{index + 1}</td>
                   <td className="py-2.5 font-bold">{node.office}</td>
                   <td className="py-2.5 text-right font-medium">₱{node.needs.toLocaleString()}</td>
-                  <td className={`py-2.5 text-right font-bold ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>₱{node.contributions.toLocaleString()}</td>
+                  <td className={`py-2.5 text-right font-bold ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>₱{node.contributions.toLocaleString()}</td>
                   <td className="py-2.5 text-center">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="w-16 bg-[#EDE7FC] dark:bg-[#3A3266] rounded-full h-2 overflow-hidden">
-                        <div className="bg-[#FF6B4A] h-full rounded-full" style={{ width: `${Math.min(node.percentage, 100)}%` }}></div>
+                      <div className="w-16 bg-[#FDF4DC] dark:bg-[#1E2D6E] rounded-full h-2 overflow-hidden">
+                        <div className="bg-[#1B8A4A] h-full rounded-full" style={{ width: `${Math.min(node.percentage, 100)}%` }}></div>
                       </div>
                       <span className="font-black text-[11px] min-w-10 text-right">{node.percentage.toFixed(1)}%</span>
                     </div>
@@ -1416,28 +1416,28 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
     exportToCSV(exportPayload, 'PROJECT_UGNAY_OFFICES_EXPORT');
   };
 
-  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'} focus:border-[#8B5CF6]`;
+  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'} focus:border-[#2A3B8F]`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
 
-      <div className="flex border-b border-[#E4DEFB] dark:border-[#3A3266]">
+      <div className="flex border-b border-[#F5E6C8] dark:border-[#1E2D6E]">
         <button 
           onClick={() => setSubTab('inventory')} 
-          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'inventory' ? `border-[#8B5CF6] ${darkMode ? 'text-[#FFC145]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'inventory' ? `border-[#2A3B8F] ${darkMode ? 'text-[#FFC72C]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
         >
           Inventory
         </button>
         <button 
           onClick={() => setSubTab('summary')} 
-          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'summary' ? `border-[#8B5CF6] ${darkMode ? 'text-[#FFC145]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'summary' ? `border-[#2A3B8F] ${darkMode ? 'text-[#FFC72C]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
         >
           Summary
         </button>
         <button 
           onClick={() => setSubTab('offices')} 
-          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'offices' ? `border-[#8B5CF6] ${darkMode ? 'text-[#FFC145]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+          className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'offices' ? `border-[#2A3B8F] ${darkMode ? 'text-[#FFC72C]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
         >
           Offices
         </button>
@@ -1445,75 +1445,75 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
 
       {subTab === 'inventory' && (
       <>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)]">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)]">
         <div>
-          <h2 className="text-sm font-bold text-[#FFC145]">Needs Inventory</h2>
+          <h2 className="text-sm font-bold text-[#FFC72C]">Needs Inventory</h2>
           <p className="text-[11px] text-white opacity-80">Scoped items: {currentFilteredView.length}</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {canAddNeeds && (
-            <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+            <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
               <Icon name="plus" size={14} /><span>Add Needs</span>
             </button>
           )}
-          <button onClick={handlePrintNeeds} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A]">
+          <button onClick={handlePrintNeeds} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F]">
             <Icon name="print" size={14} /><span>Print</span>
           </button>
-          <button onClick={() => exportToCSV(currentFilteredView, 'PROJECT_UGNAY_NEEDS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A]">
+          <button onClick={() => exportToCSV(currentFilteredView, 'PROJECT_UGNAY_NEEDS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F]">
             <Icon name="download" size={14} /><span>Export Matrix</span>
           </button>
         </div>
       </div>
 
-      <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
+      <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
-            <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('dateLogged')}>Date <SortIndicator sortConfig={sortConfig} sortKey="dateLogged" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" darkMode={darkMode} /></th>
-              <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" darkMode={darkMode} /></th>
-              <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" darkMode={darkMode} /></th>
-              <th className={`pb-2 ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Remarks</th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('status')}>Status <SortIndicator sortConfig={sortConfig} sortKey="status" darkMode={darkMode} /></th>
-              <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Actions</th>
+            <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('dateLogged')}>Date <SortIndicator sortConfig={sortConfig} sortKey="dateLogged" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" darkMode={darkMode} /></th>
+              <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" darkMode={darkMode} /></th>
+              <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" darkMode={darkMode} /></th>
+              <th className={`pb-2 ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Remarks</th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('status')}>Status <SortIndicator sortConfig={sortConfig} sortKey="status" darkMode={darkMode} /></th>
+              <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+          <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
             {sortedFilteredView.map(n => (
-              <tr key={n.id} className={`hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+              <tr key={n.id} className={`hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                 <td className="py-2.5">{n.dateLogged}</td>
                 <td className="py-2.5 font-bold">{n.office}</td>
                 <td className="py-2.5 truncate max-w-[130px]">{n.fd}</td>
                 <td className="py-2.5">{n.section}</td>
                 <td className="py-2.5 text-[11px]">{n.category}</td>
                 <td className="py-2.5 font-semibold">{n.specificItem}</td>
-                <td className="py-2.5 text-right font-medium">{n.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-80 dark:opacity-60`}>{n.uom}</span></td>
-                <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱ {Number(n.value).toLocaleString()}</td>
+                <td className="py-2.5 text-right font-medium">{n.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-80 dark:opacity-60`}>{n.uom}</span></td>
+                <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱ {Number(n.value).toLocaleString()}</td>
                 <td className="py-2.5 text-[11px] truncate max-w-[150px]" title={n.remarks}>{n.remarks || '-'}</td>
                 <td className="py-2.5">
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    n.status === 'Fulfilled' ? 'bg-[#EDE9FE] text-[#5B21B6] dark:bg-[#8B5CF6]/30 dark:text-[#FFC145]' :
+                    n.status === 'Fulfilled' ? 'bg-[#FEF3D0] text-[#92400E] dark:bg-[#2A3B8F]/30 dark:text-[#FFC72C]' :
                     n.status === 'Partially Fulfilled' ? 'bg-orange-100 text-orange-900 dark:bg-orange-900/30 dark:text-orange-400' :
-                    'bg-[#EDE7FC] text-[#2D2650] dark:bg-[#3A3266] dark:text-white'
+                    'bg-[#FDF4DC] text-[#16213E] dark:bg-[#1E2D6E] dark:text-white'
                   }`}>{n.status}</span>
                 </td>
                 <td className="py-2.5 text-center">
                   <div className="flex items-center justify-center gap-1">
                     {canEditDeleteNeeds && (
                       <>
-                        <button onClick={() => setEditModal(n)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-[#8B5CF6] dark:hover:text-[#FFC145] transition`} title="Modify Record">
+                        <button onClick={() => setEditModal(n)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] transition`} title="Modify Record">
                           <Icon name="edit" size={14} />
                         </button>
-                        <button onClick={() => handleDeleteItem(n.id)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-red-600 dark:hover:text-red-500 transition`} title="Purge Record">
+                        <button onClick={() => handleDeleteItem(n.id)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-red-600 dark:hover:text-red-500 transition`} title="Purge Record">
                           <Icon name="trash" size={14} />
                         </button>
                       </>
                     )}
-                    <button onClick={() => setTrailModal(n)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-[#8B5CF6] dark:hover:text-[#FFC145] transition`} title="Audit Trail">
+                    <button onClick={() => setTrailModal(n)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] transition`} title="Audit Trail">
                       <Icon name="history" size={14} />
                     </button>
                   </div>
@@ -1523,7 +1523,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
           </tbody>
           {sortedFilteredView.length > 0 && (
             <tfoot>
-              <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+              <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                 <td className="py-2.5" colSpan="6">TOTAL</td>
                 <td className="py-2.5 text-right">{sortedFilteredView.reduce((a, n) => a + Number(n.qty), 0)}</td>
                 <td className="py-2.5 text-right">₱ {sortedFilteredView.reduce((a, n) => a + Number(n.value), 0).toLocaleString()}</td>
@@ -1537,15 +1537,15 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       )}
 
       {subTab === 'summary' && (
-        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
+        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
             <div className="relative w-full max-w-md">
               <input 
                 type="text" 
                 value={needsSummarySearch}
                 onChange={e => setNeedsSummarySearch(e.target.value)}
                 placeholder="Search Category or Specific Item..." 
-                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#3A3266] shadow-sm outline-none transition focus:border-[#8B5CF6] bg-[#211D3D] text-white"
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#1E2D6E] shadow-sm outline-none transition focus:border-[#2A3B8F] bg-[#12204A] text-white"
               />
               {needsSummarySearch && (
                 <button onClick={() => setNeedsSummarySearch('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100">
@@ -1553,9 +1553,9 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </button>
               )}
               {needsSummarySuggestions.length > 0 && (
-                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#211D3D] border-[#3A3266] divide-[#3A3266]/60">
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#12204A] border-[#1E2D6E] divide-[#1E2D6E]/60">
                   {needsSummarySuggestions.map(itemHint => (
-                    <button key={itemHint} onClick={() => setNeedsSummarySearch(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-[#3A3266]/40 text-white transition">
+                    <button key={itemHint} onClick={() => setNeedsSummarySearch(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-[#1E2D6E]/40 text-white transition">
                       {itemHint}
                     </button>
                   ))}
@@ -1563,37 +1563,37 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
               )}
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              <button onClick={handlePrintNeedsSummary} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+              <button onClick={handlePrintNeedsSummary} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
                 <Icon name="print" size={14} /><span>Print</span>
               </button>
-              <button onClick={handleExportNeedsSummary} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A] transition">
+              <button onClick={handleExportNeedsSummary} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F] transition">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
-              <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortNeedsCategory('category')}>Category <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="category" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortNeedsCategory('qty')}>Quantity <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="qty" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortNeedsCategory('value')}>Estimated Value (₱) <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="value" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortNeedsCategory('offices')}>Req'g Offices <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="offices" darkMode={darkMode} /></th>
+              <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortNeedsCategory('category')}>Category <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="category" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortNeedsCategory('qty')}>Quantity <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="qty" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortNeedsCategory('value')}>Estimated Value (₱) <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="value" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortNeedsCategory('offices')}>Req'g Offices <SortIndicator sortConfig={sortConfigNeedsCategory} sortKey="offices" darkMode={darkMode} /></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+            <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
               {sortedNeedsCategorySummary.map(cat => (
                 <React.Fragment key={cat.category}>
-                  <tr onClick={() => toggleNeedsCategory(cat.category)} className={`cursor-pointer hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+                  <tr onClick={() => toggleNeedsCategory(cat.category)} className={`cursor-pointer hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                     <td className="py-2.5 pl-2 font-bold">
                       <span className={`inline-block mr-1.5 text-[9px] transition-transform ${(needsSummarySearch.trim() || expandedNeedsCategories[cat.category]) ? 'rotate-90' : ''}`}>▶</span>
                       {cat.category}
                     </td>
                     <td className="py-2.5 text-right font-bold">{cat.qty}</td>
-                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱ {cat.value.toLocaleString()}</td>
+                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱ {cat.value.toLocaleString()}</td>
                     <td className="py-2.5 text-right pr-2 font-bold">{cat.offices}</td>
                   </tr>
                   {(needsSummarySearch.trim() || expandedNeedsCategories[cat.category]) && cat.types.map(t => (
-                    <tr key={t.specificItem} className={`text-[11px] ${darkMode ? 'bg-[#151129]/40 text-white' : 'bg-[#F3EFFE] text-[#2D2650]'} opacity-90`}>
+                    <tr key={t.specificItem} className={`text-[11px] ${darkMode ? 'bg-[#0C1638]/40 text-white' : 'bg-[#FFFBF0] text-[#16213E]'} opacity-90`}>
                       <td className="py-2 pl-8">{t.specificItem}</td>
                       <td className="py-2 text-right">{t.qty}</td>
                       <td className="py-2 text-right">₱ {t.value.toLocaleString()}</td>
@@ -1603,12 +1603,12 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </React.Fragment>
               ))}
               {sortedNeedsCategorySummary.length === 0 && (
-                <tr><td colSpan="4" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 italic`}>No needs records match the applied parameter sets.</td></tr>
+                <tr><td colSpan="4" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 italic`}>No needs records match the applied parameter sets.</td></tr>
               )}
             </tbody>
             {sortedNeedsCategorySummary.length > 0 && (
               <tfoot>
-                <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+                <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                   <td className="py-2.5 pl-2">TOTAL</td>
                   <td className="py-2.5 text-right">{sortedNeedsCategorySummary.reduce((a, c) => a + c.qty, 0)}</td>
                   <td className="py-2.5 text-right">₱ {sortedNeedsCategorySummary.reduce((a, c) => a + c.value, 0).toLocaleString()}</td>
@@ -1621,15 +1621,15 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       )}
 
       {subTab === 'offices' && (
-        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
+        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
             <div className="relative w-full max-w-md">
               <input 
                 type="text" 
                 value={officeSearch}
                 onChange={e => setOfficeSearch(e.target.value)}
                 placeholder="Search Office..." 
-                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#3A3266] shadow-sm outline-none transition focus:border-[#8B5CF6] bg-[#211D3D] text-white"
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#1E2D6E] shadow-sm outline-none transition focus:border-[#2A3B8F] bg-[#12204A] text-white"
               />
               {officeSearch && (
                 <button onClick={() => setOfficeSearch('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100">
@@ -1637,9 +1637,9 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </button>
               )}
               {officeSuggestions.length > 0 && (
-                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#211D3D] border-[#3A3266] divide-[#3A3266]/60">
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#12204A] border-[#1E2D6E] divide-[#1E2D6E]/60">
                   {officeSuggestions.map(itemHint => (
-                    <button key={itemHint} onClick={() => setOfficeSearch(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-[#3A3266]/40 text-white transition">
+                    <button key={itemHint} onClick={() => setOfficeSearch(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-[#1E2D6E]/40 text-white transition">
                       {itemHint}
                     </button>
                   ))}
@@ -1647,38 +1647,38 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
               )}
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              <button onClick={handlePrintOffices} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+              <button onClick={handlePrintOffices} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
                 <Icon name="print" size={14} /><span>Print</span>
               </button>
-              <button onClick={handleExportOffices} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A] transition">
+              <button onClick={handleExportOffices} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F] transition">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
-              <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortOffices('office')}>Office <SortIndicator sortConfig={sortConfigOffices} sortKey="office" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortOffices('needsCount')}>No. of Needs <SortIndicator sortConfig={sortConfigOffices} sortKey="needsCount" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortOffices('value')}>Total Estimated Value (₱) <SortIndicator sortConfig={sortConfigOffices} sortKey="value" darkMode={darkMode} /></th>
+              <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortOffices('office')}>Office <SortIndicator sortConfig={sortConfigOffices} sortKey="office" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortOffices('needsCount')}>No. of Needs <SortIndicator sortConfig={sortConfigOffices} sortKey="needsCount" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortOffices('value')}>Total Estimated Value (₱) <SortIndicator sortConfig={sortConfigOffices} sortKey="value" darkMode={darkMode} /></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+            <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
               {sortedOfficesSummary.map(o => (
                 <React.Fragment key={o.office}>
-                  <tr onClick={() => toggleOffice(o.office)} className={`cursor-pointer hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+                  <tr onClick={() => toggleOffice(o.office)} className={`cursor-pointer hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                     <td className="py-2.5 pl-2 font-bold">
                       <span className={`inline-block mr-1.5 text-[9px] transition-transform ${(officeSearch.trim() || expandedOffices[o.office]) ? 'rotate-90' : ''}`}>▶</span>
                       {o.office}
                     </td>
                     <td className="py-2.5 text-right font-bold">{o.needsCount}</td>
-                    <td className={`py-2.5 text-right pr-2 font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱ {o.value.toLocaleString()}</td>
+                    <td className={`py-2.5 text-right pr-2 font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱ {o.value.toLocaleString()}</td>
                   </tr>
                   {(officeSearch.trim() || expandedOffices[o.office]) && o.divisions.map(d => {
                     const divKey = `${o.office}::${d.fd}`;
                     return (
                       <React.Fragment key={divKey}>
-                        <tr onClick={() => toggleDivision(divKey)} className={`text-[11px] cursor-pointer ${darkMode ? 'bg-[#151129]/40 text-white hover:bg-[#211D3D]' : 'bg-[#F3EFFE] text-[#2D2650] hover:bg-[#EDE7FC]'}`}>
+                        <tr onClick={() => toggleDivision(divKey)} className={`text-[11px] cursor-pointer ${darkMode ? 'bg-[#0C1638]/40 text-white hover:bg-[#12204A]' : 'bg-[#FFFBF0] text-[#16213E] hover:bg-[#FDF4DC]'}`}>
                           <td className="py-2 pl-8">
                             <span className={`inline-block mr-1.5 text-[8px] transition-transform ${expandedDivisions[divKey] ? 'rotate-90' : ''}`}>▶</span>
                             {d.fd}
@@ -1687,7 +1687,7 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                           <td className="py-2 text-right pr-2">₱ {d.value.toLocaleString()}</td>
                         </tr>
                         {expandedDivisions[divKey] && d.sections.map(s => (
-                          <tr key={s.section} className={`text-[10px] ${darkMode ? 'bg-[#151129]/70 text-white' : 'bg-[#EDE7FC] text-[#2D2650]'} opacity-90`}>
+                          <tr key={s.section} className={`text-[10px] ${darkMode ? 'bg-[#0C1638]/70 text-white' : 'bg-[#FDF4DC] text-[#16213E]'} opacity-90`}>
                             <td className="py-1.5 pl-14">{s.section}</td>
                             <td className="py-1.5 text-right">{s.needsCount}</td>
                             <td className="py-1.5 text-right pr-2">₱ {s.value.toLocaleString()}</td>
@@ -1699,12 +1699,12 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </React.Fragment>
               ))}
               {sortedOfficesSummary.length === 0 && (
-                <tr><td colSpan="3" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 italic`}>No offices match the applied parameter sets.</td></tr>
+                <tr><td colSpan="3" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 italic`}>No offices match the applied parameter sets.</td></tr>
               )}
             </tbody>
             {sortedOfficesSummary.length > 0 && (
               <tfoot>
-                <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+                <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                   <td className="py-2.5 pl-2">TOTAL</td>
                   <td className="py-2.5 text-right">{sortedOfficesSummary.reduce((a, o) => a + o.needsCount, 0)}</td>
                   <td className="py-2.5 text-right pr-2">₱ {sortedOfficesSummary.reduce((a, o) => a + o.value, 0).toLocaleString()}</td>
@@ -1716,11 +1716,11 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       )}
 
       {addModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <div className={`w-full max-w-lg p-6 rounded-[28px] border-2 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-3 mb-4">
-              <h3 className={`font-black text-sm uppercase tracking-wider ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>Record Requirements</h3>
-              <button onClick={() => setAddModal(false)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white`}><Icon name="close" size={18} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <div className={`w-full max-w-lg p-6 rounded-[28px] border-2 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-3 mb-4">
+              <h3 className={`font-black text-sm uppercase tracking-wider ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>Record Requirements</h3>
+              <button onClick={() => setAddModal(false)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white`}><Icon name="close" size={18} /></button>
             </div>
             <div className="space-y-4">
               <input type="date" value={meta.dateLogged} onChange={e=>setMeta({...meta, dateLogged: e.target.value})} className={inp} title="Date Logged" />
@@ -1733,8 +1733,8 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
               
-              <div className="border-t border-[#E4DEFB] dark:border-[#3A3266] pt-3 space-y-2">
-                <span className={`text-[10px] font-black uppercase tracking-widest ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>Line Item</span>
+              <div className="border-t border-[#F5E6C8] dark:border-[#1E2D6E] pt-3 space-y-2">
+                <span className={`text-[10px] font-black uppercase tracking-widest ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
                   <option value="">Select Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
@@ -1749,17 +1749,17 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
                 </div>
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Estimated Valuation (₱)"/>
                 <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
-                <button type="button" onClick={handlePushLine} className={`w-full py-2 text-xs font-bold rounded border transition ${darkMode ? 'bg-[#3A3266] border-[#4E4488] text-[#FFC145] hover:bg-[#4E4488]' : 'bg-[#EDE7FC] border-[#E4DEFB] text-[#EA580C] hover:bg-[#DDD3FB]'}`}><Icon name="plus" size={14} /> Add Line Item</button>
+                <button type="button" onClick={handlePushLine} className={`w-full py-2 text-xs font-bold rounded border transition ${darkMode ? 'bg-[#1E2D6E] border-[#2A3B8F] text-[#FFC72C] hover:bg-[#2A3B8F]' : 'bg-[#FDF4DC] border-[#F5E6C8] text-[#A16207] hover:bg-[#F5E6C8]'}`}><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               
               {lines.length > 0 && (
-                <div className="border-t border-[#E4DEFB] dark:border-[#3A3266] pt-3 space-y-2">
+                <div className="border-t border-[#F5E6C8] dark:border-[#1E2D6E] pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 border rounded ${darkMode ? 'bg-[#211D3D]/40 border-[#3A3266] text-white' : 'bg-[#F3EFFE] border-[#E4DEFB] text-black'}`}>
+                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 border rounded ${darkMode ? 'bg-[#12204A]/40 border-[#1E2D6E] text-white' : 'bg-[#FFFBF0] border-[#F5E6C8] text-black'}`}>
                       <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
                     </div>
                   ))}
-                  <button onClick={handleCommitBatch} className="w-full py-2 bg-[#211D3D] hover:bg-black text-[#FFC145] font-bold rounded text-xs transition">Submit</button>
+                  <button onClick={handleCommitBatch} className="w-full py-2 bg-[#12204A] hover:bg-black text-[#FFC72C] font-bold rounded text-xs transition">Submit</button>
                 </div>
               )}
             </div>
@@ -1768,52 +1768,52 @@ function NeedsWorkspace({ needs, setNeeds, userContext, darkMode }) {
       )}
 
       {editModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-2">
-              <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>Modify Specification</h3>
-              <button type="button" onClick={() => setEditModal(null)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>Modify Specification</h3>
+              <button type="button" onClick={() => setEditModal(null)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>Requirement Vol.</label>
+                <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>Requirement Vol.</label>
                 <input type="number" value={editModal.qty} onChange={e=>setEditModal({...editModal, qty: e.target.value})} className={inp} required />
               </div>
             </div>
             <div>
-              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>Estimated Overhead Cost (₱)</label>
+              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>Estimated Overhead Cost (₱)</label>
               <input type="number" value={editModal.value} onChange={e=>setEditModal({...editModal, value: e.target.value})} className={inp} required />
             </div>
             <div>
-              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>Fulfillment Status Tier</label>
+              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>Fulfillment Status Tier</label>
               <select value={editModal.status} onChange={e=>setEditModal({...editModal, status: e.target.value})} className={inp}>
                 <option value="Unfulfilled">Unfulfilled</option>
                 <option value="Partially Fulfilled">Partially Fulfilled</option>
                 <option value="Fulfilled">Fulfilled</option>
               </select>
             </div>
-            <button type="submit" className="w-full py-2 bg-[#FF6B4A] hover:bg-[#FF5230] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]"> Save Verification Changes</button>
+            <button type="submit" className="w-full py-2 bg-[#1B8A4A] hover:bg-[#146B39] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]"> Save Verification Changes</button>
           </form>
         </div>
       )}
 
       {trailModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <div className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-2">
-              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>System Change Audit Trail Log</h3>
-              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>System Change Audit Trail Log</h3>
+              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-[#3A3266]/50 border-[#4E4488]' : 'bg-[#F3EFFE] border-[#E4DEFB]'}`}>
-                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>
+                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-[#1E2D6E]/50 border-[#2A3B8F]' : 'bg-[#FFFBF0] border-[#F5E6C8]'}`}>
+                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>
                     <span>{t.timestamp}</span>
-                    <span className={`font-bold ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>{t.user}</span>
+                    <span className={`font-bold ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>{t.user}</span>
                   </div>
-                  <p className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} font-medium`}>{t.action}</p>
+                  <p className={`${darkMode ? 'text-white' : 'text-[#16213E]'} font-medium`}>{t.action}</p>
                 </div>
-              )) || <p className={`text-xs text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 py-4`}>No logged validation adjustments.</p>}
+              )) || <p className={`text-xs text-center ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 py-4`}>No logged validation adjustments.</p>}
             </div>
           </div>
         </div>
@@ -2240,29 +2240,29 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
     setTimeout(() => { printWindow.print(); printWindow.close(); }, 200);
   };
 
-  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'} focus:border-[#8B5CF6]`;
+  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'} focus:border-[#2A3B8F]`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
       
       {!isIctUser && (
-        <div className="flex border-b border-[#E4DEFB] dark:border-[#3A3266] gap-2">
+        <div className="flex border-b border-[#F5E6C8] dark:border-[#1E2D6E] gap-2">
           <button 
             onClick={() => setSubTab('ledger')} 
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? `border-[#8B5CF6] ${darkMode ? 'text-[#FFC145]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? `border-[#2A3B8F] ${darkMode ? 'text-[#FFC72C]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
           >
             Contributions
           </button>
           <button 
             onClick={() => setSubTab('partners')} 
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'partners' ? `border-[#8B5CF6] ${darkMode ? 'text-[#FFC145]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'partners' ? `border-[#2A3B8F] ${darkMode ? 'text-[#FFC72C]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
           >
             Partners
           </button>
           <button 
             onClick={() => setSubTab('summary')} 
-            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'summary' ? `border-[#8B5CF6] ${darkMode ? 'text-[#FFC145]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
+            className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'summary' ? `border-[#2A3B8F] ${darkMode ? 'text-[#FFC72C]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}
           >
             Summary
           </button>
@@ -2271,64 +2271,64 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
       {(subTab === 'ledger' || isIctUser) && (
         <>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)]">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)]">
             <div>
-              <h2 className="text-sm font-bold text-[#FFC145]">Contributions Ledger</h2>
+              <h2 className="text-sm font-bold text-[#FFC72C]">Contributions Ledger</h2>
               <p className="text-[11px] text-white opacity-80">Verified Records: {currentFilteredView.length}</p>
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {!isReadOnly && (
-                <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+                <button onClick={()=>setAddModal(true)} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
                   <Icon name="plus" size={14} /><span>Record Donations</span>
                 </button>
               )}
-              <button onClick={handlePrintContributionsLedger} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A]">
+              <button onClick={handlePrintContributionsLedger} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F]">
                 <Icon name="print" size={14} /><span>Print</span>
               </button>
-              <button onClick={() => exportToCSV(currentFilteredView, 'PROJECT_UGNAY_CONTRIBUTIONS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A]">
+              <button onClick={() => exportToCSV(currentFilteredView, 'PROJECT_UGNAY_CONTRIBUTIONS_EXPORT')} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F]">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
 
-          <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
+          <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
             <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
-                <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-                  <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('dateLogged')}>Date <SortIndicator sortConfig={sortConfig} sortKey="dateLogged" darkMode={darkMode} /></th>
-                  <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('partner')}>Partner <SortIndicator sortConfig={sortConfig} sortKey="partner" darkMode={darkMode} /></th>
-                  <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('office')}>Recipient <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
-                  <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" darkMode={darkMode} /></th>
-                  <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" darkMode={darkMode} /></th>
-                  <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" darkMode={darkMode} /></th>
-                  <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" darkMode={darkMode} /></th>
-                  <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" darkMode={darkMode} /></th>
-                  <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" darkMode={darkMode} /></th>
-                  <th className={`pb-2 ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Remarks</th>
-                  <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Actions</th>
+                <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+                  <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('dateLogged')}>Date <SortIndicator sortConfig={sortConfig} sortKey="dateLogged" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('partner')}>Partner <SortIndicator sortConfig={sortConfig} sortKey="partner" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('office')}>Recipient <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('fd')}>Functional Division <SortIndicator sortConfig={sortConfig} sortKey="fd" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('section')}>Section/Unit <SortIndicator sortConfig={sortConfig} sortKey="section" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('category')}>Category <SortIndicator sortConfig={sortConfig} sortKey="category" darkMode={darkMode} /></th>
+                  <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('specificItem')}>Line Item <SortIndicator sortConfig={sortConfig} sortKey="specificItem" darkMode={darkMode} /></th>
+                  <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('qty')}>Quantity <SortIndicator sortConfig={sortConfig} sortKey="qty" darkMode={darkMode} /></th>
+                  <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('value')}>Value <SortIndicator sortConfig={sortConfig} sortKey="value" darkMode={darkMode} /></th>
+                  <th className={`pb-2 ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Remarks</th>
+                  <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+              <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
                 {sortedFilteredView.map(c => (
-                  <tr key={c.id} className={`hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+                  <tr key={c.id} className={`hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                     <td className="py-2.5">{c.dateLogged}</td>
-                    <td className={`py-2.5 font-bold ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>{c.partner}</td>
+                    <td className={`py-2.5 font-bold ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>{c.partner}</td>
                     <td className="py-2.5 font-bold">{c.office}</td>
                     <td className="py-2.5 truncate max-w-[130px]">{c.fd}</td>
                     <td className="py-2.5">{c.section}</td>
                     <td className="py-2.5 text-[11px]">{c.category}</td>
                     <td className="py-2.5 font-semibold">{c.specificItem}</td>
-                    <td className="py-2.5 text-right font-medium">{c.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-80 dark:opacity-60`}>{c.uom}</span></td>
-                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱ {Number(c.value).toLocaleString()}</td>
+                    <td className="py-2.5 text-right font-medium">{c.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-80 dark:opacity-60`}>{c.uom}</span></td>
+                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱ {Number(c.value).toLocaleString()}</td>
                     <td className="py-2.5 text-[11px] truncate max-w-[150px]" title={c.remarks}>{c.remarks || '-'}</td>
                     <td className="py-2.5 text-center">
                       <div className="flex items-center justify-center gap-1">
                         {!isReadOnly && (
-                          <button onClick={() => setEditModal(c)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-[#8B5CF6] dark:hover:text-[#FFC145] transition`} title="Modify Record">
+                          <button onClick={() => setEditModal(c)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] transition`} title="Modify Record">
                             <Icon name="edit" size={14} />
                           </button>
                         )}
-                        <button onClick={() => setTrailModal(c)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-[#8B5CF6] dark:hover:text-[#FFC145] transition`} title="Audit Trail">
+                        <button onClick={() => setTrailModal(c)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] transition`} title="Audit Trail">
                           <Icon name="history" size={14} />
                         </button>
                       </div>
@@ -2338,7 +2338,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
               </tbody>
               {sortedFilteredView.length > 0 && (
                 <tfoot>
-                  <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+                  <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                     <td className="py-2.5" colSpan="7">TOTAL</td>
                     <td className="py-2.5 text-right">{sortedFilteredView.reduce((a, c) => a + Number(c.qty), 0)}</td>
                     <td className="py-2.5 text-right">₱ {sortedFilteredView.reduce((a, c) => a + Number(c.value), 0).toLocaleString()}</td>
@@ -2353,7 +2353,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
 
       {subTab === 'partners' && !isIctUser && (
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)]">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)]">
             
             <div className="relative w-full max-w-md">
               <input 
@@ -2361,7 +2361,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search specific partner identity..." 
-                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#3A3266] shadow-sm outline-none transition focus:border-[#8B5CF6] bg-[#211D3D] text-white"
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#1E2D6E] shadow-sm outline-none transition focus:border-[#2A3B8F] bg-[#12204A] text-white"
               />
               {searchQuery && (
                 <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100">
@@ -2370,12 +2370,12 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
               )}
               
               {autocompleteSuggestions.length > 0 && (
-                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#211D3D] border-[#3A3266] divide-[#3A3266]/60">
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#12204A] border-[#1E2D6E] divide-[#1E2D6E]/60">
                   {autocompleteSuggestions.map(itemHint => (
                     <button 
                       key={itemHint} 
                       onClick={() => setSearchQuery(itemHint)}
-                      className="w-full text-left p-2 text-xs font-semibold hover:bg-[#3A3266]/40 text-white transition"
+                      className="w-full text-left p-2 text-xs font-semibold hover:bg-[#1E2D6E]/40 text-white transition"
                     >
                       {itemHint}
                     </button>
@@ -2446,7 +2446,7 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   printWindow.print();
                   printWindow.close();
                 }, 200);
-              }} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+              }} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
                 <Icon name="print" size={14} /><span>Print List</span>
               </button>
               
@@ -2457,42 +2457,42 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   'Total Valuation (PHP)': p.totalValuation
                 }));
                 exportToCSV(exportPayload, 'PROJECT_UGNAY_PARTNERS_MATRIX_EXPORT');
-              }} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A] transition">
+              }} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F] transition">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
 
-          <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
+          <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
             <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
-                <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-                  <th className={`pb-2 pl-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortPartners('name')}>Partner <SortIndicator sortConfig={sortConfigPartners} sortKey="name" darkMode={darkMode} /></th>
-                  <th className={`pb-2 text-center cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortPartners('transactions')}>No. of Contributions <SortIndicator sortConfig={sortConfigPartners} sortKey="transactions" darkMode={darkMode} /></th>
-                  <th className={`pb-2 text-right pr-4 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortPartners('totalValuation')}>Total Value <SortIndicator sortConfig={sortConfigPartners} sortKey="totalValuation" darkMode={darkMode} /></th>
+                <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+                  <th className={`pb-2 pl-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortPartners('name')}>Partner <SortIndicator sortConfig={sortConfigPartners} sortKey="name" darkMode={darkMode} /></th>
+                  <th className={`pb-2 text-center cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortPartners('transactions')}>No. of Contributions <SortIndicator sortConfig={sortConfigPartners} sortKey="transactions" darkMode={darkMode} /></th>
+                  <th className={`pb-2 text-right pr-4 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortPartners('totalValuation')}>Total Value <SortIndicator sortConfig={sortConfigPartners} sortKey="totalValuation" darkMode={darkMode} /></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+              <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
                 {sortedPartnersSummary.map(rowNode => (
                   <tr 
                     key={rowNode.name} 
                     onClick={() => setSelectedPartner(rowNode)}
-                    className={`hover:bg-[#F3EFFE] dark:hover:bg-[#3A3266]/40 cursor-pointer transition ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}
+                    className={`hover:bg-[#FFFBF0] dark:hover:bg-[#1E2D6E]/40 cursor-pointer transition ${darkMode ? 'text-white' : 'text-[#16213E]'}`}
                   >
-                    <td className={`py-3 pl-2 font-black ${darkMode ? 'text-[#FFC145]' : 'text-black'} text-xs`}>{rowNode.name}</td>
+                    <td className={`py-3 pl-2 font-black ${darkMode ? 'text-[#FFC72C]' : 'text-black'} text-xs`}>{rowNode.name}</td>
                     <td className="py-3 text-center font-bold">{rowNode.aggregateLogs.length} transactions</td>
-                    <td className={`py-3 text-right pr-4 font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱ {rowNode.totalValuation.toLocaleString()}</td>
+                    <td className={`py-3 text-right pr-4 font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱ {rowNode.totalValuation.toLocaleString()}</td>
                   </tr>
                 ))}
                 {sortedPartnersSummary.length === 0 && (
                   <tr>
-                    <td colSpan="3" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 italic`}>No partners match the applied structural/temporal parameter sets.</td>
+                    <td colSpan="3" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 italic`}>No partners match the applied structural/temporal parameter sets.</td>
                   </tr>
                 )}
               </tbody>
               {sortedPartnersSummary.length > 0 && (
                 <tfoot>
-                  <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+                  <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                     <td className="py-3 pl-2">TOTAL</td>
                     <td className="py-3 text-center">{sortedPartnersSummary.reduce((a, p) => a + p.aggregateLogs.length, 0)} transactions</td>
                     <td className="py-3 text-right pr-4">₱ {sortedPartnersSummary.reduce((a, p) => a + p.totalValuation, 0).toLocaleString()}</td>
@@ -2505,15 +2505,15 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       )}
 
       {subTab === 'summary' && !isIctUser && (
-        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
+        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
             <div className="relative w-full max-w-md">
               <input 
                 type="text" 
                 value={summarySearchQuery}
                 onChange={e => setSummarySearchQuery(e.target.value)}
                 placeholder="Search Category or Specific Item..." 
-                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#3A3266] shadow-sm outline-none transition focus:border-[#8B5CF6] bg-[#211D3D] text-white"
+                className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#1E2D6E] shadow-sm outline-none transition focus:border-[#2A3B8F] bg-[#12204A] text-white"
               />
               {summarySearchQuery && (
                 <button onClick={() => setSummarySearchQuery('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100">
@@ -2521,9 +2521,9 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 </button>
               )}
               {summarySuggestions.length > 0 && (
-                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#211D3D] border-[#3A3266] divide-[#3A3266]/60">
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#12204A] border-[#1E2D6E] divide-[#1E2D6E]/60">
                   {summarySuggestions.map(itemHint => (
-                    <button key={itemHint} onClick={() => setSummarySearchQuery(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-[#3A3266]/40 text-white transition">
+                    <button key={itemHint} onClick={() => setSummarySearchQuery(itemHint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-[#1E2D6E]/40 text-white transition">
                       {itemHint}
                     </button>
                   ))}
@@ -2531,37 +2531,37 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
               )}
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              <button onClick={handlePrintSummary} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+              <button onClick={handlePrintSummary} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
                 <Icon name="print" size={14} /><span>Print</span>
               </button>
-              <button onClick={handleExportSummary} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A] transition">
+              <button onClick={handleExportSummary} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F] transition">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
-              <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortCategory('category')}>Category <SortIndicator sortConfig={sortConfigCategory} sortKey="category" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-center cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortCategory('partners')}>No. of Partners (Donors) <SortIndicator sortConfig={sortConfigCategory} sortKey="partners" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortCategory('value')}>Amount/Value (₱) <SortIndicator sortConfig={sortConfigCategory} sortKey="value" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortCategory('offices')}>No. of Offices (RO/SDO) <SortIndicator sortConfig={sortConfigCategory} sortKey="offices" darkMode={darkMode} /></th>
+              <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortCategory('category')}>Category <SortIndicator sortConfig={sortConfigCategory} sortKey="category" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-center cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortCategory('partners')}>No. of Partners (Donors) <SortIndicator sortConfig={sortConfigCategory} sortKey="partners" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortCategory('value')}>Amount/Value (₱) <SortIndicator sortConfig={sortConfigCategory} sortKey="value" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right pr-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortCategory('offices')}>No. of Offices (RO/SDO) <SortIndicator sortConfig={sortConfigCategory} sortKey="offices" darkMode={darkMode} /></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+            <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
               {sortedCategorySummary.map(cat => (
                 <React.Fragment key={cat.category}>
-                  <tr onClick={() => toggleCategory(cat.category)} className={`cursor-pointer hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+                  <tr onClick={() => toggleCategory(cat.category)} className={`cursor-pointer hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                     <td className="py-2.5 pl-2 font-bold">
                       <span className={`inline-block mr-1.5 text-[9px] transition-transform ${(summarySearchQuery.trim() || expandedCategories[cat.category]) ? 'rotate-90' : ''}`}>▶</span>
                       {cat.category}
                     </td>
                     <td className="py-2.5 text-center font-bold">{cat.partners}</td>
-                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱ {cat.value.toLocaleString()}</td>
+                    <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱ {cat.value.toLocaleString()}</td>
                     <td className="py-2.5 text-right pr-2 font-bold">{cat.offices}</td>
                   </tr>
                   {(summarySearchQuery.trim() || expandedCategories[cat.category]) && cat.types.map(t => (
-                    <tr key={t.specificItem} className={`text-[11px] ${darkMode ? 'bg-[#151129]/40 text-white' : 'bg-[#F3EFFE] text-[#2D2650]'} opacity-90`}>
+                    <tr key={t.specificItem} className={`text-[11px] ${darkMode ? 'bg-[#0C1638]/40 text-white' : 'bg-[#FFFBF0] text-[#16213E]'} opacity-90`}>
                       <td className="py-2 pl-8">{t.specificItem}</td>
                       <td className="py-2 text-center">{t.partners}</td>
                       <td className="py-2 text-right">₱ {t.value.toLocaleString()}</td>
@@ -2572,13 +2572,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
               ))}
               {sortedCategorySummary.length === 0 && (
                 <tr>
-                  <td colSpan="4" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 italic`}>No contribution records match the applied parameter sets.</td>
+                  <td colSpan="4" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 italic`}>No contribution records match the applied parameter sets.</td>
                 </tr>
               )}
             </tbody>
             {sortedCategorySummary.length > 0 && (
               <tfoot>
-                <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+                <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                   <td className="py-2.5 pl-2">TOTAL</td>
                   <td className="py-2.5 text-center"></td>
                   <td className="py-2.5 text-right">₱ {sortedCategorySummary.reduce((a, c) => a + c.value, 0).toLocaleString()}</td>
@@ -2591,54 +2591,54 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       )}
 
       {selectedPartner && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/70 backdrop-blur-sm">
-          <div className={`w-full max-w-4xl p-6 rounded-[28px] border-2 shadow-2xl flex flex-col max-h-[85vh] ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-3 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/70 backdrop-blur-sm">
+          <div className={`w-full max-w-4xl p-6 rounded-[28px] border-2 shadow-2xl flex flex-col max-h-[85vh] ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-3 mb-4">
               <div>
-                <span className={`text-[10px] tracking-wider uppercase font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>Resource Summary Ledger</span>
-                <h3 className={`font-black text-base ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>{selectedPartner.name}</h3>
+                <span className={`text-[10px] tracking-wider uppercase font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>Resource Summary Ledger</span>
+                <h3 className={`font-black text-base ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>{selectedPartner.name}</h3>
               </div>
               <div className="flex items-center gap-3">
-                <button onClick={handlePrintPartnerLedger} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+                <button onClick={handlePrintPartnerLedger} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
                   <Icon name="print" size={14} /><span>Print</span>
                 </button>
-                <button onClick={() => setSelectedPartner(null)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white transition opacity-60 hover:opacity-100`}>
+                <button onClick={() => setSelectedPartner(null)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white transition opacity-60 hover:opacity-100`}>
                   <Icon name="close" size={20} />
                 </button>
               </div>
             </div>
             
-            <div className="overflow-y-auto flex-1 border border-[#E4DEFB] dark:border-[#3A3266]/80 rounded-2xl">
+            <div className="overflow-y-auto flex-1 border border-[#F5E6C8] dark:border-[#1E2D6E]/80 rounded-2xl">
               <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className={`sticky top-0 font-bold uppercase tracking-wider text-[11px] border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'bg-[#151129] text-white' : 'bg-[#EDE7FC] text-[#2D2650]'}`}>
+                <thead className={`sticky top-0 font-bold uppercase tracking-wider text-[11px] border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'bg-[#0C1638] text-white' : 'bg-[#FDF4DC] text-[#16213E]'}`}>
                   <tr>
-                    <th className="p-2.5 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none" onClick={() => requestSortPartnerLogs('dateLogged')}>Date <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="dateLogged" darkMode={darkMode} /></th>
-                    <th className="p-2.5 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none" onClick={() => requestSortPartnerLogs('office')}>Office <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="office" darkMode={darkMode} /></th>
-                    <th className="p-2.5 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none" onClick={() => requestSortPartnerLogs('fd')}>Functional Division <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="fd" darkMode={darkMode} /></th>
-                    <th className="p-2.5 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none" onClick={() => requestSortPartnerLogs('section')}>Section/Unit <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="section" darkMode={darkMode} /></th>
-                    <th className="p-2.5 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none" onClick={() => requestSortPartnerLogs('category')}>Category <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="category" darkMode={darkMode} /></th>
-                    <th className="p-2.5 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none" onClick={() => requestSortPartnerLogs('specificItem')}>Line Item <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="specificItem" darkMode={darkMode} /></th>
-                    <th className="p-2.5 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none" onClick={() => requestSortPartnerLogs('qty')}>Qty <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="qty" darkMode={darkMode} /></th>
-                    <th className="p-2.5 text-right pr-3 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none" onClick={() => requestSortPartnerLogs('value')}>Valuation <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="value" darkMode={darkMode} /></th>
+                    <th className="p-2.5 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none" onClick={() => requestSortPartnerLogs('dateLogged')}>Date <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="dateLogged" darkMode={darkMode} /></th>
+                    <th className="p-2.5 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none" onClick={() => requestSortPartnerLogs('office')}>Office <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="office" darkMode={darkMode} /></th>
+                    <th className="p-2.5 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none" onClick={() => requestSortPartnerLogs('fd')}>Functional Division <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="fd" darkMode={darkMode} /></th>
+                    <th className="p-2.5 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none" onClick={() => requestSortPartnerLogs('section')}>Section/Unit <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="section" darkMode={darkMode} /></th>
+                    <th className="p-2.5 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none" onClick={() => requestSortPartnerLogs('category')}>Category <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="category" darkMode={darkMode} /></th>
+                    <th className="p-2.5 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none" onClick={() => requestSortPartnerLogs('specificItem')}>Line Item <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="specificItem" darkMode={darkMode} /></th>
+                    <th className="p-2.5 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none" onClick={() => requestSortPartnerLogs('qty')}>Qty <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="qty" darkMode={darkMode} /></th>
+                    <th className="p-2.5 text-right pr-3 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none" onClick={() => requestSortPartnerLogs('value')}>Valuation <SortIndicator sortConfig={sortConfigPartnerLogs} sortKey="value" darkMode={darkMode} /></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+                <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
                   {sortedPartnerLogs.map(itemLog => (
-                    <tr key={itemLog.id} className={`hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] text-[11px] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+                    <tr key={itemLog.id} className={`hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] text-[11px] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                       <td className="p-2.5">{itemLog.dateLogged}</td>
                       <td className="p-2.5 font-bold">{itemLog.office}</td>
                       <td className="p-2.5 truncate max-w-[120px]">{itemLog.fd}</td>
                       <td className="p-2.5">{itemLog.section}</td>
                       <td className="p-2.5">{itemLog.category}</td>
                       <td className="p-2.5 font-semibold">{itemLog.specificItem}</td>
-                      <td className="p-2.5 text-right font-medium">{itemLog.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-80 dark:opacity-60`}>{itemLog.uom}</span></td>
-                      <td className={`p-2.5 text-right pr-3 font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>₱{itemLog.value.toLocaleString()}</td>
+                      <td className="p-2.5 text-right font-medium">{itemLog.qty} <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-80 dark:opacity-60`}>{itemLog.uom}</span></td>
+                      <td className={`p-2.5 text-right pr-3 font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>₱{itemLog.value.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
                 {sortedPartnerLogs.length > 0 && (
                   <tfoot>
-                    <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+                    <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                       <td className="p-2.5" colSpan="6">TOTAL</td>
                       <td className="p-2.5 text-right">{sortedPartnerLogs.reduce((a, l) => a + Number(l.qty), 0)}</td>
                       <td className="p-2.5 text-right pr-3">₱{sortedPartnerLogs.reduce((a, l) => a + Number(l.value), 0).toLocaleString()}</td>
@@ -2647,20 +2647,20 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 )}
               </table>
             </div>
-            <div className="mt-4 pt-3 border-t border-[#E4DEFB] dark:border-[#3A3266] flex justify-between items-center">
-              <span className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Total Pipeline Records: {selectedPartner.aggregateLogs.length}</span>
-              <span className={`text-sm font-black ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>Total Contribution: ₱{selectedPartner.totalValuation.toLocaleString()}</span>
+            <div className="mt-4 pt-3 border-t border-[#F5E6C8] dark:border-[#1E2D6E] flex justify-between items-center">
+              <span className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Total Pipeline Records: {selectedPartner.aggregateLogs.length}</span>
+              <span className={`text-sm font-black ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>Total Contribution: ₱{selectedPartner.totalValuation.toLocaleString()}</span>
             </div>
           </div>
         </div>
       )}
 
       {addModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <div className={`w-full max-w-lg p-6 rounded-[28px] border-2 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-3 mb-4">
-              <h3 className={`font-black text-sm uppercase tracking-wider ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>Record Donations</h3>
-              <button onClick={() => setAddModal(false)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={18} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <div className={`w-full max-w-lg p-6 rounded-[28px] border-2 shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-3 mb-4">
+              <h3 className={`font-black text-sm uppercase tracking-wider ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>Record Donations</h3>
+              <button onClick={() => setAddModal(false)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={18} /></button>
             </div>
             <div className="space-y-4">
               
@@ -2675,13 +2675,13 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                   placeholder="Sponsoring Partner / Entity" 
                 />
                 {partnerModalSuggestions.length > 0 && (
-                  <div className={`absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y ${darkMode ? 'bg-[#211D3D] border-[#3A3266] divide-[#3A3266]/60' : 'bg-white border-[#E4DEFB] divide-[#EDE7FC]'}`}>
+                  <div className={`absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] divide-[#1E2D6E]/60' : 'bg-white border-[#F5E6C8] divide-[#FDF4DC]'}`}>
                     {partnerModalSuggestions.map(itemHint => (
                       <button 
                         key={itemHint}
                         type="button"
                         onClick={() => setMeta({...meta, partner: itemHint})}
-                        className={`w-full text-left p-2 text-xs font-semibold transition ${darkMode ? 'hover:bg-[#3A3266]/40 text-white' : 'hover:bg-[#EDE7FC] text-[#2D2650]'}`}
+                        className={`w-full text-left p-2 text-xs font-semibold transition ${darkMode ? 'hover:bg-[#1E2D6E]/40 text-white' : 'hover:bg-[#FDF4DC] text-[#16213E]'}`}
                       >
                         {itemHint}
                       </button>
@@ -2699,8 +2699,8 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 <select value={meta.section} onChange={e=>setMeta({...meta, section:e.target.value})} className={inp} disabled={!meta.fd}><option value="">Section/Unit</option>{activeSections.map(s=><option key={s} value={s}>{s}</option>)}</select>
               </div>
               
-              <div className="border-t border-[#E4DEFB] dark:border-[#3A3266] pt-3 space-y-2">
-                <span className={`text-[10px] font-black uppercase tracking-widest ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>Line Item</span>
+              <div className="border-t border-[#F5E6C8] dark:border-[#1E2D6E] pt-3 space-y-2">
+                <span className={`text-[10px] font-black uppercase tracking-widest ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>Line Item</span>
                 <select value={workingItem.category} onChange={e=>setWorkingItem({...workingItem, category:e.target.value, specificItem: ''})} className={inp}>
                   <option value="">Select Category</option>
                   {Object.keys(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
@@ -2716,17 +2716,17 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
                 <input type="number" value={workingItem.value} onChange={e=>setWorkingItem({...workingItem, value:e.target.value})} className={inp} placeholder="Value of Item(s) (₱)"/>
                 <input type="text" value={workingItem.remarks} onChange={e=>setWorkingItem({...workingItem, remarks:e.target.value})} className={inp} placeholder="Remarks (Optional)"/>
                 
-                <button type="button" onClick={handlePushLine} className={`w-full py-2 text-xs font-bold rounded border transition ${darkMode ? 'bg-[#3A3266] border-[#4E4488] text-[#FFC145] hover:bg-[#4E4488]' : 'bg-[#EDE7FC] border-[#E4DEFB] text-[#EA580C] hover:bg-[#DDD3FB]'}`}><Icon name="plus" size={14} /> Add Line Item</button>
+                <button type="button" onClick={handlePushLine} className={`w-full py-2 text-xs font-bold rounded border transition ${darkMode ? 'bg-[#1E2D6E] border-[#2A3B8F] text-[#FFC72C] hover:bg-[#2A3B8F]' : 'bg-[#FDF4DC] border-[#F5E6C8] text-[#A16207] hover:bg-[#F5E6C8]'}`}><Icon name="plus" size={14} /> Add Line Item</button>
               </div>
               
               {lines.length > 0 && (
-                <div className="border-t border-[#E4DEFB] dark:border-[#3A3266] pt-3 space-y-2">
+                <div className="border-t border-[#F5E6C8] dark:border-[#1E2D6E] pt-3 space-y-2">
                   {lines.map(l => (
-                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 border rounded ${darkMode ? 'bg-[#211D3D]/40 border-[#3A3266] text-white' : 'bg-[#F3EFFE] border-[#E4DEFB] text-black'}`}>
+                    <div key={l.id} className={`flex justify-between items-center text-[11px] p-2 border rounded ${darkMode ? 'bg-[#12204A]/40 border-[#1E2D6E] text-white' : 'bg-[#FFFBF0] border-[#F5E6C8] text-black'}`}>
                       <span>{l.specificItem} x{l.qty} - ₱{Number(l.value).toLocaleString()} {l.remarks ? `(${l.remarks})` : ''}</span>
                     </div>
                   ))}
-                  <button onClick={handleCommitBatch} className="w-full py-2 bg-[#211D3D] hover:bg-black text-[#FFC145] font-bold rounded text-xs transition">Submit</button>
+                  <button onClick={handleCommitBatch} className="w-full py-2 bg-[#12204A] hover:bg-black text-[#FFC72C] font-bold rounded text-xs transition">Submit</button>
                 </div>
               )}
             </div>
@@ -2735,44 +2735,44 @@ function ContributionsWorkspace({ contributions, setContributions, userContext, 
       )}
 
       {editModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-2">
-              <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>Modify Specification</h3>
-              <button type="button" onClick={() => setEditModal(null)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <form onSubmit={handleUpdateItem} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>Modify Specification</h3>
+              <button type="button" onClick={() => setEditModal(null)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>Quantity Provided</label>
+                <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>Quantity Provided</label>
                 <input type="number" value={editModal.qty} onChange={e=>setEditModal({...editModal, qty: e.target.value})} className={inp} required />
               </div>
             </div>
             <div>
-              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>Declared Value (₱)</label>
+              <label className={`block text-[10px] uppercase font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>Declared Value (₱)</label>
               <input type="number" value={editModal.value} onChange={e=>setEditModal({...editModal, value: e.target.value})} className={inp} required />
             </div>
-            <button type="submit" className="w-full py-2 bg-[#FF6B4A] hover:bg-[#FF5230] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]"> Save Verification Changes</button>
+            <button type="submit" className="w-full py-2 bg-[#1B8A4A] hover:bg-[#146B39] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]"> Save Verification Changes</button>
           </form>
         </div>
       )}
 
       {trailModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <div className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-2">
-              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>System Change Audit Trail Log</h3>
-              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>System Change Audit Trail Log</h3>
+              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-[#3A3266]/50 border-[#4E4488]' : 'bg-[#F3EFFE] border-[#E4DEFB]'}`}>
-                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} mb-1`}>
+                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-[#1E2D6E]/50 border-[#2A3B8F]' : 'bg-[#FFFBF0] border-[#F5E6C8]'}`}>
+                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} mb-1`}>
                     <span>{t.timestamp}</span>
-                    <span className={`font-bold ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>{t.user}</span>
+                    <span className={`font-bold ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>{t.user}</span>
                   </div>
-                  <p className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} font-medium`}>{t.action}</p>
+                  <p className={`${darkMode ? 'text-white' : 'text-[#16213E]'} font-medium`}>{t.action}</p>
                 </div>
-              )) || <p className={`text-xs text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 py-4`}>No logged validation adjustments.</p>}
+              )) || <p className={`text-xs text-center ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 py-4`}>No logged validation adjustments.</p>}
             </div>
           </div>
         </div>
@@ -3110,85 +3110,85 @@ function TransferWorkspace({ contributions, transfers, setTransfers, userContext
     })), 'PROJECT_UGNAY_TRANSFER_LEDGER_EXPORT');
   };
 
-  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'} focus:border-[#8B5CF6]`;
+  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'} focus:border-[#2A3B8F]`;
 
   return (
     <div className="space-y-6">
       <SystemFilters filters={filters} setFilters={setFilters} darkMode={darkMode} includeCategoryFilters={true} userContext={userContext} />
 
-      <div className="flex border-b border-[#E4DEFB] dark:border-[#3A3266]">
-        <button onClick={() => setSubTab('inventory')} className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'inventory' ? `border-[#8B5CF6] ${darkMode ? 'text-[#FFC145]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}>
+      <div className="flex border-b border-[#F5E6C8] dark:border-[#1E2D6E]">
+        <button onClick={() => setSubTab('inventory')} className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'inventory' ? `border-[#2A3B8F] ${darkMode ? 'text-[#FFC72C]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}>
           Inventory
         </button>
-        <button onClick={() => setSubTab('ledger')} className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? `border-[#8B5CF6] ${darkMode ? 'text-[#FFC145]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}>
+        <button onClick={() => setSubTab('ledger')} className={`px-4 py-2 text-xs font-bold border-b-2 transition-all ${subTab === 'ledger' ? `border-[#2A3B8F] ${darkMode ? 'text-[#FFC72C]' : 'text-black'}` : `border-transparent ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}`}>
           Transfer Ledger
         </button>
       </div>
 
       {subTab === 'inventory' && (
-        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
+        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
             <div className="relative w-full max-w-md">
-              <input type="text" value={inventorySearch} onChange={e => setInventorySearch(e.target.value)} placeholder="Search Category or Item..." className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#3A3266] shadow-sm outline-none transition focus:border-[#8B5CF6] bg-[#211D3D] text-white" />
+              <input type="text" value={inventorySearch} onChange={e => setInventorySearch(e.target.value)} placeholder="Search Category or Item..." className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#1E2D6E] shadow-sm outline-none transition focus:border-[#2A3B8F] bg-[#12204A] text-white" />
               {inventorySearch && (
                 <button onClick={() => setInventorySearch('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100"><Icon name="close" size={14} /></button>
               )}
               {inventorySuggestions.length > 0 && (
-                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#211D3D] border-[#3A3266] divide-[#3A3266]/60">
+                <div className="absolute top-full left-0 w-full mt-1 border rounded-2xl shadow-xl z-30 overflow-hidden divide-y bg-[#12204A] border-[#1E2D6E] divide-[#1E2D6E]/60">
                   {inventorySuggestions.map(hint => (
-                    <button key={hint} onClick={() => setInventorySearch(hint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-[#3A3266]/40 text-white transition">{hint}</button>
+                    <button key={hint} onClick={() => setInventorySearch(hint)} className="w-full text-left p-2 text-xs font-semibold hover:bg-[#1E2D6E]/40 text-white transition">{hint}</button>
                   ))}
                 </div>
               )}
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              <button onClick={handlePrintInventory} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+              <button onClick={handlePrintInventory} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
                 <Icon name="print" size={14} /><span>Print</span>
               </button>
-              <button onClick={handleExportInventory} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A] transition">
+              <button onClick={handleExportInventory} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F] transition">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
-              <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortInventory('office')}>Office <SortIndicator sortConfig={sortConfigInventory} sortKey="office" darkMode={darkMode} /></th>
-                <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortInventory('fd')}>Division <SortIndicator sortConfig={sortConfigInventory} sortKey="fd" darkMode={darkMode} /></th>
-                <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortInventory('section')}>Section/Unit <SortIndicator sortConfig={sortConfigInventory} sortKey="section" darkMode={darkMode} /></th>
-                <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortInventory('category')}>Category <SortIndicator sortConfig={sortConfigInventory} sortKey="category" darkMode={darkMode} /></th>
-                <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortInventory('specificItem')}>Item <SortIndicator sortConfig={sortConfigInventory} sortKey="specificItem" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortInventory('qty')}>Available Qty <SortIndicator sortConfig={sortConfigInventory} sortKey="qty" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-center pr-2 ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Action</th>
+              <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortInventory('office')}>Office <SortIndicator sortConfig={sortConfigInventory} sortKey="office" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortInventory('fd')}>Division <SortIndicator sortConfig={sortConfigInventory} sortKey="fd" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortInventory('section')}>Section/Unit <SortIndicator sortConfig={sortConfigInventory} sortKey="section" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortInventory('category')}>Category <SortIndicator sortConfig={sortConfigInventory} sortKey="category" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortInventory('specificItem')}>Item <SortIndicator sortConfig={sortConfigInventory} sortKey="specificItem" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortInventory('qty')}>Available Qty <SortIndicator sortConfig={sortConfigInventory} sortKey="qty" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-center pr-2 ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+            <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
               {sortedInventory.map((row, idx) => (
-                <tr key={idx} className={`hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+                <tr key={idx} className={`hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                   <td className="py-2.5 pl-2 font-bold">{row.office}</td>
                   <td className="py-2.5">{row.fd}</td>
                   <td className="py-2.5">{row.section}</td>
                   <td className="py-2.5">{row.category}</td>
                   <td className="py-2.5 font-semibold">{row.specificItem}</td>
-                  <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>{row.qty} {row.uom}</td>
+                  <td className={`py-2.5 text-right font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>{row.qty} {row.uom}</td>
                   <td className="py-2.5 text-center pr-2">
                     {canInitiateFrom(row) ? (
-                      <button onClick={() => openTransferModal(row)} className="px-2.5 py-1 bg-[#FF6B4A] hover:bg-[#FF5230] text-black rounded text-[10px] font-bold transition inline-flex items-center gap-1">
+                      <button onClick={() => openTransferModal(row)} className="px-2.5 py-1 bg-[#1B8A4A] hover:bg-[#146B39] text-black rounded text-[10px] font-bold transition inline-flex items-center gap-1">
                         <Icon name="transfer" size={11} /> Transfer
                       </button>
                     ) : (
-                      <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-40 italic`}>&mdash;</span>
+                      <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-40 italic`}>&mdash;</span>
                     )}
                   </td>
                 </tr>
               ))}
               {sortedInventory.length === 0 && (
-                <tr><td colSpan="7" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 italic`}>No inventory items match the applied parameter sets.</td></tr>
+                <tr><td colSpan="7" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 italic`}>No inventory items match the applied parameter sets.</td></tr>
               )}
             </tbody>
             {sortedInventory.length > 0 && (
               <tfoot>
-                <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+                <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                   <td className="py-2.5 pl-2" colSpan="5">TOTAL</td>
                   <td className="py-2.5 text-right">{sortedInventory.reduce((a, r) => a + Number(r.qty), 0)}</td>
                   <td></td>
@@ -3200,43 +3200,43 @@ function TransferWorkspace({ contributions, transfers, setTransfers, userContext
       )}
 
       {subTab === 'ledger' && (
-        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
+        <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)] mb-4">
             <div className="relative w-full max-w-md">
-              <input type="text" value={ledgerSearch} onChange={e => setLedgerSearch(e.target.value)} placeholder="Search item, office..." className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#3A3266] shadow-sm outline-none transition focus:border-[#8B5CF6] bg-[#211D3D] text-white" />
+              <input type="text" value={ledgerSearch} onChange={e => setLedgerSearch(e.target.value)} placeholder="Search item, office..." className="w-full p-2.5 pl-3 pr-8 text-xs font-semibold rounded-2xl border border-[#1E2D6E] shadow-sm outline-none transition focus:border-[#2A3B8F] bg-[#12204A] text-white" />
               {ledgerSearch && (
                 <button onClick={() => setLedgerSearch('')} className="absolute right-2.5 top-3 text-white opacity-50 hover:opacity-100"><Icon name="close" size={14} /></button>
               )}
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              <button onClick={handlePrintTransferLedger} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+              <button onClick={handlePrintTransferLedger} className="flex items-center justify-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
                 <Icon name="print" size={14} /><span>Print</span>
               </button>
-              <button onClick={handleExportTransferLedger} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#3A3266] text-[#FFC145] rounded-2xl text-xs font-black border-2 border-[#4E4488] hover:bg-[#453C7A] transition">
+              <button onClick={handleExportTransferLedger} className="flex items-center justify-center gap-2 px-3 py-1.5 bg-[#1E2D6E] text-[#FFC72C] rounded-2xl text-xs font-black border-2 border-[#2A3B8F] hover:bg-[#2A3B8F] transition">
                 <Icon name="download" size={14} /><span>Export Matrix</span>
               </button>
             </div>
           </div>
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead>
-              <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortLedger('dateInitiated')}>Date <SortIndicator sortConfig={sortConfigLedger} sortKey="dateInitiated" darkMode={darkMode} /></th>
-                <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortLedger('specificItem')}>Item <SortIndicator sortConfig={sortConfigLedger} sortKey="specificItem" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-right cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortLedger('qty')}>Qty <SortIndicator sortConfig={sortConfigLedger} sortKey="qty" darkMode={darkMode} /></th>
-                <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortLedger('fromOffice')}>From <SortIndicator sortConfig={sortConfigLedger} sortKey="fromOffice" darkMode={darkMode} /></th>
-                <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortLedger('toOffice')}>To <SortIndicator sortConfig={sortConfigLedger} sortKey="toOffice" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-center cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSortLedger('status')}>Status <SortIndicator sortConfig={sortConfigLedger} sortKey="status" darkMode={darkMode} /></th>
-                <th className={`pb-2 text-center pr-2 ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Actions</th>
+              <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+                <th className={`pb-2 pl-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortLedger('dateInitiated')}>Date <SortIndicator sortConfig={sortConfigLedger} sortKey="dateInitiated" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortLedger('specificItem')}>Item <SortIndicator sortConfig={sortConfigLedger} sortKey="specificItem" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-right cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortLedger('qty')}>Qty <SortIndicator sortConfig={sortConfigLedger} sortKey="qty" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortLedger('fromOffice')}>From <SortIndicator sortConfig={sortConfigLedger} sortKey="fromOffice" darkMode={darkMode} /></th>
+                <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortLedger('toOffice')}>To <SortIndicator sortConfig={sortConfigLedger} sortKey="toOffice" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-center cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSortLedger('status')}>Status <SortIndicator sortConfig={sortConfigLedger} sortKey="status" darkMode={darkMode} /></th>
+                <th className={`pb-2 text-center pr-2 ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+            <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
               {sortedLedger.map(t => (
-                <tr key={t.id} className={`hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+                <tr key={t.id} className={`hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                   <td className="py-2.5 pl-2">{t.dateInitiated}</td>
                   <td className="py-2.5 font-semibold">{t.specificItem}</td>
                   <td className="py-2.5 text-right font-medium">{t.qty} {t.uom}</td>
-                  <td className="py-2.5">{t.fromOffice}<div className={`text-[9px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60`}>{t.fromFd} &middot; {t.fromSection}</div></td>
-                  <td className="py-2.5">{t.toOffice}<div className={`text-[9px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60`}>{t.toFd} &middot; {t.toSection}</div></td>
+                  <td className="py-2.5">{t.fromOffice}<div className={`text-[9px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60`}>{t.fromFd} &middot; {t.fromSection}</div></td>
+                  <td className="py-2.5">{t.toOffice}<div className={`text-[9px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60`}>{t.toFd} &middot; {t.toSection}</div></td>
                   <td className="py-2.5 text-center">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                       t.status === 'Pending' ? 'bg-orange-500/15 text-orange-500' :
@@ -3248,15 +3248,15 @@ function TransferWorkspace({ contributions, transfers, setTransfers, userContext
                     <div className="flex items-center justify-center gap-1">
                       {canApprove(t) && (
                         <>
-                          <button onClick={() => handleApprove(t)} className="p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded text-green-600 hover:text-green-500 transition" title="Approve Transfer">
+                          <button onClick={() => handleApprove(t)} className="p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded text-green-600 hover:text-green-500 transition" title="Approve Transfer">
                             <Icon name="check" size={14} />
                           </button>
-                          <button onClick={() => handleReject(t)} className="p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded text-red-600 hover:text-red-500 transition" title="Reject Transfer">
+                          <button onClick={() => handleReject(t)} className="p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded text-red-600 hover:text-red-500 transition" title="Reject Transfer">
                             <Icon name="close" size={14} />
                           </button>
                         </>
                       )}
-                      <button onClick={() => setTrailModal(t)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-[#8B5CF6] dark:hover:text-[#FFC145] transition`} title="View History">
+                      <button onClick={() => setTrailModal(t)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] transition`} title="View History">
                         <Icon name="history" size={14} />
                       </button>
                     </div>
@@ -3264,12 +3264,12 @@ function TransferWorkspace({ contributions, transfers, setTransfers, userContext
                 </tr>
               ))}
               {sortedLedger.length === 0 && (
-                <tr><td colSpan="7" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 italic`}>No transfer records match the applied parameter sets.</td></tr>
+                <tr><td colSpan="7" className={`py-6 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 italic`}>No transfer records match the applied parameter sets.</td></tr>
               )}
             </tbody>
             {sortedLedger.length > 0 && (
               <tfoot>
-                <tr className={`border-t-2 border-[#E4DEFB] dark:border-[#3A3266] font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>
+                <tr className={`border-t-2 border-[#F5E6C8] dark:border-[#1E2D6E] font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>
                   <td className="py-2.5 pl-2" colSpan="2">TOTAL</td>
                   <td className="py-2.5 text-right">{sortedLedger.reduce((a, t) => a + Number(t.qty), 0)}</td>
                   <td colSpan="4"></td>
@@ -3281,17 +3281,17 @@ function TransferWorkspace({ contributions, transfers, setTransfers, userContext
       )}
 
       {transferModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <form onSubmit={handleSubmitTransfer} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-2">
-              <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>Initiate Transfer</h3>
-              <button type="button" onClick={() => setTransferModal(null)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <form onSubmit={handleSubmitTransfer} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>Initiate Transfer</h3>
+              <button type="button" onClick={() => setTransferModal(null)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
             </div>
 
-            <div className={`p-3 rounded-2xl text-[11px] border ${darkMode ? 'bg-[#151129]/40 border-[#3A3266]' : 'bg-[#F3EFFE] border-[#E4DEFB]'}`}>
+            <div className={`p-3 rounded-2xl text-[11px] border ${darkMode ? 'bg-[#0C1638]/40 border-[#1E2D6E]' : 'bg-[#FFFBF0] border-[#F5E6C8]'}`}>
               <p className="font-bold">{transferModal.specificItem} <span className="opacity-60">({transferModal.category})</span></p>
               <p className="opacity-80 mt-0.5">From: {transferModal.office} &middot; {transferModal.fd} &middot; {transferModal.section}</p>
-              <p className={`mt-1 font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>Available: {transferModal.qty} {transferModal.uom}</p>
+              <p className={`mt-1 font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>Available: {transferModal.qty} {transferModal.uom}</p>
             </div>
 
             <select value={form.toOffice} onChange={e => setForm({ ...form, toOffice: e.target.value, toFd: '', toSection: '' })} className={inp} disabled={!(isSuperAdmin || isRoFocal)} required>
@@ -3311,32 +3311,32 @@ function TransferWorkspace({ contributions, transfers, setTransfers, userContext
 
             {formError && <p className="text-red-500 text-[11px] font-semibold">{formError}</p>}
 
-            <p className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60`}>
+            <p className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60`}>
               {form.toOffice && form.toOffice !== transferModal.office
                 ? 'Cross-office transfer — requires Regional Office Focal approval.'
                 : 'Intra-office transfer — requires approval from this office\'s Partnerships Focal.'}
             </p>
 
-            <button type="submit" className="w-full py-2 bg-[#FF6B4A] hover:bg-[#FF5230] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]">Submit Transfer Request</button>
+            <button type="submit" className="w-full py-2 bg-[#1B8A4A] hover:bg-[#146B39] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]">Submit Transfer Request</button>
           </form>
         </div>
       )}
 
       {trailModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <div className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-2 mb-3">
-              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Transfer Audit Trail</h3>
-              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-2 mb-3">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Transfer Audit Trail</h3>
+              <button onClick={() => setTrailModal(null)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white`}><Icon name="close" size={16} /></button>
             </div>
             <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
               {trailModal.history?.map((t, i) => (
-                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-[#3A3266]/50 border-[#4E4488]' : 'bg-[#F3EFFE] border-[#E4DEFB]'}`}>
-                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-60 mb-1`}>
+                <div key={i} className={`text-xs p-3 rounded border ${darkMode ? 'bg-[#1E2D6E]/50 border-[#2A3B8F]' : 'bg-[#FFFBF0] border-[#F5E6C8]'}`}>
+                  <div className={`flex justify-between text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-60 mb-1`}>
                     <span>{t.user}</span>
                     <span>{t.timestamp}</span>
                   </div>
-                  <p className={`${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>{t.action}</p>
+                  <p className={`${darkMode ? 'text-white' : 'text-[#16213E]'}`}>{t.action}</p>
                 </div>
               ))}
             </div>
@@ -3428,14 +3428,14 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
     }
   };
 
-  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-[#E4DEFB] text-[#2D2650]'} focus:border-[#8B5CF6]`;
-  const filterCls = `text-xs px-3 py-1.5 rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#3A3266] border-[#4E4488] text-white' : 'bg-[#F3EFFE] border-[#E4DEFB] text-[#2D2650]'}`;
+  const inp = `w-full p-2.5 text-xs rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-[#F5E6C8] text-[#16213E]'} focus:border-[#2A3B8F]`;
+  const filterCls = `text-xs px-3 py-1.5 rounded-2xl border-2 outline-none transition ${darkMode ? 'bg-[#1E2D6E] border-[#2A3B8F] text-white' : 'bg-[#FFFBF0] border-[#F5E6C8] text-[#16213E]'}`;
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#211D3D] p-4 border-2 border-[#3A3266] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)]">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#12204A] p-4 border-2 border-[#1E2D6E] rounded-3xl shadow-[6px_6px_0px_rgba(0,0,0,0.18)]">
         <div>
-          <h2 className="text-sm font-bold text-[#FFC145]">User Management Directory</h2>
+          <h2 className="text-sm font-bold text-[#FFC72C]">User Management Directory</h2>
           <p className="text-[11px] text-white opacity-80">Verified Access Profiles: {displayedUsers.length}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
@@ -3448,33 +3448,33 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
             {Object.values(SYSTEM_ROLES).map(r => <option key={r} value={r}>{r}</option>)}
           </select>
           {hasWriteClearance && (
-            <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-[#FF6B4A] hover:bg-[#FF5230] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
+            <button onClick={() => setIsAddOpen(true)} className="flex items-center gap-2 px-4 py-1.5 bg-[#1B8A4A] hover:bg-[#146B39] text-white rounded-2xl text-xs font-black shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)] transition-all">
               <Icon name="plus" size={14} /><span>Add Account</span>
             </button>
           )}
         </div>
       </div>
 
-      <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#211D3D]/80 border-[#3A3266]' : 'bg-white border-white'}`}>
+      <div className={`p-5 rounded-[28px] border-2 shadow-sm overflow-x-auto ${darkMode ? 'bg-[#12204A]/80 border-[#1E2D6E]' : 'bg-white border-white'}`}>
         <table className="w-full text-left text-xs whitespace-nowrap">
           <thead>
-            <tr className={`border-b border-[#E4DEFB] dark:border-[#3A3266] ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-bold uppercase tracking-wider`}>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('name')}>Name <SortIndicator sortConfig={sortConfig} sortKey="name" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('username')}>Username <SortIndicator sortConfig={sortConfig} sortKey="username" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('position')}>Designation/Position <SortIndicator sortConfig={sortConfig} sortKey="position" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('role')}>Access Level <SortIndicator sortConfig={sortConfig} sortKey="role" darkMode={darkMode} /></th>
-              <th className={`pb-2 cursor-pointer hover:text-[#8B5CF6] dark:hover:text-[#FFC145] select-none ${darkMode ? 'text-white' : 'text-[#2D2650]'}`} onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
-              {hasWriteClearance && <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Actions</th>}
+            <tr className={`border-b border-[#F5E6C8] dark:border-[#1E2D6E] ${darkMode ? 'text-white' : 'text-[#16213E]'} font-bold uppercase tracking-wider`}>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('name')}>Name <SortIndicator sortConfig={sortConfig} sortKey="name" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('username')}>Username <SortIndicator sortConfig={sortConfig} sortKey="username" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('position')}>Designation/Position <SortIndicator sortConfig={sortConfig} sortKey="position" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('role')}>Access Level <SortIndicator sortConfig={sortConfig} sortKey="role" darkMode={darkMode} /></th>
+              <th className={`pb-2 cursor-pointer hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] select-none ${darkMode ? 'text-white' : 'text-[#16213E]'}`} onClick={() => requestSort('office')}>Office <SortIndicator sortConfig={sortConfig} sortKey="office" darkMode={darkMode} /></th>
+              {hasWriteClearance && <th className={`pb-2 text-center ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Actions</th>}
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#EDE7FC] dark:divide-[#3A3266]/60">
+          <tbody className="divide-y divide-[#FDF4DC] dark:divide-[#1E2D6E]/60">
             {sortedUsers.map(u => (
-              <tr key={u.id} className={`hover:bg-[#F3EFFE] dark:hover:bg-[#2A2451] ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+              <tr key={u.id} className={`hover:bg-[#FFFBF0] dark:hover:bg-[#16234F] ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                 <td className="py-2.5">
                   <p className="font-bold">{u.name}</p>
-                  <p className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-80`}>{u.email}</p>
+                  <p className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-80`}>{u.email}</p>
                 </td>
-                <td className={`py-2.5 font-semibold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>
+                <td className={`py-2.5 font-semibold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>
                   {u.username}
                   {u.passwordResetRequired && (
                     <span className="ml-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-500/15 text-red-500">Reset Pending</span>
@@ -3482,7 +3482,7 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
                 </td>
                 <td className="py-2.5">{u.position || '-'}</td>
                 <td className="py-2.5">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#8B5CF6]/30 text-[#FFC145]">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#2A3B8F]/30 text-[#FFC72C]">
                     {u.role}
                   </span>
                 </td>
@@ -3492,20 +3492,20 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
                     <div className="flex items-center justify-center gap-1">
                       {canManageTarget(u) ? (
                         <>
-                          <button onClick={() => setEditingUser(u)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-[#8B5CF6] dark:hover:text-[#FFC145] transition`} title="Modify Access">
+                          <button onClick={() => setEditingUser(u)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] transition`} title="Modify Access">
                             <Icon name="edit" size={14} />
                           </button>
                           {u.id !== userContext.id && (
-                            <button onClick={() => handleResetPassword(u)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-[#8B5CF6] dark:hover:text-[#FFC145] transition`} title="Reset Password">
+                            <button onClick={() => handleResetPassword(u)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-[#2A3B8F] dark:hover:text-[#FFC72C] transition`} title="Reset Password">
                               <Icon name="key" size={14} />
                             </button>
                           )}
-                          <button onClick={() => handleDeleteUser(u.id)} className={`p-1 hover:bg-[#EDE7FC] dark:hover:bg-[#3A3266] rounded ${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-red-600 dark:hover:text-red-500 transition`} title="Purge Record">
+                          <button onClick={() => handleDeleteUser(u.id)} className={`p-1 hover:bg-[#FDF4DC] dark:hover:bg-[#1E2D6E] rounded ${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-red-600 dark:hover:text-red-500 transition`} title="Purge Record">
                             <Icon name="trash" size={14} />
                           </button>
                         </>
                       ) : (
-                        <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-40 italic`}>Restricted</span>
+                        <span className={`text-[10px] ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-40 italic`}>Restricted</span>
                       )}
                     </div>
                   </td>
@@ -3517,11 +3517,11 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
       </div>
 
       {isAddOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <div className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-3 mb-4">
-              <h3 className={`font-black text-sm ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>New User Identity</h3>
-              <button onClick={() => setIsAddOpen(false)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={18} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-3 mb-4">
+              <h3 className={`font-black text-sm ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>New User Identity</h3>
+              <button onClick={() => setIsAddOpen(false)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={18} /></button>
             </div>
             <form onSubmit={handleAddUser} className="space-y-4">
               <input type="text" placeholder="Full Name" value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className={inp} required />
@@ -3534,18 +3534,18 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
               <select value={form.office} onChange={e=>setForm({...form, office: e.target.value})} className={inp} disabled={!isSuperAdmin && form.role !== SYSTEM_ROLES.PARTNER}>
                 {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
               </select>
-              <button type="submit" className="w-full py-2 bg-[#FF6B4A] hover:bg-[#FF5230] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]">Create Profile</button>
+              <button type="submit" className="w-full py-2 bg-[#1B8A4A] hover:bg-[#146B39] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]">Create Profile</button>
             </form>
           </div>
         </div>
       )}
 
       {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#151129]/60 backdrop-blur-sm">
-          <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#211D3D] border-[#3A3266] text-white' : 'bg-white border-white text-[#2D2650]'}`}>
-            <div className="flex justify-between items-center border-b border-[#E4DEFB] dark:border-[#3A3266] pb-2">
-              <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC145]' : 'text-black'}`}>Modify Identity Access</h3>
-              <button type="button" onClick={() => setEditingUser(null)} className={`${darkMode ? 'text-white' : 'text-[#2D2650]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0C1638]/60 backdrop-blur-sm">
+          <form onSubmit={handleUpdateUser} className={`w-full max-w-md p-6 rounded-[28px] border-2 shadow-2xl space-y-4 ${darkMode ? 'bg-[#12204A] border-[#1E2D6E] text-white' : 'bg-white border-white text-[#16213E]'}`}>
+            <div className="flex justify-between items-center border-b border-[#F5E6C8] dark:border-[#1E2D6E] pb-2">
+              <h3 className={`font-bold text-sm ${darkMode ? 'text-[#FFC72C]' : 'text-black'}`}>Modify Identity Access</h3>
+              <button type="button" onClick={() => setEditingUser(null)} className={`${darkMode ? 'text-white' : 'text-[#16213E]'} hover:text-black dark:hover:text-white opacity-60 hover:opacity-100`}><Icon name="close" size={16} /></button>
             </div>
             <input type="text" placeholder="Full Name" value={editingUser.name} onChange={e=>setEditingUser({...editingUser, name: e.target.value})} className={inp} required />
             <input type="text" placeholder="Position / Title" value={editingUser.position} onChange={e=>setEditingUser({...editingUser, position: e.target.value})} className={inp} required />
@@ -3555,7 +3555,7 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
             <select value={editingUser.office} onChange={e=>setEditingUser({...editingUser, office: e.target.value})} className={inp} disabled={!isSuperAdmin && editingUser.role !== SYSTEM_ROLES.PARTNER}>
               {OFFICES.map(o=><option key={o} value={o}>{o}</option>)}
             </select>
-            <button type="submit" className="w-full py-2 bg-[#FF6B4A] hover:bg-[#FF5230] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]">Update Credentials</button>
+            <button type="submit" className="w-full py-2 bg-[#1B8A4A] hover:bg-[#146B39] text-white font-black text-xs rounded-2xl transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.18)] hover:shadow-[2px_2px_0px_rgba(0,0,0,0.18)]">Update Credentials</button>
           </form>
         </div>
       )}
@@ -3565,16 +3565,16 @@ function UserWorkspace({ users, setUsers, userContext, darkMode }) {
 
 function SystemFlowDiagram({ darkMode }) {
   const nodes = [
-    { key: 'needs', label: 'Offices Log Needs', sub: 'End Users & Focals', color: '#FF6B4A', icon: 'needs' },
-    { key: 'contrib', label: 'Partners Contribute', sub: 'External Partners', color: '#8B5CF6', icon: 'contributions' },
-    { key: 'match', label: 'Focal Reviews & Records', sub: 'Partnerships Focal', color: '#FFC145', icon: 'check' },
-    { key: 'transfer', label: 'Resources Transferred', sub: 'RO ⇄ SDO Redistribution', color: '#2DD4A7', icon: 'transfer' },
-    { key: 'dashboard', label: 'Dashboard & Reports', sub: 'All Roles (scoped)', color: '#4C6FFF', icon: 'dashboard' },
+    { key: 'needs', label: 'Offices Log Needs', sub: 'End Users & Focals', color: '#1B8A4A', icon: 'needs' },
+    { key: 'contrib', label: 'Partners Contribute', sub: 'External Partners', color: '#2A3B8F', icon: 'contributions' },
+    { key: 'match', label: 'Focal Reviews & Records', sub: 'Partnerships Focal', color: '#FFC72C', icon: 'check' },
+    { key: 'transfer', label: 'Resources Transferred', sub: 'RO ⇄ SDO Redistribution', color: '#D62828', icon: 'transfer' },
+    { key: 'dashboard', label: 'Dashboard & Reports', sub: 'All Roles (scoped)', color: '#5B9BD5', icon: 'dashboard' },
   ];
 
-  const textColor = darkMode ? '#FFFFFF' : '#2D2650';
-  const subColor = darkMode ? '#B9A9FF' : '#6B5EA8';
-  const laneColor = darkMode ? '#3A3266' : '#E4DEFB';
+  const textColor = darkMode ? '#FFFFFF' : '#16213E';
+  const subColor = darkMode ? '#F5D485' : '#47628A';
+  const laneColor = darkMode ? '#1E2D6E' : '#F5E6C8';
 
   const nodeW = 190, nodeH = 108, gap = 40;
   const totalW = nodes.length * nodeW + (nodes.length - 1) * gap;
@@ -3634,36 +3634,36 @@ function SystemFlowDiagram({ darkMode }) {
 
 function AboutWorkspace({ darkMode }) {
   return (
-    <div className={`p-8 rounded-[28px] border-2 shadow-sm max-w-5xl mx-auto ${darkMode ? 'bg-[#211D3D] border-[#3A3266]' : 'bg-white border-[#E4DEFB]'}`}>
-      <div className="flex items-center gap-4 mb-6 pb-6 border-b border-[#E4DEFB] dark:border-[#3A3266]">
-        <div className="w-16 h-16 rounded-2xl bg-[#FF6B4A] flex items-center justify-center shadow-lg text-black overflow-hidden">
+    <div className={`p-8 rounded-[28px] border-2 shadow-sm max-w-5xl mx-auto ${darkMode ? 'bg-[#12204A] border-[#1E2D6E]' : 'bg-white border-[#F5E6C8]'}`}>
+      <div className="flex items-center gap-4 mb-6 pb-6 border-b border-[#F5E6C8] dark:border-[#1E2D6E]">
+        <div className="w-16 h-16 rounded-2xl bg-[#1B8A4A] flex items-center justify-center shadow-lg text-black overflow-hidden">
            <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
            <span className="hidden">R8</span>
         </div>
         <div>
-          <h1 className={`text-2xl font-black ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>Project UGNAY</h1>
-          <p className={`text-sm ${darkMode ? 'text-white' : 'text-[#2D2650]'} font-medium opacity-80`}>Unified Gateway for Needs and Assistance Yields</p>
+          <h1 className={`text-2xl font-black ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>Project UGNAY</h1>
+          <p className={`text-sm ${darkMode ? 'text-white' : 'text-[#16213E]'} font-medium opacity-80`}>Unified Gateway for Needs and Assistance Yields</p>
         </div>
       </div>
-      <div className={`mb-6 pb-6 border-b border-[#E4DEFB] dark:border-[#3A3266]`}>
-        <h3 className={`text-xs font-black uppercase tracking-widest mb-3 ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>System Flow</h3>
+      <div className={`mb-6 pb-6 border-b border-[#F5E6C8] dark:border-[#1E2D6E]`}>
+        <h3 className={`text-xs font-black uppercase tracking-widest mb-3 ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>System Flow</h3>
         <SystemFlowDiagram darkMode={darkMode} />
       </div>
-      <div className={`space-y-4 text-sm ${darkMode ? 'text-white' : 'text-[#2D2650]'} opacity-90 leading-relaxed`}>
+      <div className={`space-y-4 text-sm ${darkMode ? 'text-white' : 'text-[#16213E]'} opacity-90 leading-relaxed`}>
       <p><strong>Project UGNAY</strong> (Unified Gateway for Needs and Assistance Yields) is the official partnership management and resource coordination platform of DepEd Region VIII. Inspired by the Filipino word <strong>"ugnay,"</strong> which means <em>connection, linkage, or coordination</em>, the project embodies the Department's commitment to strengthening collaboration among schools, offices, stakeholders, and development partners. It serves as a unified gateway where identified needs are matched with available assistance, fostering meaningful partnerships that contribute to improved educational outcomes across the region.</p>
 <p>Anchored on the Filipino value of <strong>ugnayan</strong> or working together toward a common purpose, Project UGNAY promotes a culture of cooperation, transparency, and shared responsibility. It enables DepEd Region VIII to effectively coordinate with government agencies, local government units, private organizations, non-government organizations, alumni associations, civic groups, and other education partners by providing a centralized, data-driven system for identifying priorities and aligning partner support with actual institutional needs.</p>
 <p>The project was developed in response to the growing need for a streamlined and equitable mechanism for managing partnership initiatives and external assistance. Traditionally, partner interventions were often coordinated through separate channels, making it challenging to consolidate needs, monitor commitments, and ensure that resources reached the offices and schools that needed them most. Project UGNAY addresses these challenges by providing a single, integrated platform that enhances planning, coordination, accountability, and monitoring of partnership programs.</p>
 <p>This localized system bridges the gap between identified office needs and the resources provided by external partners, ensuring transparent, data-driven, needs-based, and equitable distribution of support across all offices in DepEd Region VIII. Through real-time monitoring, centralized records, and informed decision-making, Project UGNAY empowers both DepEd offices and partners to maximize the impact of every contribution while promoting accountability, efficiency, and sustainability in partnership initiatives.</p>
 <p>Beyond serving as a repository of requests and assistance, Project UGNAY functions as a strategic decision-support tool that enables regional leaders and partner organizations to identify priority areas, monitor resource allocation, evaluate partnership outcomes, and strengthen collaborative governance. By aligning partner contributions with validated needs, the system helps ensure that every intervention creates meaningful and measurable impact for learners, schools, and communities.</p>
 <p>Project UGNAY is conceptualized and realized through the visionary leadership of <strong>Regional Director Salustiano T. Jimenez, JD, EdD, CESO III</strong>, and <strong>Assistant Regional Director Marilyn B. Siao, PhD, CESO IV</strong>. The initiative is implemented through the <strong>Special Programs and Projects Section</strong> of the <strong>Education Support Services Division (ESSD)</strong>, the designated focal unit for Partnerships in DepEd Region VIII, reinforcing the Region's commitment to innovation, collaboration, and responsive governance in advancing quality basic education.</p>
-        <div className="pt-4 border-t border-[#E4DEFB] dark:border-[#3A3266] grid grid-cols-2 gap-4 text-xs">
+        <div className="pt-4 border-t border-[#F5E6C8] dark:border-[#1E2D6E] grid grid-cols-2 gap-4 text-xs">
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Version</span>
-            <span className={`font-black ${darkMode ? 'text-[#FFC145]' : 'text-[#EA580C]'}`}>v1.0.0 (Beta)</span>
+            <span className={`font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>v1.0.0 (Beta)</span>
           </div>
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Developed By</span>
-            <span className={`font-bold ${darkMode ? 'text-white' : 'text-[#2D2650]'}`}>ORD-ICT Unit - Region VIII</span>
+            <span className={`font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>ORD-ICT Unit - Region VIII</span>
           </div>
         </div>
       </div>
