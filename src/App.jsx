@@ -380,9 +380,9 @@ function LoginScreen({ users, setUsers, onLoginSuccess, darkMode, setDarkMode })
              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
              <span className="hidden">R8</span>
           </div>
-          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-[#F5D485]' : 'text-[#2A3B8F]'} mb-1`}>Republic of the Philippines · Department of Education</p>
+          <p className={`text-[9px] uppercase tracking-widest font-bold ${darkMode ? 'text-[#F5D485]' : 'text-[#2A3B8F]'} mb-1`}>Department of Education - Region VIII</p>
           <h1 className={`text-xl font-black tracking-tight ${darkMode ? 'text-[#FFC72C]' : 'text-[#16213E]'}`}>Project UGNAY</h1>
-          <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'} mt-1`}>by DepEd Region VIII</p>
+          <p className={`text-xs uppercase font-bold tracking-widest ${darkMode ? 'text-white' : 'text-[#16213E]'} mt-1`}>Unified Gateway for Needs and Assistance Yields</p>
         </div>
 
         {resetUser ? (
@@ -488,9 +488,9 @@ function Sidebar({ activeTab, setActiveTab, darkMode, role, transfers, userConte
           <span className="hidden">R8</span>
         </div>
         <div>
-          <p className="text-[8px] uppercase tracking-wider text-[#F5D485] font-bold leading-none mb-0.5">Republic of the Philippines · Dep. of Education</p>
+          <p className="text-[10px] uppercase tracking-wider text-[#F5D485] font-bold leading-none mb-0.5">DepEd Region VIII</p>
           <h1 className="font-black text-sm tracking-tight text-[#FFC72C]">Project UGNAY</h1>
-          <p className="text-[10px] uppercase tracking-wider text-white opacity-80 font-medium">DepEd Region VIII</p>
+          <p className="text-[7px] uppercase tracking-wider text-white opacity-80 font-medium">Unified Gateway for Needs and Assistance Yields</p>
         </div>
       </div>
       <div className="flex-1 p-3 space-y-1.5 flex md:flex-col overflow-x-auto">
@@ -3659,11 +3659,11 @@ function AboutWorkspace({ darkMode }) {
         <div className="pt-4 border-t border-[#F5E6C8] dark:border-[#1E2D6E] grid grid-cols-2 gap-4 text-xs">
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Version</span>
-            <span className={`font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>v1.0.0 (Beta)</span>
+            <span className={`font-black ${darkMode ? 'text-[#FFC72C]' : 'text-[#A16207]'}`}>v1.15.5 (Beta)</span>
           </div>
           <div>
             <span className="block opacity-60 font-bold uppercase mb-1">Developed By</span>
-            <span className={`font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>ORD-ICT Unit - Region VIII</span>
+            <span className={`font-bold ${darkMode ? 'text-white' : 'text-[#16213E]'}`}>MIKKO S. DUERO, CP II, ORD-ICT Unit</span>
           </div>
         </div>
       </div>
